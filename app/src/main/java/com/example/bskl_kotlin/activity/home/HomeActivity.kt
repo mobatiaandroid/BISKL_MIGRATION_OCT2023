@@ -29,7 +29,6 @@ import com.example.bskl_kotlin.activity.home.model.StudDetailsUsermodel
 import com.example.bskl_kotlin.activity.home.model.TimeTableStudentModel
 import com.example.bskl_kotlin.activity.home.model.UserDetailsModel
 import com.example.bskl_kotlin.common.PreferenceManager
-import com.example.bskl_kotlin.fragment.home.HomeScreenFragment
 import com.mobatia.bskl.R
 import retrofit2.Call
 import retrofit2.Callback
@@ -51,6 +50,8 @@ class HomeActivity:AppCompatActivity() {
     lateinit var mDrawerLayout: DrawerLayout
     lateinit var downarrow: ImageView
     lateinit var linearLayout: LinearLayout
+    lateinit var logoClickImgView:ImageView
+
     lateinit var mHomeListView: ListView
     lateinit var mListItemArray: Array<String>
     var mListImgArray: TypedArray? = null
@@ -127,6 +128,7 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
     private fun init() {
         // mListItemArray= ArrayList()
         homePageLogoImg = findViewById(R.id.homePageLogoImg)
+        logoClickImgView = findViewById(R.id.logoClickImgView)
         maintopRel = findViewById(R.id.maintopRel)
         mDrawerLayout = findViewById(R.id.drawer_layout)
         mHomeListView = findViewById<ListView>(R.id.homeList)
