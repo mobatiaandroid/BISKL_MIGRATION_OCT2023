@@ -1,0 +1,324 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical"
+    android:weightSum="100">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="10dp"
+        android:background="@android:color/white">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="top"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="50">
+
+                    <RelativeLayout
+                        android:id="@+id/firstRelativeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <Button
+                                android:id="@+id/messageBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:background="@drawable/messages"
+                                android:gravity="left|bottom"
+                                android:paddingBottom="15dp"
+                                android:paddingLeft="15dp"
+                                android:textColor="@color/white"
+                                android:textSize="42sp" />
+
+                        </RelativeLayout>
+
+                        <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorWhiteHome
+                            android:id="@+id/firstTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginLeft="10dp"
+                            android:layout_marginRight="10dp"
+                            android:layout_marginTop="30dp"
+                            android:gravity="center_horizontal"
+                            android:text="Messages"
+                            android:textColor="@color/white" />
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/firstRelativeLayout"
+                        android:layout_alignParentRight="true"
+
+                        android:layout_margin="10dp">
+
+                        <ImageView
+                            android:id="@+id/firstImageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:src="@drawable/messages_side" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginLeft="5dp"
+
+                    android:layout_weight="50">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/secondRelativeLayout"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content">
+
+                                <Button
+                                    android:id="@+id/newsBtn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentTop="true"
+                                    android:background="@drawable/bskl_msg" />
+                            </RelativeLayout>
+
+                            <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorWhiteHome
+                                android:id="@+id/secondTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="30dp"
+                                android:gravity="center_horizontal"
+                                android:text="BSKL News"
+                                android:textColor="@color/white" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/secondRelativeLayout"
+                            android:layout_alignParentRight="true"
+
+                            android:layout_margin="10dp">
+
+                            <ImageView
+                                android:id="@+id/secondImageView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="10dp"
+                                android:layout_centerVertical="true" />
+
+                        </RelativeLayout>
+                    </RelativeLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="50">
+
+                    <RelativeLayout
+                        android:id="@+id/thirdRelativeLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <Button
+                                android:id="@+id/socialBtn"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentTop="true"
+                                android:layout_marginTop="-3dp"
+                                android:background="@drawable/social_media" />
+                        </RelativeLayout>
+
+                        <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorWhiteHome
+                            android:id="@+id/thirdTextView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginLeft="5dp"
+                            android:layout_marginRight="5dp"
+                            android:layout_marginTop="30dp"
+                            android:gravity="center_horizontal"
+                            android:text="Calendar"
+                            android:textColor="@color/white" />
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/safeGuarding"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/thirdRelativeLayout"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="14dp">
+
+                        <ImageView
+                            android:id="@+id/img"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:visibility="gone"
+                            android:src="@drawable/safe_guard_not"/>
+                        <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                            android:id="@+id/safeGuardingBadge"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:textColor="@color/white"
+                            android:text="2"
+                            android:gravity="center"
+                            android:visibility="gone"
+                            android:background="@drawable/shape_circle__safe_guarding"/>
+
+                    </RelativeLayout>
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/thirdRelativeLayout"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp">
+
+                        <ImageView
+                            android:id="@+id/thirdImageView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="10dp"
+                            android:src="@drawable/calendar_side" />
+
+                    </RelativeLayout>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="50">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:id="@+id/fourthRelativeLayout"
+                            android:layout_width="match_parent"
+
+                            android:layout_height="wrap_content">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+
+                                android:layout_height="wrap_content">
+
+                                <Button
+                                    android:id="@+id/calendarBtn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/calendar"
+                                    android:gravity="left|bottom"
+                                    android:paddingLeft="15dp"
+                                    android:paddingBottom="10dp"
+                                    android:textColor="@color/white"
+                                    android:textSize="42sp" />
+                            </RelativeLayout>
+
+                            <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorWhiteHome
+                                android:id="@+id/fourthTextView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerHorizontal="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="30dp"
+                                android:gravity="center_horizontal"
+                                android:text="Social Media"
+                                android:textColor="@color/white" />
+
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignBottom="@+id/fourthRelativeLayout"
+                            android:layout_alignParentRight="true"
+
+                            android:layout_margin="10dp">
+
+                            <ImageView
+                                android:id="@+id/fourthImageView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerVertical="true"
+                                android:layout_marginBottom="10dp"
+                                android:src="@drawable/social_media_side" />
+
+                        </RelativeLayout>
+
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+</RelativeLayout>

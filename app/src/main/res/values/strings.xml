@@ -1,0 +1,682 @@
+<resources>
+    <string name="app_name">BSKL_KOTLIN</string>
+    <string name="search_hint">Search...</string>
+    <string name="no_result_found">Results not found</string>
+    <string name="select_country">Select a country</string>
+
+    <string name="common_error_loading_pdf">Failed to load the pdf. Please try again later.</string>
+    <string name="common_error_loading_link">Failed to load the link. Please try again later.</string>
+    <string name="common_error_loading_page">Failed to load. Please try again later.</string>
+    <string name="internet_error">Cannot continue at this time. Please check your internet connectivity.</string>
+    <string name="mandatory_field">Mandatory field</string>
+    <string name="no_internet">Please check your internet connectivity</string>
+    <string name="only_primary">Secondary timetable is not currently operational</string>
+    <string name="only_secondary">Primary timetable is not currently operational</string>
+    <string name="both_secondary_primary">This Feature is only available for Both Secodary and Primary Students</string>
+    <string name="common_error">Cannot continue. Please try again later</string>
+    <string name="error_heading">Alert</string>
+    <string name="username">USER EMAIL</string>
+    <string name="password">PASSWORD</string>
+    <string name="loading">Loading&#8230;</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="enter_current_password">Please enter Current Password</string>
+    <string name="enter_new_password">Please enter New Password</string>
+    <string name="enter_confirm_password">Please enter Confirm Password</string>
+    <string name="succ_pswd">Password successfully changed</string>
+    <string name="password_mismatch">Password mismatch</string>
+    <string name="some_error">Some Error Occured</string>
+    <string name="play">PLAY</string>
+    <string name="no_calendar_data">Currently you  have no events in this month.</string>
+    <string name="pause">PAUSE</string>
+    <string name="drag_duplicate">Item already present in home page</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="otp_error">Invalid verification code. Please enter the correct verification code and proceed.</string>
+    <string name="sign_up_successfull">Your password has been sent to the registered email address </string>
+    <string name="sign_up_successfull_last">You can use your  registered email address and password to login </string>
+    <string name="action_settings">Settings</string>
+    <string name="null_value"></string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="exit_alert">Do you wish to exit?</string>
+    <string name="drag_impossible">Drag and drop is not possible for this section</string>
+    <string name="alert_heading">Alert</string>
+    <string name="enter_email">Please enter Email</string>
+    <string name="enter_valid_email">Please enter a valid Email</string>
+    <string name="enter_password">Please enter Password</string>
+    <string name="invalid_email">The email submitted "</string>
+    <string name="invalid_email_normal">Incorrect email.Please try again  "</string>
+    <string name="invalid_email_end">"is not registered with the school"</string>
+    <string name="invalid_otp">Invalid otp</string>
+    <string name="already_exist">You\'ve already registered with this email id. Please login to continue.</string>
+    <string name="not_available_child">This feature is not available for this student. Please contact BSKL for further details.</string>
+    <string name="not_available_feature">Feature is not currently operational</string>
+    <string name="not_available_limitted_access">Your account does not have the correct permission to view this feature</string>
+
+    <string name="signup_success_alert">Successfully registered.Please check your Email for further details.</string>
+    <string name="missing_parameter">Missing parameter</string>
+    <string name="missing_phoneno">No Mobile phone registered. Please contact Admin</string>
+    <string name="email_exists">Email already exists.</string>
+    <string name="email_already_reg_login">Email already registered.</string>
+    <string name="login_success_alert">Successfully logged in.</string>
+    <string name="incrct_usernamepswd">Incorrect username or password.</string>
+    <string name="incrct_pswd">Incorrect password. Please try again.</string>
+    <string name="frgot_success_alert">Password is successfully sent to your email.Please check.</string>
+    <string name="enter_valid_otp">Please enter the otp correctly</string>
+    <string name="enter_otp">Enter OTP</string>
+    <string name="enter_phone_no">Enter PhoneNumber</string>
+    <string name="not_active">You are not registered with this email Id. Please go to \'BSKL Parent Sign Up\' and register with your email id before logging in</string>
+    <string name="coming_soon">Coming Soon</string>
+    <string name="update_success">Thank you for the Update, the school will be in touch when the changes have been made</string>
+    <string name="not_available">Feature is not available as you have no students enrolled.</string>
+
+    <string name="student_not_available">No Student Data Available.</string>
+    <string name="enter_startdate">Please select First day of absence</string>
+    <string name="enter_enddate">Please select Return to school</string>
+    <string name="enter_reason">Please enter reason for your absence</string>
+    <string name="succ_add_student">Successfully added your child</string>
+    <string name="student_exists">Student already exists</string>
+    <string name="succ_leave_submission">Successfully submitted your leave request.</string>
+    <string name="requestHint">If you need to cancel a registered absence please contact reception (phone or email).</string>
+    <string name="appregisteredHint">App Registered Absences</string>
+    <string name="regNewAbsence">Register New Absence</string>
+    <string name="submit">SUBMIT</string>
+    <string name="internal_server_error">Internal server error</string>
+    <!--absence-->
+
+    <string name="approved">Approved</string>
+    <string name="pending">Pending</string>
+    <string name="Rejected">Approved</string>
+
+    <!--Case 1: No Report Absence , No Safe Guarding, No Attendance, No TimeTable
+Preference Manager setHomeListType = "1"   -->
+
+
+    <string-array name="home_list_content_items_1">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_1">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+
+    <!--Case 2: No Report Absence , No Safe Guarding, No Attendance, Have TimeTable
+   Preference Manager setHomeListType = "2"   -->
+
+
+    <string-array name="home_list_content_items_2">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Timetable</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_2">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/time_table_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+
+    <!--Case 3: No Report Absence , No Safe Guarding, Have Attendance, No TimeTable
+  Preference Manager setHomeListType = "3"   -->
+
+    <string-array name="home_list_content_items_3">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Attendance</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_3">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/attendance_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+
+    <!--Case 4: No Report Absence , No Safe Guarding, Have Attendance, Have TimeTable
+    Preference Manager setHomeListType = "4"   -->
+
+    <string-array name="home_list_content_items_4">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Attendance</item>
+        <item>Timetable</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_4">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/attendance_side</item>
+        <item>@drawable/time_table_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+
+    <!--Case 5: No Report Absence , Have Safe Guarding, No Attendance, No TimeTable
+   Preference Manager setHomeListType = "5"   -->
+
+    <string-array name="home_list_content_items_5">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Safeguarding</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_5">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/safe_guarding</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+
+    <!--Case 6: No Report Absence , Have Safe Guarding, No Attendance, Have TimeTable
+   Preference Manager setHomeListType = "6"   -->
+
+    <string-array name="home_list_content_items_6">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Safeguarding</item>
+        <item>Timetable</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_6">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/safe_guarding</item>
+        <item>@drawable/time_table_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+
+    <!--Case 7: No Report Absence , Have Safe Guarding, Have Attendance, No TimeTable
+ Preference Manager setHomeListType = "7"   -->
+
+    <string-array name="home_list_content_items_7">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Safeguarding</item>
+        <item>Attendance</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_7">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/safe_guarding</item>
+        <item>@drawable/attendance_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+
+    <!--Case8: No Report Absence , Have Safe Guarding, Have Attendance, Have TimeTable
+    Preference Manager setHomeListType = "8"   -->
+
+    <string-array name="home_list_content_items_8">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Safeguarding</item>
+        <item>Attendance</item>
+        <item>Timetable</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_8">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/safe_guarding</item>
+        <item>@drawable/attendance_side</item>
+        <item>@drawable/time_table_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+    <!--Case9: Have Report Absence , No Safe Guarding, No Attendance, No TimeTable
+   Preference Manager setHomeListType = "9"   -->
+
+    <string-array name="home_list_content_items_9">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Report Absence</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_9">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/absence</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+    <!--Case10: Have Report Absence , No Safe Guarding, No Attendance, Have TimeTable
+  Preference Manager setHomeListType = "10"   -->
+
+    <string-array name="home_list_content_items_10">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Report Absence</item>
+        <item>Timetable</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_10">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/absence</item>
+        <item>@drawable/time_table_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+    <!--Case11: Have Report Absence , No Safe Guarding, Have Attendance, No TimeTable
+    Preference Manager setHomeListType = "11"   -->
+
+    <string-array name="home_list_content_items_11">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Report Absence</item>
+        <item>Attendance</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_11">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/absence</item>
+        <item>@drawable/attendance_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+
+    <!--Case12: Have Report Absence , No Safe Guarding, Have Attendance, Have TimeTable
+   Preference Manager setHomeListType = "12"   -->
+
+    <string-array name="home_list_content_items_12">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Report Absence</item>
+        <item>Attendance</item>
+        <item>Timetable</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_12">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/absence</item>
+        <item>@drawable/attendance_side</item>
+        <item>@drawable/time_table_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+
+    <!--Case13: Have Report Absence , Have Safe Guarding, No Attendance, No TimeTable
+  Preference Manager setHomeListType = "13"   -->
+
+    <string-array name="home_list_content_items_13">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Report Absence</item>
+        <item>Safeguarding</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons_13">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/absence</item>
+        <item>@drawable/safe_guarding</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+
+    <!--Case14: Have Report Absence , Have Safe Guarding, No Attendance, Have TimeTable
+    Preference Manager setHomeListType = "14"   -->
+
+    <string-array name="home_list_content_items_14">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Report Absence</item>
+        <item>Safeguarding</item>
+        <item>Timetable</item>
+        <item>Contact us</item>
+    </string-array>
+
+    <string-array name="home_list_reg_icons_14">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/absence</item>
+        <item>@drawable/safe_guarding</item>
+        <item>@drawable/time_table_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+    <!--Case15: Have Report Absence , Have Safe Guarding, Have Attendance, No TimeTable
+    Preference Manager setHomeListType = "15"   -->
+
+    <string-array name="home_list_content_items_15">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Report Absence</item>
+        <item>Safeguarding</item>
+        <item>Attendance</item>
+        <item>Contact us</item>
+    </string-array>
+
+    <string-array name="home_list_reg_icons_15">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/absence</item>
+        <item>@drawable/safe_guarding</item>
+        <item>@drawable/attendance_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+
+    <!--Case16: Have Report Absence , Have Safe Guarding, Have Attendance, Have TimeTable
+   Preference Manager setHomeListType = "16"   -->
+    <string-array name="home_list_content_items">
+        <item>Home</item>
+        <item>Calendar</item>
+        <item>Messages</item>
+        <item>BSKL News</item>
+        <item>Social Media</item>
+        <item>Reports</item>
+        <item>Report Absence</item>
+        <item>Safeguarding</item>
+        <item>Attendance</item>
+        <item>Timetable</item>
+        <item>Contact us</item>
+    </string-array>
+    <string-array name="home_list_reg_icons">
+
+        <item>@drawable/home_side</item>
+        <item>@drawable/calendar_side</item>
+        <item>@drawable/messages_side</item>
+        <item>@drawable/news_side</item>
+        <item>@drawable/social_media_side</item>
+        <item>@drawable/report_side</item>
+        <item>@drawable/absence</item>
+        <item>@drawable/safe_guarding</item>
+        <item>@drawable/attendance_side</item>
+        <item>@drawable/time_table_side</item>
+        <item>@drawable/contacts</item>
+    </string-array>
+
+
+    <string-array name="array_spinner">
+        <item>Year View</item>
+        <item>Month View</item>
+        <item>Week View</item>
+    </string-array>
+
+
+    <!--google analytics -->
+
+    <string name="title_activity_second">Second Activity</string>
+    <string name="toast_track_exception">Exception is recorded. Check the Crashes and Exceptions on Google Dashboard!</string>
+    <string name="toast_app_crash">The app will crash now! Check the Crashes and Exceptions on Google Dashboard!</string>
+    <string name="fragment_footer">Fragment is loaded! Check the screen view on Google Analytics Dashboard.</string>
+    <string name="msg_instructions">Click on each button to see the appropriate tracking on Google Analytics</string>
+    <string name="btn_second_screen">Second Screen</string>
+    <string name="btn_send_event">Track Event</string>
+    <string name="btn_exception_tracking">Track Exception</string>
+    <string name="btn_app_crash">Track App Crash</string>
+    <string name="btn_load_fragment">Fragment Tracking</string>
+
+    <!--Force Update-->
+    <string name="new_version_available">New Version Available</string>
+    <string name="force_update">There is a newer version available for download! Please update the app by visiting the Google Play Store.</string>
+    <string name="data_collection_kin_details">Next of Kin Details</string>
+    <string name="data_collection_address_postel_code">Post Code</string>
+    <string name="data_collection_address_country">Country</string>
+    <string name="data_collection_address_state">State</string>
+    <string name="data_collection_address_town">Town</string>
+    <string name="data_collection_address_Line3">Address Line 3</string>
+    <string name="data_collection_address_Line2">Address Line 2</string>
+    <string name="data_collection_address_Line1">Address Line 1</string>
+    <string name="data_collection_home_address">Home Address</string>
+    <string name="data_collection_own_contact_no_hint">Contact Number</string>
+    <string name="data_collection_own_contact_email_hint">Email</string>
+    <string name="data_collection_details">Please provide the details below</string>
+    <string name="data_collection">In the event of an emergency and the primary caregivers not being available we may need to contact your child\'s next of Kin.</string>
+    <string name="title_activity_kin_details">KinDetails</string>
+
+    <string name="hello_world">Hello world!</string>
+    <string name="full_name">Full Name</string>
+    <string name="email">E - Mail</string>
+    <string name="contactnumber">Contact Number</string>
+    <string name="data_collection_emergency">Emergency Contacts</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="kin_title_hint">(Next of Kin Contact must not be the parent/guardian)</string>
+    <string name="local_emergency_title_hint">(Emergency Contact must not be the parent/guardian)</string>
+    <string name="empty_text">Please add one contact as a minimum</string>
+    <string name="pleasewait">Please wait...</string>
+
+    <!--Own Details-->
+    <string name="own_details_confirm_first_name">First name</string>
+    <string name="own_details_confirm_last_name">Last name</string>
+    <string name="own_details_confirm_email_id">Email-ID</string>
+    <string name="own_details_confirm_relation">Relation</string>
+    <string name="own_details_confirm_home_address">Home Address</string>
+    <string name="own_details_confirm_address_line_1">Address Line 1</string>
+    <string name="own_details_confirm_address_line_2">Address Line 2</string>
+    <string name="own_details_confirm_address_line_3">Address Line 3</string>
+    <string name="own_details_confirm_town">Town</string>
+    <string name="own_details_confirm_state">State</string>
+    <string name="own_details_confirm_country">Country</string>
+    <string name="own_details_confirm_post_code">Post Code</string>
+    <string name="own_details_confirm_communication_preference">Communication Preferences</string>
+    <string name="own_details_confirm_communication_preference_info">Please contact the school if the Communication preferences are incorrect</string>
+    <string name="own_details_confirm_communication_preference_corresspondance">Contact receives school correspondance</string>
+    <string name="own_details_confirm_communication_preference_report">Contact receives school reports and has access to student details via the BSKL parent app</string>
+    <string name="own_details_confirm">Confirm</string>
+
+    <!--Passport data collection-->
+
+    <string name="passport_visa_details">Passport/Visa Details</string>
+    <string name="passport_select_student">Select Student</string>
+    <string name="passport_nationallity">Passport Nationality</string>
+    <string name="passport_number">Passport Number</string>
+    <string name="passport_expiry">Passport Expiry</string>
+    <string name="passport_student_is_malaysia">Student is Malaysian and does not need visa</string>
+    <string name="no_valid_passport">Student does not have a valid passport</string>
+    <string name="visa_number">Visa/Permit Number</string>
+    <string name="visa_expiry">Visa/Permit Expiry Date</string>
+    <string name="visa_passport_upload">Upload</string>
+    <string name="attach_visa">Attach Visa</string>
+    <string name="attach_passport">Attach Passport</string>
+
+
+    <!--Health insuarance data collection-->
+    <string name="insurance_details">Health Details</string>
+    <string name="medical_insurance">Medical Insurance</string>
+    <string name="no_medical_insurance">Do not have medical insurance</string>
+    <string name="medical_insurance_policy_number">Medical Insurance Policy Number</string>
+    <string name="medical_insurance_member_number">Medical Insurance Member Number</string>
+    <string name="medical_insurance_provider">Medical Insurance Provider</string>
+    <string name="medical_insurance_expiry_date">Medical Insurance Expiry Date</string>
+    <string name="personal_accident_insurance">Personal Accident Insurance</string>
+    <string name="no_personal_accident_insurance">Do not have Personal Accident Insurance</string>
+    <string name="personal_medical_insurance_policy_number">Personal Accident insurance Policy Number</string>
+    <string name="personal_medical_insurance_provider">Personal Accident insurance Provider</string>
+    <string name="personal_medical_insurance_expiry_date">Personal Accident insurance Expiry Date</string>
+    <string name="preferred_hospital">Preferred Hospital</string>
+    <string name="medical_note">Medical Notes</string>
+    <string name="medical_note_sub">(including allergies)</string>
+    <string name="no_family_data_content">There are currently no other contacts associated with students(s).Please add at least one Next of Kin and one Emergency contact for the family as required.</string>
+
+    <!--Contact Details-->
+    <string name="contact_details">Contact Details</string>
+    <string name="additional_contact_description">Additional contacts must have unique details. Eg A Next of Kin contact email address cannot be the same as the mother’s email address.</string>
+    <string name="local_emergency_contact_detail">Emergency contact - Must have a Malaysian country code</string>
+
+    <string name="AST_ADD_1">Address Line 1<font fgcolor="red">*</font></string>
+    <string name="AST_ADD_2">Address Line 2<font fgcolor="red">*</font></string>
+    <string name="AST_TOWN">Town<font fgcolor="red">*</font></string>
+    <string name="AST_STATE">State<font fgcolor="red">*</font></string>
+    <string name="AST_COUNTRY">Country<font fgcolor="red">*</font></string>
+    <string name="AST_POST">Post Code<font fgcolor="red">*</font></string>
+    <string name="AST_PHONE">Phone Number<font fgcolor="red">*</font></string>
+    <string name="AST_FIRST_NAME">First Name<font fgcolor="red">*</font></string>
+    <string name="AST_EMAIL">Email<font fgcolor="red">*</font></string>
+    <string name="AST_EMAIL_NO">Email</string>
+    <string name="AST_RELATIONSHIP">Relationship<font fgcolor="red">*</font></string>
+    <string name="AST_CONTACT_NUMBER">Contact Number<font fgcolor="red">*</font></string>
+    <string name="AST_LAST_NAME">Last Name<font fgcolor="red">*</font></string>
+    <string name="no_need"><font fgcolor="black">*</font>Not required for malaysians</string>
+    <string name="passport_nationallity_red">Nationality<font fgcolor="red">*</font></string>
+    <string name="passport_number_red">Passport Number<font fgcolor="red">*</font></string>
+    <string name="passport_expiry_new">Passport Expiry<font fgcolor="red">*</font></string>
+    <string name="no_next_of_kin_data">Please get in touch with the school and provide a Next of Kin contact.</string>
+    <string name="no_local_emergency">Please get in touch with the school and provide a Emergency contact.</string>
+    <string name="student_info">Please get in touch with the school if \"No Data\" is displayed or if any of the above information is incorrect.</string>
+    <string name="insurance_data_click_popup">Please contact the school nurse directly if circumstances have changed.</string>
+    <string name="no_insurance_data">No medical concerns, please contact the school nurses</string>
+    <string name="insurance_declaration">I understand that it is my responsibility to ensure my child/children has/have appropriate medical insurance coverage and that the school will not cover any medical expenses whatsoever relative to my child/children.</string>
+    <string name="data_collection_submission_success">Thank you for updating your details, please wait 5 working days for the changes to take effect</string>
+    <string name="AST_VISA_PERMIT_TEXT_WITH_RED">Visa/Permit Number<font fgcolor="red">*</font></string>
+    <string name="AST_VISA_PERMIT_EXPIRY_WITH_RED">Visa/Permit Expiry Date<font fgcolor="red">*</font></string>
+    <string name="VISA_PERMIT_EXPIRY">Visa/Permit Expiry Date</string>
+    <string name="VISA_PERMIT_TXT">Visa/Permit Number</string>
+    <string name="personal_insurance_policy_number">Insurance Policy Number</string>
+    <string name="personal_insurance_policy_number_red">Insurance Policy Number<font fgcolor="red">*</font></string>
+    <string name="personal_insurance_provider">Insurance Provider</string>
+    <string name="personal_insurance_provider_red">Insurance Provider<font fgcolor="red">*</font></string>
+    <string name="personal_insurance_expiry_date_red">Insurance Expiry Date<font fgcolor="red">*</font></string>
+    <string name="personal_insurance_expiry_date">Insurance Expiry Date</string>
+    <string name="passport_check">Please provide the new passport details when known</string>
+</resources>

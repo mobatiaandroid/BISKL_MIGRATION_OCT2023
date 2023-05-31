@@ -1,0 +1,301 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="AppThemes" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/split_bg</item>
+        <item name="colorPrimaryDark">@color/split_bg</item>
+        <item name="colorAccent">@color/split_bg</item>
+    </style>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+    <style name="AppThemeBlack" parent="@android:style/Theme.Black.NoTitleBar.Fullscreen">
+        <!-- Customize your theme here. -->
+        <item name="android:windowDisablePreview">true</item>
+
+    </style>
+
+    <style name="CustomActionBarTheme" parent="@style/Theme.AppCompat.Light.DarkActionBar">
+        <item name="actionBarSize">100dp</item>
+        <item name="android:actionBarStyle" tools:targetApi="11">@style/ActionBarStyle</item>
+        <item name="android:actionBarTabTextStyle" tools:targetApi="11">@style/ActionBarTabText</item>
+        <item name="android:actionMenuTextColor" tools:targetApi="11">@color/action_bar_title</item>
+
+        <!-- Support library compatibility -->
+
+        <item name="actionBarStyle">@style/ActionBarStyle</item>
+        <item name="actionBarTabTextStyle">@style/ActionBarTabText</item>
+        <item name="actionMenuTextColor">@color/action_bar_title</item>
+    </style>
+
+    <style name="ListStyleBlackTextTransparentSelector" parent="@android:style/Widget.ListView">
+        <item name="android:textColor">@color/split_bg</item>
+        <item name="android:divider">@drawable/list_divider</item>
+        <item name="android:overScrollMode">never</item>
+        <item name="android:scrollbars">none</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:listSelector">@color/transparent</item>
+        <item name="android:cacheColorHint">@color/transparent</item>
+    </style>
+
+    <style name="textstyleblack" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/black</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="ActionBarStyle" parent="@style/Widget.AppCompat.Light.ActionBar.Solid">
+        <item name="android:titleTextStyle" tools:targetApi="11">@style/ActionBarTitleText</item>
+        <item name="android:background" tools:targetApi="11">@color/white</item>
+        <!----> <!--<item name="android:height">@dimen/action_bar_height</item>-->
+        <item name="actionBarSize">800dp</item>
+
+        <!-- Support library compatibility -->
+        <item name="titleTextStyle">@style/ActionBarTitleText</item>
+        <item name="background">@color/white</item>
+    </style>
+
+    <style name="textstyleblacklogout" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/logout_user</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+    <style name="textstyletimetablesingle" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/logout_user</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+    <style name="textstyleWhite" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+    <style name="DialogTheme" parent="android:Theme.DeviceDefault.Light.DialogWhenLarge.NoActionBar">
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+    <style name="DialogAnimatioUp">
+        <item name="android:windowEnterAnimation">@anim/slide_up</item>
+        <item name="android:windowExitAnimation">@anim/slide_bottom</item>
+    </style>
+    <style name="full_screen_dialog" parent="Theme.AppCompat.Light.DialogWhenLarge">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:paddingRight">0dp</item>
+        <item name="android:paddingLeft">0dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+    <style name="textstyleblacklow" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/logout_user</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+    <style name="textstyleblacklowsocial" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/logout_user</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="textstyleblackView" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/logout_user</item>
+        <item name="android:textSize">11sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+    <style name="TransparentProgressDialogNew" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+    <style name="textstyleblacklogoutuser" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/logout_user</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="SpinnerStyle" parent="@android:style/Widget.Spinner">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:divider">@drawable/list_divider</item>
+        <item name="android:overScrollMode">never</item>
+        <item name="android:scrollbars">none</item>
+        <item name="android:dividerHeight">1dp</item>
+        <item name="android:cacheColorHint">@color/transparent</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+
+
+    </style>
+    <style name="textstyleblacksignup" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/logout_user</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+    <style name="textstyleblacksignupsuccessfull" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/logout_user</item>
+        <item name="android:textSize">25sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+    <style name="textstyleblacksignupsuccessfullPhn" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/logout_user</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <!-- ActionBar title text -->
+    <style name="ActionBarTitleText" parent="@style/TextAppearance.AppCompat.Widget.ActionBar.Title">
+        <item name="android:textColor">@color/action_bar_title</item>
+        <!-- The textColor property is backward compatible with the Support Library -->
+    </style>
+
+    <!-- ActionBar tabs text -->
+    <style name="ActionBarTabText" parent="@style/Widget.AppCompat.ActionBar.TabText">
+        <item name="android:textColor">@color/action_bar_title</item>
+        <!-- The textColor property is backward compatible with the Support Library -->
+    </style>
+
+    <style name="TransparentProgressDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="editTextPasswordUsernameStyle" parent="@android:style/Widget.EditText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingLeft">2dp</item>
+        <item name="android:paddingRight">2dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:focusable">true</item>
+        <item name="android:focusableInTouchMode">true</item>
+        <item name="android:textColorHint">@color/cleargreyColor</item>
+        <item name="android:textCursorDrawable">@drawable/edittext_cursor</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="buttonStyle" parent="@android:style/Widget.Button">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:paddingLeft">10dp</item>
+        <item name="android:paddingTop">5dp</item>
+        <item name="android:paddingRight">10dp</item>
+        <item name="android:paddingBottom">5dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:background">@color/split_bg</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="textstyleListItemsNew" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">18sp</item>
+        <item name="android:padding">1dp</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceLarge</item>
+    </style>
+
+    <style name="NewDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <style name="NewDialogs" parent="@android:style/Theme.Material.Dialog.Alert">
+        <item name="android:windowNoTitle">false</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:background">@color/transparent</item>
+    </style>
+
+    <style name="textstyleNoPadding" parent="@android:style/Widget.TextView">
+        <item name="android:textColor">@color/split_bg</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="CalendarView" />
+
+    <style name="CalendarView.MonthTitle">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/black</item>
+    </style>
+
+    <style name="CalendarView.DayOfTheWeek">
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="CalendarView.DayOfTheMonth">
+        <item name="android:textSize">14sp</item>
+        <item name="android:minHeight">@dimen/minDayCellHeight</item>
+        <item name="android:minWidth">@dimen/minDayCellHeight</item>
+    </style>
+
+    <style name="CalendarView.DayOfTheWeeks">
+        <item name="android:textSize">5sp</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+
+    <style name="NestedScrollBarStyle">
+        <item name="android:scrollbarFadeDuration">2</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:fillViewport">false</item>
+        <item name="android:orientation">vertical</item>
+        <item name="android:fadeScrollbars">false</item>
+        <item name="android:scrollbarThumbVertical">@drawable/scroll_color</item>
+    </style>
+</resources>
