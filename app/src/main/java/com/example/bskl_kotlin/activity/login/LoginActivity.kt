@@ -231,7 +231,14 @@ class LoginActivity:AppCompatActivity() {
         iconImageView.setImageResource(R.drawable.tick)
         btn_Ok.setOnClickListener()
         {
-            startActivity(Intent(mContext, HomeActivity::class.java))
+            val loginIntent = Intent(
+                mContext,
+                HomeActivity::class.java
+            )
+            loginIntent.putExtra("fromsplash", true)
+            startActivity(loginIntent)
+            /*startActivity(Intent(mContext, HomeActivity::class.java))
+            loginIntent.putExtra("fromsplash", true)*/
             dialog.dismiss()
             finish()
 

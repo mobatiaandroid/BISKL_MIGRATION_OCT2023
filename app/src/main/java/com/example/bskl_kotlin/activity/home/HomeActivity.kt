@@ -28,29 +28,32 @@ import androidx.fragment.app.Fragment
 import com.example.bskl_kotlin.activity.home.model.StudDetailsUsermodel
 import com.example.bskl_kotlin.activity.home.model.TimeTableStudentModel
 import com.example.bskl_kotlin.activity.home.model.UserDetailsModel
+import com.example.bskl_kotlin.common.BsklTabConstants
 import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.fragment.home.HomeScreenFragment
+import com.example.bskl_kotlin.fragment.news.NewsFragment
 import com.mobatia.bskl.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class HomeActivity:AppCompatActivity() {
+class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
     lateinit var mContext: Context
     lateinit var activity: Activity
     lateinit var sharedprefs: PreferenceManager
     lateinit var extras: Bundle
-    var notificationRecieved :Int= 0
-    var replaceCurrentVersion :Int= 0
-    var android_app_version:String=""
+    var notificationRecieved: Int = 0
+    var replaceCurrentVersion: Int = 0
+    var android_app_version: String = ""
     var fromsplash = false
-    lateinit var homePageLogoImg:ImageView
-    lateinit var maintopRel:RelativeLayout
+    lateinit var homePageLogoImg: ImageView
+    lateinit var maintopRel: RelativeLayout
     lateinit var view: View
     lateinit var toolbar: Toolbar
     lateinit var mDrawerLayout: DrawerLayout
     lateinit var downarrow: ImageView
     lateinit var linearLayout: LinearLayout
-    lateinit var logoClickImgView:ImageView
+    lateinit var logoClickImgView: ImageView
 
     lateinit var mHomeListView: ListView
     lateinit var mListItemArray: Array<String>
@@ -58,10 +61,12 @@ class HomeActivity:AppCompatActivity() {
     lateinit var imageButton: ImageView
     lateinit var imageButton2: ImageView
     lateinit var headerTitle: TextView
-    lateinit var studentDetailList:ArrayList<StudDetailsUsermodel>
-    lateinit var timeTableStudArray:ArrayList<TimeTableStudentModel>
+    lateinit var studentDetailList: ArrayList<StudDetailsUsermodel>
+    lateinit var timeTableStudArray: ArrayList<TimeTableStudentModel>
     private var mFragment: Fragment? = null
     var tabPositionProceed = 0
+
+    lateinit var bsklTabConstants: BsklTabConstants
 
     private var mDrawerToggle: ActionBarDrawerToggle? = null
     private var mDetector: GestureDetector? = null
@@ -71,8 +76,9 @@ class HomeActivity:AppCompatActivity() {
         setContentView(R.layout.activity_home)
 
         mContext = this
-        activity=this
+        activity = this
         sharedprefs = PreferenceManager()
+        bsklTabConstants = BsklTabConstants()
 
         init()
         initSet()
@@ -101,16 +107,16 @@ class HomeActivity:AppCompatActivity() {
                     handler.postDelayed(
                         {
 
-                        setUserDetails()
+                            setUserDetails()
                             //showSettingUserDetail(URL_GET_SETTINGS_USER_DETAIL)
-                            },
+                        },
                         4000
                     )
                 }
 
                 override fun onAnimationEnd(animation: Animation) {
-                    Log.e("an ","end")
-                    homePageLogoImg.visibility=View.INVISIBLE
+                    Log.e("an ", "end")
+                    homePageLogoImg.visibility = View.INVISIBLE
                     maintopRel.setBackgroundColor(mContext.resources.getColor(R.color.white))
                     view.setVisibility(View.VISIBLE)
                     toolbar.setVisibility(View.VISIBLE)
@@ -123,19 +129,20 @@ class HomeActivity:AppCompatActivity() {
             maintopRel.setBackgroundColor(mContext.resources.getColor(R.color.white))
         }
 
-Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
+        Toast.makeText(mContext, "home", Toast.LENGTH_SHORT).show()
     }
+
     private fun init() {
         // mListItemArray= ArrayList()
         homePageLogoImg = findViewById(R.id.homePageLogoImg)
-        logoClickImgView = findViewById(R.id.logoClickImgView)
+
         maintopRel = findViewById(R.id.maintopRel)
         mDrawerLayout = findViewById(R.id.drawer_layout)
         mHomeListView = findViewById<ListView>(R.id.homeList)
         downarrow = findViewById(R.id.downarrow)
         linearLayout = findViewById(R.id.linearLayout)
-        studentDetailList= ArrayList()
-        timeTableStudArray= ArrayList()
+        studentDetailList = ArrayList()
+        timeTableStudArray = ArrayList()
         //view = supportActionBar!!.customView
 
 
@@ -273,10 +280,19 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                 R.color.split_bg
             )
         )
+        //mHomeListView.onItemClickListener= this
+        mHomeListView.setOnItemClickListener {adapterView, view, position, id ->
+            if (PreferenceManager().getIfHomeItemClickEnabled(mContext)) {
+                Log.e("position homelist", position.toString())
+
+                displayView(position)
+            }
+        }
 
 
     }
-    private fun initSet(){
+
+    private fun initSet() {
 
         supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         supportActionBar!!.setDisplayShowCustomEnabled(true)
@@ -284,6 +300,7 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
         supportActionBar!!.elevation = 0f
         view = supportActionBar!!.customView
         toolbar = view.parent as Toolbar
+        logoClickImgView = view.findViewById(R.id.logoClickImgView)
         imageButton = view.findViewById<ImageView>(R.id.action_bar_back)
         imageButton2 = view.findViewById<ImageView>(R.id.action_bar_forward)
         headerTitle = view.findViewById<TextView>(R.id.headerTitle)
@@ -314,9 +331,12 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
 
 
     }
-    fun setUserDetails(){
-        val call: Call<UserDetailsModel> = ApiClient.getClient.user_details(PreferenceManager().getaccesstoken(mContext).toString(),
-            PreferenceManager().getUserId(mContext).toString())
+
+    fun setUserDetails() {
+        val call: Call<UserDetailsModel> = ApiClient.getClient.user_details(
+            PreferenceManager().getaccesstoken(mContext).toString(),
+            PreferenceManager().getUserId(mContext).toString()
+        )
 
         call.enqueue(object : Callback<UserDetailsModel> {
             override fun onFailure(call: Call<UserDetailsModel>, t: Throwable) {
@@ -330,32 +350,61 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
             ) {
 
                 val responsedata = response.body()
-                if(responsedata!!.responsecode.equals("200")){
-                    if (responsedata!!.response.statuscode.equals("303")){
+                if (responsedata!!.responsecode.equals("200")) {
+                    if (responsedata!!.response.statuscode.equals("303")) {
                         //String userId=respObj.optString(JTAG_USER_ID);
                         //PreferenceManager.setUserId(mContext, respObj.optString(JTAG_USER_ID));
-                        PreferenceManager().setPhoneNo(mContext, responsedata!!.response.responseArray.mobileno)
-                        PreferenceManager().setFullName(mContext, responsedata!!.response.responseArray.name)
-                        PreferenceManager().setCalenderPush(mContext, responsedata!!.response.responseArray.calenderpush)
-                        PreferenceManager().setEmailPush(mContext,responsedata!!.response.responseArray.emailpush)
-                        PreferenceManager().setMessageBadge(mContext,responsedata!!.response.responseArray.messagebadge)
-                        PreferenceManager().setCalenderBadge(mContext,responsedata!!.response.responseArray.calenderbadge)
-                        PreferenceManager().setReportMailMerge(mContext,responsedata!!.response.responseArray.reportmailmerge)
-                        PreferenceManager().setCorrespondenceMailMerge(mContext,responsedata!!.response.responseArray.correspondencemailmerge)
+                        PreferenceManager().setPhoneNo(
+                            mContext,
+                            responsedata!!.response.responseArray.mobileno
+                        )
+                        PreferenceManager().setFullName(
+                            mContext,
+                            responsedata!!.response.responseArray.name
+                        )
+                        PreferenceManager().setCalenderPush(
+                            mContext,
+                            responsedata!!.response.responseArray.calenderpush
+                        )
+                        PreferenceManager().setEmailPush(
+                            mContext,
+                            responsedata!!.response.responseArray.emailpush
+                        )
+                        PreferenceManager().setMessageBadge(
+                            mContext,
+                            responsedata!!.response.responseArray.messagebadge
+                        )
+                        PreferenceManager().setCalenderBadge(
+                            mContext,
+                            responsedata!!.response.responseArray.calenderbadge
+                        )
+                        PreferenceManager().setReportMailMerge(
+                            mContext,
+                            responsedata!!.response.responseArray.reportmailmerge
+                        )
+                        PreferenceManager().setCorrespondenceMailMerge(
+                            mContext,
+                            responsedata!!.response.responseArray.correspondencemailmerge
+                        )
 
-                       android_app_version = responsedata!!.response.android_version
-                        PreferenceManager().setVersionFromApi(mContext,responsedata!!.response.android_version)
+                        android_app_version = responsedata!!.response.android_version
+                        PreferenceManager().setVersionFromApi(
+                            mContext,
+                            responsedata!!.response.android_version
+                        )
                         val versionFromPreference: String =
                             PreferenceManager().getVersionFromApi(mContext)!!.replace(".", "")
                         val versionNumberAsInteger = versionFromPreference.toInt()
 
-                        if (responsedata.response.responseArray.studentdetails.size>0){
-                            studentDetailList=ArrayList()
-                            for (i in responsedata.response.responseArray.studentdetails.indices){
+                        if (responsedata.response.responseArray.studentdetails.size > 0) {
+                            studentDetailList = ArrayList()
+                            for (i in responsedata.response.responseArray.studentdetails.indices) {
 
-                                var nmodel= StudDetailsUsermodel(responsedata.response.responseArray.studentdetails[i].id.toString(),
+                                var nmodel = StudDetailsUsermodel(
+                                    responsedata.response.responseArray.studentdetails[i].id.toString(),
                                     responsedata.response.responseArray.studentdetails[i].alumi.toString(),
-                                    responsedata.response.responseArray.studentdetails[i].applicant.toString())
+                                    responsedata.response.responseArray.studentdetails[i].applicant.toString()
+                                )
                                 studentDetailList.add(nmodel)
                             }
 
@@ -383,9 +432,18 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
 
 
 
-                        PreferenceManager().setFbkey(mContext, responsedata!!.response.socialmedia.fbkey)
-                        PreferenceManager().setInstaKey(mContext, responsedata!!.response.socialmedia.inkey)
-                        PreferenceManager().setYouKey(mContext, responsedata!!.response.socialmedia.youtubekey)
+                        PreferenceManager().setFbkey(
+                            mContext,
+                            responsedata!!.response.socialmedia.fbkey
+                        )
+                        PreferenceManager().setInstaKey(
+                            mContext,
+                            responsedata!!.response.socialmedia.inkey
+                        )
+                        PreferenceManager().setYouKey(
+                            mContext,
+                            responsedata!!.response.socialmedia.youtubekey
+                        )
 
 
                         //  System.out.println("Replace current version"+replaceVersion);
@@ -396,9 +454,11 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                         }
                         if (responsedata!!.response.timetable_student.size > 0) {
                             for (i in responsedata!!.response.timetable_student.indices) {
-                                var pmodel=TimeTableStudentModel(responsedata!!.response.timetable_student[i].id.toString(),
+                                var pmodel = TimeTableStudentModel(
+                                    responsedata!!.response.timetable_student[i].id.toString(),
                                     responsedata!!.response.timetable_student[i].student_name.toString(),
-                                    responsedata!!.response.timetable_student[i].type.toString())
+                                    responsedata!!.response.timetable_student[i].type.toString()
+                                )
                                 timeTableStudArray.add(pmodel)
                             }
                         }
@@ -514,7 +574,7 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                         }
 
 
-                       if (responsedata!!.response.app_feature.timetable
+                        if (responsedata!!.response.app_feature.timetable
                                 .equals("1")
                         ) {
                             if (responsedata!!.response.app_feature.timetable_group
@@ -526,7 +586,8 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                     PreferenceManager().setHomeTimetable(mContext, "0")
                                 }
                             } else if (responsedata!!.response.app_feature.timetable_group
-                                    .equals("2")) {
+                                    .equals("2")
+                            ) {
                                 if (secondaryTimeTable.equals("1")) {
                                     PreferenceManager().setHomeTimetable(mContext, "1")
                                 } else {
@@ -982,7 +1043,7 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
         })
     }
 
-    private fun callHomeList(){
+    private fun callHomeList() {
         if (PreferenceManager().getHomeListType(mContext).equals("1")) {
             mListItemArray = mContext.resources.getStringArray(
                 R.array.home_list_content_items_1
@@ -1241,19 +1302,16 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
             )
         }
     }
-
-    fun onItemClick(
-        parent: AdapterView<*>?, view: View?,
-        position: Int, id: Long
-    ) {
+    /*override fun setOnItemClickListener(v: View?,position:Position) {
         if (PreferenceManager().getIfHomeItemClickEnabled(mContext)) {
             Log.e("position homelist", position.toString())
 
             displayView(position)
         }
-    }
+    }*/
 
-    private fun displayView(position:Int){
+
+    private fun displayView(position: Int) {
         mFragment = null
         tabPositionProceed = position
 
@@ -1264,17 +1322,17 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                         0 -> {
                             imageButton2.setImageResource(R.drawable.settings)
                             imageButton2.visibility = View.VISIBLE
-                            /*mFragment = HomeScreenFragment(
+                            mFragment = HomeScreenFragment(
                                 mListItemArray.get(position),
                                 mDrawerLayout,
                                 mHomeListView,
                                 linearLayout,
                                 mListItemArray,
-                                mListImgArray
-                            )*/
+                                mListImgArray!!
+                            )
                             replaceFragmentsSelected(position)
                             headerTitle.visibility = View.GONE
-                            //logoClickImgView.setVisibility(View.VISIBLE)
+                            logoClickImgView.setVisibility(View.VISIBLE)
                             val mListAdapter = HomeListAdapter(
                                 activity, mListItemArray, mListImgArray!!
                             )
@@ -1290,9 +1348,9 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                 TAB_CALENDAR
                             )
                             replaceFragmentsSelected(position)
-                        }
+                        }*/
 
-                        2 -> {
+                        /*2 -> {
                             // Messages
                             imageButton2.setImageResource(R.drawable.tutorial_icon)
                             imageButton2.visibility = View.VISIBLE
@@ -1301,18 +1359,18 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                 TAB_MESSAGES
                             )
                             replaceFragmentsSelected(position)
-                        }
+                        }*/
 
-                        3 -> {
+                         3 -> {
                             // News
                             imageButton2.setImageResource(R.drawable.settings)
                             imageButton2.visibility = View.VISIBLE
                             mFragment =
-                                NewsFragment(mListItemArray.get(position), TAB_NEWS)
+                                NewsFragment(mListItemArray.get(position), bsklTabConstants.TAB_NEWS)
                             replaceFragmentsSelected(position)
                         }
 
-                        4 -> {
+                        /*4 -> {
                             imageButton2.visibility = View.VISIBLE
                             imageButton2.setImageResource(R.drawable.settings)
                             mFragment = SocialMediaFragment(
@@ -1320,9 +1378,9 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                 TAB_SOCIAL_MEDIA
                             )
                             replaceFragmentsSelected(position)
-                        }
+                        }*/
 
-                        5 -> {
+                        /* 5 -> {
 
                             // Report
                             imageButton2.visibility = View.VISIBLE
@@ -1332,9 +1390,9 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                 TAB_REPORT
                             )
                             replaceFragmentsSelected(position)
-                        }
+                        }*/
 
-                        6 -> {
+                        /* 6 -> {
                             // Absence
                             Log.e(
                                 "HOME LIST TYPE C6**",
@@ -1457,9 +1515,9 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                 )
                                 replaceFragmentsSelected(position)
                             }
-                        }
+                        }*/
 
-                        7 -> {
+                        /* 7 -> {
                             Log.e(
                                 "HOME LIST TYPE C7**",
                                 PreferenceManager().getHomeListType(mContext)
@@ -1648,9 +1706,9 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                 )
                                 replaceFragmentsSelected(position)
                             }
-                        }
+                        }*/
 
-                        8 -> {
+                        /* 8 -> {
                             // Attendance
                             Log.e(
                                 "HOME LIST TYPE C8**",
@@ -1831,8 +1889,8 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                 replaceFragmentsSelected(position)
                             }
                         }
-
-                        9 -> {
+*/
+                        /*9 -> {
                             // TimeTable
                             Log.e(
                                 "HOME LIST TYPE C9**",
@@ -1868,9 +1926,9 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                     replaceFragmentsSelected(position)
                                 }
                             }
-                        }
+                        }*/
 
-                        10 -> {
+                        /* 10 -> {
                             imageButton2.setImageResource(R.drawable.settings)
                             imageButton2.visibility = View.VISIBLE
                             if (Build.VERSION.SDK_INT >= 23) {
@@ -1888,335 +1946,12 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                     TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
-                            }*/
+                            }
+                    }*/
+
+
                     }
-
-
-                }
-            } else {
-                when (position) {
-                    0 -> {
-                        // home
-//                    mFragment = new HomeScreenRegisteredUserFragment(
-//                            mListItemArray[position], mDrawerLayout, mHomeListView,
-//                            mListItemArray, mListImgArray);
-                        imageButton2.setImageResource(R.drawable.settings)
-                        imageButton2.visibility = View.VISIBLE
-                       /* mFragment = HomeScreenFragment(
-                            mListItemArray.get(position),
-                            mDrawerLayout,
-                            mHomeListView,
-                            linearLayout,
-                            mListItemArray,
-                            mListImgArray
-                        )*/
-                        replaceFragmentsSelected(position)
-                        headerTitle.visibility = View.GONE
-                        //logoClickImgView.setVisibility(View.VISIBLE)
-                        val mListAdapter = HomeListAdapter(
-                            activity, mListItemArray, mListImgArray!!
-                        )
-                        mHomeListView.adapter = mListAdapter
-                    }
-
-                    /* 1 -> {
-                            // Calendar
-                            imageButton2.setImageResource(R.drawable.tutorial_icon)
-                            imageButton2.visibility = View.VISIBLE
-                            mFragment = ListViewCalendar(
-                                mListItemArray.get(position),
-                                TAB_CALENDAR
-                            )
-                            replaceFragmentsSelected(position)
-                        }
-
-                        2 -> {
-                            // Messages
-                            imageButton2.setImageResource(R.drawable.tutorial_icon)
-                            imageButton2.visibility = View.VISIBLE
-                            mFragment = NotificationFragmentPagination(
-                                mListItemArray.get(position),
-                                TAB_MESSAGES
-                            )
-                            replaceFragmentsSelected(position)
-                        }
-
-                        3 -> {
-                            // News
-                            imageButton2.setImageResource(R.drawable.settings)
-                            imageButton2.visibility = View.VISIBLE
-                            mFragment =
-                                NewsFragment(mListItemArray.get(position), TAB_NEWS)
-                            replaceFragmentsSelected(position)
-                        }
-
-                        4 -> {
-                            // Social media
-                            imageButton2.visibility = View.VISIBLE
-                            imageButton2.setImageResource(R.drawable.settings)
-                            mFragment = SocialMediaFragment(
-                                mListItemArray.get(position),
-                                TAB_SOCIAL_MEDIA
-                            )
-                            replaceFragmentsSelected(position)
-                        }
-
-                        5 ->                             // Report
-                            *//*if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
-                                    mContext as Activity,
-                                    getString(R.string.alert_heading),
-                                    getString(R.string.not_available_limitted_access),
-                                    R.drawable.exclamationicon,
-                                    R.drawable.round
-                                )
-                            } else {
-                                AppUtils.showDialogAlertDismiss(
-                                    mContext as Activity,
-                                    "Network Error",
-                                    getString(R.string.no_internet),
-                                    R.drawable.nonetworkicon,
-                                    R.drawable.roundred
-                                )
-                            }*//*
-
-                        6 ->                             // Absence
-                            if (PreferenceManager().getHomeListType(mContext).equals("1")) {
-                                mFragment = ContactUsFragment(
-                                    mListItemArray.get(position),
-                                    TAB_CONTACT_US
-                                )
-                                replaceFragmentsSelected(position)
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        .check()
-                                } else {
-                                    mFragment = ContactUsFragment(
-                                        mListItemArray.get(position),
-                                        TAB_CONTACT_US
-                                    )
-                                    replaceFragmentsSelected(position)
-                                }
-                            } else {
-                                *//*if (AppUtils.isNetworkConnected(mContext)) {
-                                    AppUtils.showDialogAlertDismiss(
-                                        mContext as Activity,
-                                        getString(R.string.alert_heading),
-                                        getString(R.string.not_available_limitted_access),
-                                        R.drawable.exclamationicon,
-                                        R.drawable.round
-                                    )
-                                } else {
-                                    AppUtils.showDialogAlertDismiss(
-                                        mContext as Activity,
-                                        "Network Error",
-                                        getString(R.string.no_internet),
-                                        R.drawable.nonetworkicon,
-                                        R.drawable.roundred
-                                    )
-                                }*//*
-                            }
-
-                        7 ->                             // SafeGuarding
-                            if (PreferenceManager().getHomeListType(mContext)
-                                    .equals("2") || PreferenceManager().getHomeListType(
-                                    mContext
-                                ).equals("3") || PreferenceManager().getHomeListType(
-                                    mContext
-                                ).equals("5") || PreferenceManager().getHomeListType(
-                                    mContext
-                                ).equals("9")
-                            ) {
-                                mFragment = ContactUsFragment(
-                                    mListItemArray.get(position),
-                                    TAB_CONTACT_US
-                                )
-                                replaceFragmentsSelected(position)
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        .check()
-                                } else {
-                                    mFragment = ContactUsFragment(
-                                        mListItemArray.get(position),
-                                        TAB_CONTACT_US
-                                    )
-                                    replaceFragmentsSelected(position)
-                                }
-                            } else {
-                                *//*if (AppUtils.isNetworkConnected(mContext)) {
-                                    AppUtils.showDialogAlertDismiss(
-                                        mContext as Activity,
-                                        getString(R.string.alert_heading),
-                                        getString(R.string.not_available_limitted_access),
-                                        R.drawable.exclamationicon,
-                                        R.drawable.round
-                                    )
-                                } else {
-                                    AppUtils.showDialogAlertDismiss(
-                                        mContext as Activity,
-                                        "Network Error",
-                                        getString(R.string.no_internet),
-                                        R.drawable.nonetworkicon,
-                                        R.drawable.roundred
-                                    )
-                                }*//*
-                            }
-
-                        8 ->                             // Attendance
-                            if (PreferenceManager().getHomeListType(mContext)
-                                    .equals("4") || PreferenceManager().getHomeListType(
-                                    mContext
-                                ).equals("6") || PreferenceManager().getHomeListType(
-                                    mContext
-                                ).equals("7") || PreferenceManager().getHomeListType(
-                                    mContext
-                                ).equals("10") || PreferenceManager().getHomeListType(
-                                    mContext
-                                ).equals("11") || PreferenceManager().getHomeListType(
-                                    mContext
-                                ).equals("13")
-                            ) {
-                                mFragment = ContactUsFragment(
-                                    mListItemArray.get(position),
-                                    TAB_CONTACT_US
-                                )
-                                replaceFragmentsSelected(position)
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        .check()
-                                } else {
-                                    mFragment = ContactUsFragment(
-                                        mListItemArray.get(position),
-                                        TAB_CONTACT_US
-                                    )
-                                    replaceFragmentsSelected(position)
-                                }
-                            } else {
-                               *//* if (AppUtils.isNetworkConnected(mContext)) {
-                                    AppUtils.showDialogAlertDismiss(
-                                        mContext as Activity,
-                                        getString(R.string.alert_heading),
-                                        getString(R.string.not_available_limitted_access),
-                                        R.drawable.exclamationicon,
-                                        R.drawable.round
-                                    )
-                                } else {
-                                    AppUtils.showDialogAlertDismiss(
-                                        mContext as Activity,
-                                        "Network Error",
-                                        getString(R.string.no_internet),
-                                        R.drawable.nonetworkicon,
-                                        R.drawable.roundred
-                                    )
-                                }*//*
-                            }
-
-                        9 -> if (PreferenceManager().getHomeListType(mContext)
-                                .equals("8") || PreferenceManager().getHomeListType(mContext)
-                                .equals("12") || PreferenceManager().getHomeListType(
-                                mContext
-                            ).equals("14") || PreferenceManager().getHomeListType(mContext)
-                                .equals("15")
-                        ) {
-                            mFragment = ContactUsFragment(
-                                mListItemArray.get(position),
-                                TAB_CONTACT_US
-                            )
-                            replaceFragmentsSelected(position)
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                TedPermission.with(mContext)
-                                    .setPermissionListener(permissionContactuslistener)
-                                    .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                    .setPermissions(
-                                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                                        Manifest.permission.ACCESS_FINE_LOCATION
-                                    ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    .check()
-                            } else {
-                                mFragment = ContactUsFragment(
-                                    mListItemArray.get(position),
-                                    TAB_CONTACT_US
-                                )
-                                replaceFragmentsSelected(position)
-                            }
-                        } else {
-                            *//*if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
-                                    mContext as Activity,
-                                    getString(R.string.alert_heading),
-                                    getString(R.string.not_available_limitted_access),
-                                    R.drawable.exclamationicon,
-                                    R.drawable.round
-                                )
-                            } else {
-                                AppUtils.showDialogAlertDismiss(
-                                    mContext as Activity,
-                                    "Network Error",
-                                    getString(R.string.no_internet),
-                                    R.drawable.nonetworkicon,
-                                    R.drawable.roundred
-                                )
-                            }*//*
-                        }
-
-                        10 -> {
-                            // Contact Us
-                            mFragment = ContactUsFragment(
-                                mListItemArray.get(position),
-                                TAB_CONTACT_US
-                            )
-                            replaceFragmentsSelected(position)
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                TedPermission.with(mContext)
-                                    .setPermissionListener(permissionContactuslistener)
-                                    .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                    .setPermissions(
-                                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                                        Manifest.permission.ACCESS_FINE_LOCATION
-                                    ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    .check()
-                            } else {
-                                mFragment = ContactUsFragment(
-                                    mListItemArray.get(position),
-                                    TAB_CONTACT_US
-                                )
-                                replaceFragmentsSelected(position)
-                            }
-                        }
-
-                        else -> {}
-                    }
-                }
-            } else {
-                if (PreferenceManager().getReportMailMerge(mContext).equals("0")) {
+                } else {
                     when (position) {
                         0 -> {
                             // home
@@ -2231,7 +1966,7 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                 mHomeListView,
                                 linearLayout,
                                 mListItemArray,
-                                mListImgArray
+                                mListImgArray!!
                             )
                             replaceFragmentsSelected(position)
                             headerTitle.visibility = View.GONE
@@ -2242,12 +1977,54 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                             mHomeListView.adapter = mListAdapter
                         }
 
-                        1 ->                             // Calendar
-                            if (AppUtils.isNetworkConnected(mContext)) {
+                        /*1 -> {
+                            // Calendar
+                            imageButton2.setImageResource(R.drawable.tutorial_icon)
+                            imageButton2.visibility = View.VISIBLE
+                            mFragment = ListViewCalendar(
+                                mListItemArray.get(position),
+                                TAB_CALENDAR
+                            )
+                            replaceFragmentsSelected(position)
+                        }*/
+
+                        /* 2 -> {
+                            // Messages
+                            imageButton2.setImageResource(R.drawable.tutorial_icon)
+                            imageButton2.visibility = View.VISIBLE
+                            mFragment = NotificationFragmentPagination(
+                                mListItemArray.get(position),
+                                TAB_MESSAGES
+                            )
+                            replaceFragmentsSelected(position)
+                        }*/
+
+                        /* 3 -> {
+                            // News
+                            imageButton2.setImageResource(R.drawable.settings)
+                            imageButton2.visibility = View.VISIBLE
+                            mFragment =
+                                NewsFragment(mListItemArray.get(position), TAB_NEWS)
+                            replaceFragmentsSelected(position)
+                        }*/
+
+                        /* 4 -> {
+                            // Social media
+                            imageButton2.visibility = View.VISIBLE
+                            imageButton2.setImageResource(R.drawable.settings)
+                            mFragment = SocialMediaFragment(
+                                mListItemArray.get(position),
+                                TAB_SOCIAL_MEDIA
+                            )
+                            replaceFragmentsSelected(position)
+                        }*/
+
+                        /* 5 ->
+                    if (AppUtils.isNetworkConnected(mContext)) {
                                 AppUtils.showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
-                                    getString(R.string.not_available),
+                                    getString(R.string.not_available_limitted_access),
                                     R.drawable.exclamationicon,
                                     R.drawable.round
                                 )
@@ -2259,85 +2036,9 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }
+                            }*/
 
-                        2 ->                             // Messages
-                            if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
-                                    mContext as Activity,
-                                    getString(R.string.alert_heading),
-                                    getString(R.string.not_available),
-                                    R.drawable.exclamationicon,
-                                    R.drawable.round
-                                )
-                            } else {
-                                AppUtils.showDialogAlertDismiss(
-                                    mContext as Activity,
-                                    "Network Error",
-                                    getString(R.string.no_internet),
-                                    R.drawable.nonetworkicon,
-                                    R.drawable.roundred
-                                )
-                            }
-
-                        3 ->                             // News
-                            if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
-                                    mContext as Activity,
-                                    getString(R.string.alert_heading),
-                                    getString(R.string.not_available),
-                                    R.drawable.exclamationicon,
-                                    R.drawable.round
-                                )
-                            } else {
-                                AppUtils.showDialogAlertDismiss(
-                                    mContext as Activity,
-                                    "Network Error",
-                                    getString(R.string.no_internet),
-                                    R.drawable.nonetworkicon,
-                                    R.drawable.roundred
-                                )
-                            }
-
-                        4 ->                             // Social media
-                            if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
-                                    mContext as Activity,
-                                    getString(R.string.alert_heading),
-                                    getString(R.string.not_available),
-                                    R.drawable.exclamationicon,
-                                    R.drawable.round
-                                )
-                            } else {
-                                AppUtils.showDialogAlertDismiss(
-                                    mContext as Activity,
-                                    "Network Error",
-                                    getString(R.string.no_internet),
-                                    R.drawable.nonetworkicon,
-                                    R.drawable.roundred
-                                )
-                            }
-
-                        5 ->                             // Report
-                            if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
-                                    mContext as Activity,
-                                    getString(R.string.alert_heading),
-                                    getString(R.string.not_available),
-                                    R.drawable.exclamationicon,
-                                    R.drawable.round
-                                )
-                            } else {
-                                AppUtils.showDialogAlertDismiss(
-                                    mContext as Activity,
-                                    "Network Error",
-                                    getString(R.string.no_internet),
-                                    R.drawable.nonetworkicon,
-                                    R.drawable.roundred
-                                )
-                            }
-
-                        6 ->                             // Absence
+                        /*6 ->                             // Absence
                             if (PreferenceManager().getHomeListType(mContext).equals("1")) {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
@@ -2367,7 +2068,7 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                     AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
-                                        getString(R.string.not_available),
+                                        getString(R.string.not_available_limitted_access),
                                         R.drawable.exclamationicon,
                                         R.drawable.round
                                     )
@@ -2380,9 +2081,9 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                         R.drawable.roundred
                                     )
                                 }
-                            }
+                            }*/
 
-                        7 ->                             // Attendance
+                        /* 7 ->                             // SafeGuarding
                             if (PreferenceManager().getHomeListType(mContext)
                                     .equals("2") || PreferenceManager().getHomeListType(
                                     mContext
@@ -2420,7 +2121,7 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                     AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
-                                        getString(R.string.not_available),
+                                        getString(R.string.not_available_limitted_access),
                                         R.drawable.exclamationicon,
                                         R.drawable.round
                                     )
@@ -2433,9 +2134,9 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                         R.drawable.roundred
                                     )
                                 }
-                            }
+                            }*/
 
-                        8 ->                             // Absence
+                        /*8 ->                             // Attendance
                             if (PreferenceManager().getHomeListType(mContext)
                                     .equals("4") || PreferenceManager().getHomeListType(
                                     mContext
@@ -2477,7 +2178,7 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                     AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
-                                        getString(R.string.not_available),
+                                        getString(R.string.not_available_limitted_access),
                                         R.drawable.exclamationicon,
                                         R.drawable.round
                                     )
@@ -2491,8 +2192,8 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                     )
                                 }
                             }
-
-                        9 -> if (PreferenceManager().getHomeListType(mContext)
+*/
+                        /* 9 -> if (PreferenceManager().getHomeListType(mContext)
                                 .equals("8") || PreferenceManager().getHomeListType(mContext)
                                 .equals("12") || PreferenceManager().getHomeListType(
                                 mContext
@@ -2527,7 +2228,7 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                 AppUtils.showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
-                                    getString(R.string.not_available),
+                                    getString(R.string.not_available_limitted_access),
                                     R.drawable.exclamationicon,
                                     R.drawable.round
                                 )
@@ -2540,9 +2241,9 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                                     R.drawable.roundred
                                 )
                             }
-                        }
+                        }*/
 
-                        10 -> {
+                        /* 10 -> {
                             // Contact Us
                             mFragment = ContactUsFragment(
                                 mListItemArray.get(position),
@@ -2569,10 +2270,11 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
                             }
                         }*/
 
-                    else -> {}
+                        else -> {}
+                    }
                 }
-            }
-        }else {
+            } else {
+                if (PreferenceManager().getReportMailMerge(mContext).equals("0")) {
                     when (position) {
                         0 -> {
                             // home
@@ -2581,17 +2283,372 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
 //                            mListItemArray, mListImgArray);
                             imageButton2.setImageResource(R.drawable.settings)
                             imageButton2.visibility = View.VISIBLE
-                           /* mFragment = HomeScreenFragment(
+                            mFragment = HomeScreenFragment(
                                 mListItemArray.get(position),
                                 mDrawerLayout,
                                 mHomeListView,
                                 linearLayout,
-                                HomeActivity.mListItemArray,
-                                HomeActivity.mListImgArray
-                            )*/
+                                mListItemArray,
+                                mListImgArray!!
+                            )
                             replaceFragmentsSelected(position)
                             headerTitle.visibility = View.GONE
-                           // logoClickImgView.setVisibility(View.VISIBLE)
+                            logoClickImgView.setVisibility(View.VISIBLE)
+                            val mListAdapter = HomeListAdapter(
+                                activity, mListItemArray, mListImgArray!!
+                            )
+                            mHomeListView.adapter = mListAdapter
+                        }
+
+                        /*1 ->                             // Calendar
+                            if (AppUtils.isNetworkConnected(mContext)) {
+                                AppUtils.showDialogAlertDismiss(
+                                    mContext as Activity,
+                                    getString(R.string.alert_heading),
+                                    getString(R.string.not_available),
+                                    R.drawable.exclamationicon,
+                                    R.drawable.round
+                                )
+                            } else {
+                                AppUtils.showDialogAlertDismiss(
+                                    mContext as Activity,
+                                    "Network Error",
+                                    getString(R.string.no_internet),
+                                    R.drawable.nonetworkicon,
+                                    R.drawable.roundred
+                                )
+                            }*/
+
+                        /* 2 ->                             // Messages
+                            if (AppUtils.isNetworkConnected(mContext)) {
+                                AppUtils.showDialogAlertDismiss(
+                                    mContext as Activity,
+                                    getString(R.string.alert_heading),
+                                    getString(R.string.not_available),
+                                    R.drawable.exclamationicon,
+                                    R.drawable.round
+                                )
+                            } else {
+                                AppUtils.showDialogAlertDismiss(
+                                    mContext as Activity,
+                                    "Network Error",
+                                    getString(R.string.no_internet),
+                                    R.drawable.nonetworkicon,
+                                    R.drawable.roundred
+                                )
+                            }*/
+
+                        /*3 ->                             // News
+                            if (AppUtils.isNetworkConnected(mContext)) {
+                                AppUtils.showDialogAlertDismiss(
+                                    mContext as Activity,
+                                    getString(R.string.alert_heading),
+                                    getString(R.string.not_available),
+                                    R.drawable.exclamationicon,
+                                    R.drawable.round
+                                )
+                            } else {
+                                AppUtils.showDialogAlertDismiss(
+                                    mContext as Activity,
+                                    "Network Error",
+                                    getString(R.string.no_internet),
+                                    R.drawable.nonetworkicon,
+                                    R.drawable.roundred
+                                )
+                            }*/
+
+                        /*4 ->                             // Social media
+                            if (AppUtils.isNetworkConnected(mContext)) {
+                                AppUtils.showDialogAlertDismiss(
+                                    mContext as Activity,
+                                    getString(R.string.alert_heading),
+                                    getString(R.string.not_available),
+                                    R.drawable.exclamationicon,
+                                    R.drawable.round
+                                )
+                            } else {
+                                AppUtils.showDialogAlertDismiss(
+                                    mContext as Activity,
+                                    "Network Error",
+                                    getString(R.string.no_internet),
+                                    R.drawable.nonetworkicon,
+                                    R.drawable.roundred
+                                )
+                            }*/
+
+                        /* 5 ->                             // Report
+                            if (AppUtils.isNetworkConnected(mContext)) {
+                                AppUtils.showDialogAlertDismiss(
+                                    mContext as Activity,
+                                    getString(R.string.alert_heading),
+                                    getString(R.string.not_available),
+                                    R.drawable.exclamationicon,
+                                    R.drawable.round
+                                )
+                            } else {
+                                AppUtils.showDialogAlertDismiss(
+                                    mContext as Activity,
+                                    "Network Error",
+                                    getString(R.string.no_internet),
+                                    R.drawable.nonetworkicon,
+                                    R.drawable.roundred
+                                )
+                            }*/
+
+                        /*6 ->                             // Absence
+                            if (PreferenceManager().getHomeListType(mContext).equals("1")) {
+                                mFragment = ContactUsFragment(
+                                    mListItemArray.get(position),
+                                    TAB_CONTACT_US
+                                )
+                                replaceFragmentsSelected(position)
+                                if (Build.VERSION.SDK_INT >= 23) {
+                                    TedPermission.with(mContext)
+                                        .setPermissionListener(permissionContactuslistener)
+                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                                        .setPermissions(
+                                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                                            Manifest.permission.ACCESS_FINE_LOCATION
+                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        .check()
+                                } else {
+                                    mFragment = ContactUsFragment(
+                                        mListItemArray.get(position),
+                                        TAB_CONTACT_US
+                                    )
+                                    replaceFragmentsSelected(position)
+                                }
+                            } else {
+                                if (AppUtils.isNetworkConnected(mContext)) {
+                                    AppUtils.showDialogAlertDismiss(
+                                        mContext as Activity,
+                                        getString(R.string.alert_heading),
+                                        getString(R.string.not_available),
+                                        R.drawable.exclamationicon,
+                                        R.drawable.round
+                                    )
+                                } else {
+                                    AppUtils.showDialogAlertDismiss(
+                                        mContext as Activity,
+                                        "Network Error",
+                                        getString(R.string.no_internet),
+                                        R.drawable.nonetworkicon,
+                                        R.drawable.roundred
+                                    )
+                                }
+                            }*/
+
+                        /* 7 ->                             // Attendance
+                            if (PreferenceManager().getHomeListType(mContext)
+                                    .equals("2") || PreferenceManager().getHomeListType(
+                                    mContext
+                                ).equals("3") || PreferenceManager().getHomeListType(
+                                    mContext
+                                ).equals("5") || PreferenceManager().getHomeListType(
+                                    mContext
+                                ).equals("9")
+                            ) {
+                                mFragment = ContactUsFragment(
+                                    mListItemArray.get(position),
+                                    TAB_CONTACT_US
+                                )
+                                replaceFragmentsSelected(position)
+                                if (Build.VERSION.SDK_INT >= 23) {
+                                    TedPermission.with(mContext)
+                                        .setPermissionListener(permissionContactuslistener)
+                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                                        .setPermissions(
+                                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                                            Manifest.permission.ACCESS_FINE_LOCATION
+                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        .check()
+                                } else {
+                                    mFragment = ContactUsFragment(
+                                        mListItemArray.get(position),
+                                        TAB_CONTACT_US
+                                    )
+                                    replaceFragmentsSelected(position)
+                                }
+                            } else {
+                                if (AppUtils.isNetworkConnected(mContext)) {
+                                    AppUtils.showDialogAlertDismiss(
+                                        mContext as Activity,
+                                        getString(R.string.alert_heading),
+                                        getString(R.string.not_available),
+                                        R.drawable.exclamationicon,
+                                        R.drawable.round
+                                    )
+                                } else {
+                                    AppUtils.showDialogAlertDismiss(
+                                        mContext as Activity,
+                                        "Network Error",
+                                        getString(R.string.no_internet),
+                                        R.drawable.nonetworkicon,
+                                        R.drawable.roundred
+                                    )
+                                }
+                            }*/
+
+                        /* 8 ->                             // Absence
+                            if (PreferenceManager().getHomeListType(mContext)
+                                    .equals("4") || PreferenceManager().getHomeListType(
+                                    mContext
+                                ).equals("6") || PreferenceManager().getHomeListType(
+                                    mContext
+                                ).equals("7") || PreferenceManager().getHomeListType(
+                                    mContext
+                                ).equals("10") || PreferenceManager().getHomeListType(
+                                    mContext
+                                ).equals("11") || PreferenceManager().getHomeListType(
+                                    mContext
+                                ).equals("13")
+                            ) {
+                                mFragment = ContactUsFragment(
+                                    mListItemArray.get(position),
+                                    TAB_CONTACT_US
+                                )
+                                replaceFragmentsSelected(position)
+                                if (Build.VERSION.SDK_INT >= 23) {
+                                    TedPermission.with(mContext)
+                                        .setPermissionListener(permissionContactuslistener)
+                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                                        .setPermissions(
+                                            Manifest.permission.ACCESS_COARSE_LOCATION,
+                                            Manifest.permission.ACCESS_FINE_LOCATION
+                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                        .check()
+                                } else {
+                                    mFragment = ContactUsFragment(
+                                        mListItemArray.get(position),
+                                        TAB_CONTACT_US
+                                    )
+                                    replaceFragmentsSelected(position)
+                                }
+                            } else {
+                                if (AppUtils.isNetworkConnected(mContext)) {
+                                    AppUtils.showDialogAlertDismiss(
+                                        mContext as Activity,
+                                        getString(R.string.alert_heading),
+                                        getString(R.string.not_available),
+                                        R.drawable.exclamationicon,
+                                        R.drawable.round
+                                    )
+                                } else {
+                                    AppUtils.showDialogAlertDismiss(
+                                        mContext as Activity,
+                                        "Network Error",
+                                        getString(R.string.no_internet),
+                                        R.drawable.nonetworkicon,
+                                        R.drawable.roundred
+                                    )
+                                }
+                            }*/
+
+                        /*9 -> if (PreferenceManager().getHomeListType(mContext)
+                                .equals("8") || PreferenceManager().getHomeListType(mContext)
+                                .equals("12") || PreferenceManager().getHomeListType(
+                                mContext
+                            ).equals("14") || PreferenceManager().getHomeListType(mContext)
+                                .equals("15")
+                        ) {
+                            mFragment = ContactUsFragment(
+                                mListItemArray.get(position),
+                                TAB_CONTACT_US
+                            )
+                            replaceFragmentsSelected(position)
+                            if (Build.VERSION.SDK_INT >= 23) {
+                                TedPermission.with(mContext)
+                                    .setPermissionListener(permissionContactuslistener)
+                                    .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                                    .setPermissions(
+                                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    .check()
+                            } else {
+                                mFragment = ContactUsFragment(
+                                    mListItemArray.get(position),
+                                    TAB_CONTACT_US
+                                )
+                                replaceFragmentsSelected(position)
+                            }
+                        } else {
+                            if (AppUtils.isNetworkConnected(mContext)) {
+                                AppUtils.showDialogAlertDismiss(
+                                    mContext as Activity,
+                                    getString(R.string.alert_heading),
+                                    getString(R.string.not_available),
+                                    R.drawable.exclamationicon,
+                                    R.drawable.round
+                                )
+                            } else {
+                                AppUtils.showDialogAlertDismiss(
+                                    mContext as Activity,
+                                    "Network Error",
+                                    getString(R.string.no_internet),
+                                    R.drawable.nonetworkicon,
+                                    R.drawable.roundred
+                                )
+                            }
+                        }*/
+
+                        /*10 -> {
+                            // Contact Us
+                            mFragment = ContactUsFragment(
+                                mListItemArray.get(position),
+                                TAB_CONTACT_US
+                            )
+                            replaceFragmentsSelected(position)
+                            if (Build.VERSION.SDK_INT >= 23) {
+                                TedPermission.with(mContext)
+                                    .setPermissionListener(permissionContactuslistener)
+                                    .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
+                                    .setPermissions(
+                                        Manifest.permission.ACCESS_COARSE_LOCATION,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
+                                    .check()
+                            } else {
+                                mFragment = ContactUsFragment(
+                                    mListItemArray.get(position),
+                                    TAB_CONTACT_US
+                                )
+                                replaceFragmentsSelected(position)
+                            }
+                        }*/
+
+                        else -> {}
+                    }
+                } else {
+                    when (position) {
+                        0 -> {
+                            // home
+//                    mFragment = new HomeScreenRegisteredUserFragment(
+//                            mListItemArray[position], mDrawerLayout, mHomeListView,
+//                            mListItemArray, mListImgArray);
+                            imageButton2.setImageResource(R.drawable.settings)
+                            imageButton2.visibility = View.VISIBLE
+                            mFragment = HomeScreenFragment(
+                                mListItemArray.get(position),
+                                mDrawerLayout,
+                                mHomeListView,
+                                linearLayout,
+                                mListItemArray,
+                                mListImgArray!!
+                            )
+                            replaceFragmentsSelected(position)
+                            headerTitle.visibility = View.GONE
+                            logoClickImgView.setVisibility(View.VISIBLE)
                             val mListAdapter = HomeListAdapter(
                                 activity, mListItemArray, mListImgArray!!
                             )
@@ -2919,10 +2976,13 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
 
                         else -> {}
                     }*/
+                    }
                 }
             }
         }
-    private fun replaceFragmentsSelected(position: Int) {
+    }
+
+    fun replaceFragmentsSelected(position: Int) {
         if (mFragment != null) {
             val fragmentManager = supportFragmentManager
             fragmentManager
@@ -2939,4 +2999,8 @@ Toast.makeText(mContext,"home",Toast.LENGTH_SHORT).show()
         }
     }
 
+    override fun onItemLongClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long): Boolean {
+        TODO("Not yet implemented")
+    }
 }
+
