@@ -1,8 +1,10 @@
 package com.example.bskl_kotlin.activity.home
 
 import ApiClient
+import android.Manifest
 import android.app.Activity
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.TypedArray
 import android.os.Bundle
 import android.os.Handler
@@ -23,6 +25,8 @@ import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.bskl_kotlin.activity.home.model.StudDetailsUsermodel
@@ -30,6 +34,7 @@ import com.example.bskl_kotlin.activity.home.model.TimeTableStudentModel
 import com.example.bskl_kotlin.activity.home.model.UserDetailsModel
 import com.example.bskl_kotlin.common.BsklTabConstants
 import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.fragment.contactus.ContactUsFragment
 import com.example.bskl_kotlin.fragment.home.HomeScreenFragment
 import com.example.bskl_kotlin.fragment.news.NewsFragment
 import com.mobatia.bskl.R
@@ -1517,10 +1522,10 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             }
                         }*/
 
-                        /* 7 -> {
+                         7 -> {
                             Log.e(
                                 "HOME LIST TYPE C7**",
-                                PreferenceManager().getHomeListType(mContext)
+                                PreferenceManager().getHomeListType(mContext).toString()
                             )
                             // TAB_SAFE_GUARDING
                             if (PreferenceManager().getHomeListType(mContext).equals("2")) {
@@ -1528,7 +1533,30 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Contactus
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                if (Build.VERSION.SDK_INT >= 23) {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
+                                    mFragment = ContactUsFragment(
+                                        mListItemArray.get(position),
+                                        bsklTabConstants.TAB_CONTACT_US
+                                    )
+                                    replaceFragmentsSelected(position)
+                                }
+                               /* if (Build.VERSION.SDK_INT >= 23) {
                                     TedPermission.with(mContext)
                                         .setPermissionListener(permissionContactuslistener)
                                         .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
@@ -1543,7 +1571,7 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                         TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
-                                }
+                                }*/
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("3")
                             ) {
@@ -1551,19 +1579,26 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Contactus
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        )
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
-                                        HomeActivity.mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        mListItemArray.get(position),
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
@@ -1574,29 +1609,36 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Timetable
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                mFragment = TimeTableFragmentN(
+                                /*mFragment = TimeTableFragmentN(
                                     mListItemArray.get(position),
                                     TAB_TIME_TABLE
                                 )
-                                replaceFragmentsSelected(position)
+                                replaceFragmentsSelected(position)*/
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("5")
                             ) {
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        )
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
@@ -1606,11 +1648,11 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Timetable
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                mFragment = TimeTableFragmentN(
+                                /*mFragment = TimeTableFragmentN(
                                     mListItemArray.get(position),
                                     TAB_TIME_TABLE
                                 )
-                                replaceFragmentsSelected(position)
+                                replaceFragmentsSelected(position)*/
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("7")
                             ) {
@@ -1618,11 +1660,11 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Attendance
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
-                                mFragment = AttendenceFragment(
+                                /*mFragment = AttendenceFragment(
                                     mListItemArray.get(position),
                                     TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)
+                                replaceFragmentsSelected(position)*/
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("8")
                             ) {
@@ -1630,11 +1672,11 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Attendance
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
-                                mFragment = AttendenceFragment(
+                               /* mFragment = AttendenceFragment(
                                     mListItemArray.get(position),
                                     TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)
+                                replaceFragmentsSelected(position)*/
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("9")
                             ) {
@@ -1642,19 +1684,26 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Contactus
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        )
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
@@ -1664,11 +1713,11 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Timetable
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                mFragment = TimeTableFragmentN(
+                              /*  mFragment = TimeTableFragmentN(
                                     mListItemArray.get(position),
                                     TAB_TIME_TABLE
                                 )
-                                replaceFragmentsSelected(position)
+                                replaceFragmentsSelected(position)*/
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("11")
                             ) {
@@ -1677,11 +1726,11 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE444")
-                                mFragment = AttendenceFragment(
+                              /*  mFragment = AttendenceFragment(
                                     mListItemArray.get(position),
                                     TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)
+                                replaceFragmentsSelected(position)*/
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("12")
                             ) {
@@ -1690,23 +1739,23 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE555")
-                                mFragment = AttendenceFragment(
+                               /* mFragment = AttendenceFragment(
                                     mListItemArray.get(position),
                                     TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)
+                                replaceFragmentsSelected(position)*/
                             } else {
 
                                 // SafeGuarding
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                mFragment = SafeGuardingFragment(
+                                /*mFragment = SafeGuardingFragment(
                                     mListItemArray.get(position),
                                     TAB_SAFE_GUARDING
                                 )
-                                replaceFragmentsSelected(position)
+                                replaceFragmentsSelected(position)*/
                             }
-                        }*/
+                        }
 
                         /* 8 -> {
                             // Attendance
@@ -2982,6 +3031,26 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
         }
     }
 
+
+    private fun checkPermission() {
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+            || ContextCompat.checkSelfPermission(mContext, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED
+//            || ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_NOTIFICATION_POLICY) != PackageManager.PERMISSION_GRANTED
+        ) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.CALL_PHONE
+//                    ,
+//                    Manifest.permission.ACCESS_NOTIFICATION_POLICY
+                ),
+                123
+            )
+        }
+    }
     fun replaceFragmentsSelected(position: Int) {
         if (mFragment != null) {
             val fragmentManager = supportFragmentManager

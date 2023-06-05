@@ -25,10 +25,11 @@
         android:background="@android:color/transparent"
         android:src="@drawable/hamburgerbtn" />
 
-    <TextView
+    <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorBlack
         android:id="@+id/headerTitle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+
         android:layout_toRightOf="@+id/action_bar_back"
         android:layout_toLeftOf="@+id/action_bar_forward"
         android:layout_alignBottom="@+id/logoClickImgView"
