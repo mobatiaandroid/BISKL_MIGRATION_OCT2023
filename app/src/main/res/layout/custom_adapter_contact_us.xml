@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_margin="2dp">
     <com.example.bskl_kotlin.manager.TextViewFontSansProSemiBoldColorBlack
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/contactName"
+        android:layout_marginBottom="4dp"
         android:textColor="@color/black"
         android:text=""
         android:gravity="left|center"
@@ -17,6 +19,7 @@
         android:id="@+id/cotactNumber"
         android:textColor="@color/black"
         android:text=""
+        android:layout_marginBottom="4dp"
         android:gravity="left|center"
         />
     <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
@@ -26,4 +29,9 @@
         android:textColor="@color/black"
         android:text=""
         android:gravity="left|center"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/list_divider"
+        />
 </LinearLayout>

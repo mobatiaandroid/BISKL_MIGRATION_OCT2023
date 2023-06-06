@@ -36,6 +36,7 @@ import com.example.bskl_kotlin.common.BsklTabConstants
 import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.fragment.contactus.ContactUsFragment
 import com.example.bskl_kotlin.fragment.home.HomeScreenFragment
+import com.example.bskl_kotlin.fragment.messages.NotificationFragmentPagination
 import com.example.bskl_kotlin.fragment.news.NewsFragment
 import com.mobatia.bskl.R
 import retrofit2.Call
@@ -1355,16 +1356,16 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             replaceFragmentsSelected(position)
                         }*/
 
-                        /*2 -> {
+                        2 -> {
                             // Messages
                             imageButton2.setImageResource(R.drawable.tutorial_icon)
                             imageButton2.visibility = View.VISIBLE
                             mFragment = NotificationFragmentPagination(
                                 mListItemArray.get(position),
-                                TAB_MESSAGES
+                                bsklTabConstants.TAB_MESSAGES
                             )
                             replaceFragmentsSelected(position)
-                        }*/
+                        }
 
                          3 -> {
                             // News
@@ -1757,11 +1758,11 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             }
                         }
 
-                        /* 8 -> {
+                         8 -> {
                             // Attendance
                             Log.e(
                                 "HOME LIST TYPE C8**",
-                                PreferenceManager().getHomeListType(mContext)
+                                PreferenceManager().getHomeListType(mContext).toString()
                             )
                             if (PreferenceManager().getHomeListType(mContext).equals("4")) {
 
@@ -1769,19 +1770,26 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Contactus
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        )
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
@@ -1793,19 +1801,26 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Contactus
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        )
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
@@ -1817,19 +1832,26 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Contactus
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        )
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
@@ -1841,19 +1863,26 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Contactus
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        )
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
@@ -1865,19 +1894,26 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Contactus
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        )
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
@@ -1888,19 +1924,26 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 // Contactus
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        )
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
@@ -1911,11 +1954,11 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE666")
-                                mFragment = AttendenceFragment(
+                               /* mFragment = AttendenceFragment(
                                     mListItemArray.get(position),
                                     TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)
+                                replaceFragmentsSelected(position)*/
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("16")
                             ) {
@@ -1923,80 +1966,90 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE777")
-                                mFragment = AttendenceFragment(
+                               /* mFragment = AttendenceFragment(
                                     mListItemArray.get(position),
                                     TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)
+                                replaceFragmentsSelected(position)*/
                             } else {
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                mFragment = TimeTableFragmentN(
+                                /*mFragment = TimeTableFragmentN(
                                     mListItemArray.get(position),
                                     TAB_TIME_TABLE
                                 )
-                                replaceFragmentsSelected(position)
+                                replaceFragmentsSelected(position)*/
                             }
                         }
-*/
-                        /*9 -> {
+                        9 -> {
                             // TimeTable
-                            Log.e(
-                                "HOME LIST TYPE C9**",
-                                PreferenceManager().getHomeListType(mContext)
-                            )
+
                             if (PreferenceManager().getHomeListType(mContext)
                                     .equals("16")
                             ) {
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                mFragment = TimeTableFragmentN(
+                               /* mFragment = TimeTableFragmentN(
                                     mListItemArray.get(position),
                                     TAB_TIME_TABLE
                                 )
-                                replaceFragmentsSelected(position)
+                                replaceFragmentsSelected(position)*/
                             } else {
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        )
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
                             }
-                        }*/
+                        }
 
-                        /* 10 -> {
+                         10 -> {
                             imageButton2.setImageResource(R.drawable.settings)
                             imageButton2.visibility = View.VISIBLE
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                TedPermission.with(mContext)
-                                    .setPermissionListener(permissionContactuslistener)
-                                    .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                    .setPermissions(
-                                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                                        Manifest.permission.ACCESS_FINE_LOCATION
-                                    )
-                                    .check()
-                            } else {
-                                mFragment = ContactUsFragment(
-                                    mListItemArray.get(position),
-                                    TAB_CONTACT_US
-                                )
-                                replaceFragmentsSelected(position)
-                            }
-                    }*/
+                             if (ActivityCompat.checkSelfPermission(
+                                     mContext,
+                                     Manifest.permission.ACCESS_FINE_LOCATION
+                                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                     mContext,
+                                     Manifest.permission.ACCESS_COARSE_LOCATION
+                                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                     mContext,
+                                     Manifest.permission.CALL_PHONE
+                                 ) != PackageManager.PERMISSION_GRANTED
+                             )
+                             {
+                                 checkPermission()
+
+
+                             }
+                             else {
+                                 mFragment = ContactUsFragment(
+                                     mListItemArray.get(position),
+                                     bsklTabConstants.TAB_CONTACT_US
+                                 )
+                                 replaceFragmentsSelected(position)
+                             }
+                    }
 
 
                     }
@@ -2037,16 +2090,16 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             replaceFragmentsSelected(position)
                         }*/
 
-                        /* 2 -> {
+                         2 -> {
                             // Messages
                             imageButton2.setImageResource(R.drawable.tutorial_icon)
                             imageButton2.visibility = View.VISIBLE
                             mFragment = NotificationFragmentPagination(
                                 mListItemArray.get(position),
-                                TAB_MESSAGES
+                                bsklTabConstants.TAB_MESSAGES
                             )
                             replaceFragmentsSelected(position)
-                        }*/
+                        }
 
                         /* 3 -> {
                             // News
@@ -2087,33 +2140,38 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 )
                             }*/
 
-                        /*6 ->                             // Absence
+                        6 ->                             // Absence
                             if (PreferenceManager().getHomeListType(mContext).equals("1")) {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                if (AppUtils.isNetworkConnected(mContext)) {
+                               /* if (AppUtils.isNetworkConnected(mContext)) {
                                     AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
@@ -2122,17 +2180,17 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                         R.drawable.round
                                     )
                                 } else {
-                                    AppUtils.showDialogAlertDismiss(
+                                   *//* AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         "Network Error",
                                         getString(R.string.no_internet),
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
-                                    )
-                                }
-                            }*/
+                                    )*//*
+                                }*/
+                            }
 
-                        /* 7 ->                             // SafeGuarding
+                         7 ->                             // SafeGuarding
                             if (PreferenceManager().getHomeListType(mContext)
                                     .equals("2") || PreferenceManager().getHomeListType(
                                     mContext
@@ -2144,29 +2202,34 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             ) {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                if (AppUtils.isNetworkConnected(mContext)) {
+                              /*  if (AppUtils.isNetworkConnected(mContext)) {
                                     AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
@@ -2182,10 +2245,10 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }
-                            }*/
+                                }*/
+                            }
 
-                        /*8 ->                             // Attendance
+                        8 ->                             // Attendance
                             if (PreferenceManager().getHomeListType(mContext)
                                     .equals("4") || PreferenceManager().getHomeListType(
                                     mContext
@@ -2201,29 +2264,34 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             ) {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                if (AppUtils.isNetworkConnected(mContext)) {
+                               /* if (AppUtils.isNetworkConnected(mContext)) {
                                     AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
@@ -2239,10 +2307,9 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }
+                                }*/
                             }
-*/
-                        /* 9 -> if (PreferenceManager().getHomeListType(mContext)
+                         9 -> if (PreferenceManager().getHomeListType(mContext)
                                 .equals("8") || PreferenceManager().getHomeListType(mContext)
                                 .equals("12") || PreferenceManager().getHomeListType(
                                 mContext
@@ -2251,29 +2318,34 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                         ) {
                             mFragment = ContactUsFragment(
                                 mListItemArray.get(position),
-                                TAB_CONTACT_US
+                                bsklTabConstants.TAB_CONTACT_US
                             )
                             replaceFragmentsSelected(position)
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                TedPermission.with(mContext)
-                                    .setPermissionListener(permissionContactuslistener)
-                                    .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                    .setPermissions(
-                                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                                        Manifest.permission.ACCESS_FINE_LOCATION
-                                    ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    .check()
-                            } else {
-                                mFragment = ContactUsFragment(
-                                    mListItemArray.get(position),
-                                    TAB_CONTACT_US
-                                )
-                                replaceFragmentsSelected(position)
-                            }
+                             if (ActivityCompat.checkSelfPermission(
+                                     mContext,
+                                     Manifest.permission.ACCESS_FINE_LOCATION
+                                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                     mContext,
+                                     Manifest.permission.ACCESS_COARSE_LOCATION
+                                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                     mContext,
+                                     Manifest.permission.CALL_PHONE
+                                 ) != PackageManager.PERMISSION_GRANTED
+                             )
+                             {
+                                 checkPermission()
+
+
+                             }
+                             else {
+                                 mFragment = ContactUsFragment(
+                                     mListItemArray.get(position),
+                                     bsklTabConstants.TAB_CONTACT_US
+                                 )
+                                 replaceFragmentsSelected(position)
+                             }
                         } else {
-                            if (AppUtils.isNetworkConnected(mContext)) {
+                           /* if (AppUtils.isNetworkConnected(mContext)) {
                                 AppUtils.showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
@@ -2289,35 +2361,40 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }
-                        }*/
+                            }*/
+                        }
 
-                        /* 10 -> {
+                         10 -> {
                             // Contact Us
                             mFragment = ContactUsFragment(
                                 mListItemArray.get(position),
-                                TAB_CONTACT_US
+                               bsklTabConstants. TAB_CONTACT_US
                             )
                             replaceFragmentsSelected(position)
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                TedPermission.with(mContext)
-                                    .setPermissionListener(permissionContactuslistener)
-                                    .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                    .setPermissions(
-                                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                                        Manifest.permission.ACCESS_FINE_LOCATION
-                                    ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    .check()
-                            } else {
-                                mFragment = ContactUsFragment(
-                                    mListItemArray.get(position),
-                                    TAB_CONTACT_US
-                                )
-                                replaceFragmentsSelected(position)
-                            }
-                        }*/
+                             if (ActivityCompat.checkSelfPermission(
+                                     mContext,
+                                     Manifest.permission.ACCESS_FINE_LOCATION
+                                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                     mContext,
+                                     Manifest.permission.ACCESS_COARSE_LOCATION
+                                 ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                     mContext,
+                                     Manifest.permission.CALL_PHONE
+                                 ) != PackageManager.PERMISSION_GRANTED
+                             )
+                             {
+                                 checkPermission()
+
+
+                             }
+                             else {
+                                 mFragment = ContactUsFragment(
+                                     mListItemArray.get(position),
+                                     bsklTabConstants.TAB_CONTACT_US
+                                 )
+                                 replaceFragmentsSelected(position)
+                             }
+                        }
 
                         else -> {}
                     }
@@ -2368,7 +2445,7 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 )
                             }*/
 
-                        /* 2 ->                             // Messages
+                        /* 2 ->
                             if (AppUtils.isNetworkConnected(mContext)) {
                                 AppUtils.showDialogAlertDismiss(
                                     mContext as Activity,
@@ -2444,33 +2521,38 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 )
                             }*/
 
-                        /*6 ->                             // Absence
+                        6 ->                             // Absence
                             if (PreferenceManager().getHomeListType(mContext).equals("1")) {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                if (AppUtils.isNetworkConnected(mContext)) {
+                               /* if (AppUtils.isNetworkConnected(mContext)) {
                                     AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
@@ -2486,10 +2568,10 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }
-                            }*/
+                                }*/
+                            }
 
-                        /* 7 ->                             // Attendance
+                         7 ->                             // Attendance
                             if (PreferenceManager().getHomeListType(mContext)
                                     .equals("2") || PreferenceManager().getHomeListType(
                                     mContext
@@ -2501,29 +2583,34 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             ) {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                if (AppUtils.isNetworkConnected(mContext)) {
+                                /*if (AppUtils.isNetworkConnected(mContext)) {
                                     AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
@@ -2539,10 +2626,10 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }
-                            }*/
+                                }*/
+                            }
 
-                        /* 8 ->                             // Absence
+                         8 ->                             // Absence
                             if (PreferenceManager().getHomeListType(mContext)
                                     .equals("4") || PreferenceManager().getHomeListType(
                                     mContext
@@ -2558,29 +2645,34 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             ) {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                if (AppUtils.isNetworkConnected(mContext)) {
+                               /* if (AppUtils.isNetworkConnected(mContext)) {
                                     AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
@@ -2596,10 +2688,10 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }
-                            }*/
+                                }*/
+                            }
 
-                        /*9 -> if (PreferenceManager().getHomeListType(mContext)
+                        9 -> if (PreferenceManager().getHomeListType(mContext)
                                 .equals("8") || PreferenceManager().getHomeListType(mContext)
                                 .equals("12") || PreferenceManager().getHomeListType(
                                 mContext
@@ -2608,29 +2700,34 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                         ) {
                             mFragment = ContactUsFragment(
                                 mListItemArray.get(position),
-                                TAB_CONTACT_US
+                                bsklTabConstants.TAB_CONTACT_US
                             )
                             replaceFragmentsSelected(position)
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                TedPermission.with(mContext)
-                                    .setPermissionListener(permissionContactuslistener)
-                                    .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                    .setPermissions(
-                                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                                        Manifest.permission.ACCESS_FINE_LOCATION
-                                    ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    .check()
-                            } else {
+                            if (ActivityCompat.checkSelfPermission(
+                                    mContext,
+                                    Manifest.permission.ACCESS_FINE_LOCATION
+                                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                    mContext,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION
+                                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                    mContext,
+                                    Manifest.permission.CALL_PHONE
+                                ) != PackageManager.PERMISSION_GRANTED
+                            )
+                            {
+                                checkPermission()
+
+
+                            }
+                            else {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
                             }
                         } else {
-                            if (AppUtils.isNetworkConnected(mContext)) {
+                          /*  if (AppUtils.isNetworkConnected(mContext)) {
                                 AppUtils.showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
@@ -2646,35 +2743,40 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }
-                        }*/
+                            }*/
+                        }
 
-                        /*10 -> {
+                        10 -> {
                             // Contact Us
                             mFragment = ContactUsFragment(
                                 mListItemArray.get(position),
-                                TAB_CONTACT_US
+                                bsklTabConstants.TAB_CONTACT_US
                             )
                             replaceFragmentsSelected(position)
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                TedPermission.with(mContext)
-                                    .setPermissionListener(permissionContactuslistener)
-                                    .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                    .setPermissions(
-                                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                                        Manifest.permission.ACCESS_FINE_LOCATION
-                                    ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    .check()
-                            } else {
+                            if (ActivityCompat.checkSelfPermission(
+                                    mContext,
+                                    Manifest.permission.ACCESS_FINE_LOCATION
+                                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                    mContext,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION
+                                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                    mContext,
+                                    Manifest.permission.CALL_PHONE
+                                ) != PackageManager.PERMISSION_GRANTED
+                            )
+                            {
+                                checkPermission()
+
+
+                            }
+                            else {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
                             }
-                        }*/
+                        }
 
                         else -> {}
                     }
@@ -2704,7 +2806,7 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             mHomeListView.adapter = mListAdapter
                         }
 
-                        /*1 ->                             // Calendar
+                       /* 1 ->                             // Calendar
                             if (AppUtils.isNetworkConnected(mContext)) {
                                 AppUtils.showDialogAlertDismiss(
                                     mContext as Activity,
@@ -2722,8 +2824,8 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                     R.drawable.roundred
                                 )
                             }
-
-                        2 ->                             // Messages
+*/
+                        /*2 ->                             // Messages
                             if (AppUtils.isNetworkConnected(mContext)) {
                                 AppUtils.showDialogAlertDismiss(
                                     mContext as Activity,
@@ -2740,9 +2842,9 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }
+                            }*/
 
-                        3 ->                             // News
+                       /* 3 ->                             // News
                             if (AppUtils.isNetworkConnected(mContext)) {
                                 AppUtils.showDialogAlertDismiss(
                                     mContext as Activity,
@@ -2759,9 +2861,9 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }
+                            }*/
 
-                        4 ->                             // Social media
+                        /*4 ->                             // Social media
                             if (AppUtils.isNetworkConnected(mContext)) {
                                 AppUtils.showDialogAlertDismiss(
                                     mContext as Activity,
@@ -2778,9 +2880,9 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }
+                            }*/
 
-                        5 -> {
+                        /*5 -> {
                             // Report
                             imageButton2.visibility = View.VISIBLE
                             imageButton2.setImageResource(R.drawable.settings)
@@ -2789,35 +2891,40 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 TAB_REPORT
                             )
                             replaceFragmentsSelected(position)
-                        }
+                        }*/
 
                         6 ->                             // Absence
                             if (PreferenceManager().getHomeListType(mContext).equals("1")) {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                if (AppUtils.isNetworkConnected(mContext)) {
+                               /* if (AppUtils.isNetworkConnected(mContext)) {
                                     AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
@@ -2833,7 +2940,7 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }
+                                }*/
                             }
 
                         7 ->                             // Attendance
@@ -2848,29 +2955,34 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             ) {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
                                         mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                if (AppUtils.isNetworkConnected(mContext)) {
+                                /*if (AppUtils.isNetworkConnected(mContext)) {
                                     AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
@@ -2886,7 +2998,7 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }
+                                }*/
                             }
 
                         8 ->                             // Absence
@@ -2901,33 +3013,38 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                     mContext
                                 ).equals("11") || PreferenceManager().getHomeListType(
                                     mContext
-                                ).equals.("13")
+                                ).equals("13")
                             ) {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
-                                if (Build.VERSION.SDK_INT >= 23) {
-                                    TedPermission.with(mContext)
-                                        .setPermissionListener(permissionContactuslistener)
-                                        .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                        .setPermissions(
-                                            Manifest.permission.ACCESS_COARSE_LOCATION,
-                                            Manifest.permission.ACCESS_FINE_LOCATION
-                                        ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                        .check()
-                                } else {
+                                if (ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_FINE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.ACCESS_COARSE_LOCATION
+                                    ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                        mContext,
+                                        Manifest.permission.CALL_PHONE
+                                    ) != PackageManager.PERMISSION_GRANTED
+                                )
+                                {
+                                    checkPermission()
+
+
+                                }
+                                else {
                                     mFragment = ContactUsFragment(
-                                        .mListItemArray.get(position),
-                                        TAB_CONTACT_US
+                                        mListItemArray.get(position),
+                                        bsklTabConstants.TAB_CONTACT_US
                                     )
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                if (AppUtils.isNetworkConnected(mContext)) {
+                               /* if (AppUtils.isNetworkConnected(mContext)) {
                                     AppUtils.showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
@@ -2943,7 +3060,7 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }
+                                }*/
                             }
 
                         9 -> if (PreferenceManager().getHomeListType(mContext)
@@ -2955,29 +3072,34 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                         ) {
                             mFragment = ContactUsFragment(
                                 mListItemArray.get(position),
-                                TAB_CONTACT_US
+                                bsklTabConstants.TAB_CONTACT_US
                             )
                             replaceFragmentsSelected(position)
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                TedPermission.with(mContext)
-                                    .setPermissionListener(permissionContactuslistener)
-                                    .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                    .setPermissions(
-                                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                                        Manifest.permission.ACCESS_FINE_LOCATION
-                                    ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    .check()
-                            } else {
+                            if (ActivityCompat.checkSelfPermission(
+                                    mContext,
+                                    Manifest.permission.ACCESS_FINE_LOCATION
+                                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                    mContext,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION
+                                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                    mContext,
+                                    Manifest.permission.CALL_PHONE
+                                ) != PackageManager.PERMISSION_GRANTED
+                            )
+                            {
+                                checkPermission()
+
+
+                            }
+                            else {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
                             }
                         } else {
-                            if (AppUtils.isNetworkConnected(mContext)) {
+                           /* if (AppUtils.isNetworkConnected(mContext)) {
                                 AppUtils.showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
@@ -2993,43 +3115,47 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }
+                            }*/
                         }
 
                         10 -> {
                             // Contact Us
                             mFragment = ContactUsFragment(
                                 mListItemArray.get(position),
-                                TAB_CONTACT_US
+                                bsklTabConstants.TAB_CONTACT_US
                             )
                             replaceFragmentsSelected(position)
-                            if (Build.VERSION.SDK_INT >= 23) {
-                                TedPermission.with(mContext)
-                                    .setPermissionListener(permissionContactuslistener)
-                                    .setDeniedMessage("If you reject permission,you cannot use this service\n\nPlease turn on permissions at [Setting] > [Permission]")
-                                    .setPermissions(
-                                        Manifest.permission.ACCESS_COARSE_LOCATION,
-                                        Manifest.permission.ACCESS_FINE_LOCATION
-                                    ) //                                .setPermissions(Manifest.permission.CALL_PHONE,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_COARSE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    //                                .setPermissions(Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.READ_EXTERNAL_STORAGE)
-                                    .check()
-                            } else {
+                            if (ActivityCompat.checkSelfPermission(
+                                    mContext,
+                                    Manifest.permission.ACCESS_FINE_LOCATION
+                                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                    mContext,
+                                    Manifest.permission.ACCESS_COARSE_LOCATION
+                                ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                                    mContext,
+                                    Manifest.permission.CALL_PHONE
+                                ) != PackageManager.PERMISSION_GRANTED
+                            )
+                            {
+                                checkPermission()
+
+
+                            }
+                            else {
                                 mFragment = ContactUsFragment(
                                     mListItemArray.get(position),
-                                    TAB_CONTACT_US
+                                    bsklTabConstants.TAB_CONTACT_US
                                 )
                                 replaceFragmentsSelected(position)
                             }
                         }
 
                         else -> {}
-                    }*/
+                    }
                     }
                 }
             }
         }
-    }
 
 
     private fun checkPermission() {

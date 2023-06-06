@@ -550,4 +550,21 @@ class PreferenceManager {
         return prefs.getBoolean("home_item_click",true)
     }
 
+    fun setIsFirstTimeInNotification(context: Context, result: Boolean) {
+        val prefs = context.getSharedPreferences(
+            PREFSNAME, Context.MODE_PRIVATE
+        )
+        val editor = prefs.edit()
+        editor.putBoolean("result", result)
+        editor.apply()
+    }
+
+    fun getIsFirstTimeInNotification(context: Context): Boolean {
+        val prefs = context.getSharedPreferences(
+            PREFSNAME,
+            Context.MODE_PRIVATE
+        )
+        return prefs.getBoolean("result",true)
+    }
+
 }

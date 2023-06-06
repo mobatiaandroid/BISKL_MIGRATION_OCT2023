@@ -24,7 +24,12 @@
         tools:ignore="GoogleAppIndexingWarning"
         android:requestLegacyExternalStorage="true"
         tools:replace="android:allowBackup,android:icon, android:label, android:theme">
-
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAixzbHoPqIadZKzIMQuZXU_hBR6LAJths" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <activity
             android:name="com.example.bskl_kotlin.activity.splash.SplashActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
@@ -50,6 +55,12 @@
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
             android:name="com.example.bskl_kotlin.activity.home.HomeActivity"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.notification.NotificationInfoActivity"
             android:label="@string/title_activity_home"
             android:exported="true"
             android:screenOrientation="portrait"

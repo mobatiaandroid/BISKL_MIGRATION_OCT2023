@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <RelativeLayout
+        android:id="@+id/relative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp">
+        <RelativeLayout
+            android:id="@+id/clickRelative"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:gravity="center">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:weightSum="100">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="20"/>
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorWhite
+                    android:id="@+id/unreadTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="30"
+                    android:text="Unread"
+                    android:background="@drawable/notification_read"
+                    android:gravity="center"/>
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    android:id="@+id/readTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="30"
+                    android:text="Read"
+                    android:textColor="@color/rel_one"
+                    android:background="@drawable/notification_unread"
+                    android:gravity="center"/>
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="20"/>
+            </LinearLayout>
+        </RelativeLayout>
+        <RelativeLayout
+            android:id="@+id/noMsgAlert"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:layout_below="@+id/clickRelative"
+            android:visibility="gone">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="50dp"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/no_message"
+                    android:layout_gravity="center"/>
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    android:id="@+id/noMsgAlertTxt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/grey"
+                    android:layout_margin="5dp"
+                    android:textSize="20dp"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/markLinear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/relative">
+
+        <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+            android:id="@+id/markReadTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="right|center"
+            android:text="Mark as Read"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="15sp"
+            android:visibility="gone"
+
+            />
+
+        <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+            android:id="@+id/markUnreadTxt"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="right|center"
+            android:text="Mark as Unread"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
+            android:textSize="15sp"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/maniRelative"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:layout_below="@+id/markLinear">
+
+            <LinearLayout
+                android:id="@+id/msgUnreadLinear"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="10dp"
+                    android:weightSum="20">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="18">
+
+                        <com.example.bskl_kotlin.manager.TextViewFontSansProSemiBoldColorBlack
+                            android:id="@+id/msgUnRead"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_centerVertical="true"
+                            android:layout_margin="10dp"
+                            android:text="Select All"
+                            android:gravity="right"
+                            android:textSize="18sp"
+                            android:visibility="gone"/>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:gravity="right|center">
+
+                        <ImageView
+                            android:id="@+id/messageUnread"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_margin="12dp"
+                            android:src="@drawable/check_box_header"
+                            android:visibility="gone" />
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <LinearLayout
+                    android:id="@+id/listMsg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/mMessageUnReadList"
+                        android:layout_below="@+id/descriptionTV"
+                        android:layout_width="match_parent"
+                        android:background="@color/white"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/msgReadLinear"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginRight="5dp"
+                    android:weightSum="20">
+
+                    <RelativeLayout
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="17">
+
+                        <com.example.bskl_kotlin.manager.TextViewFontSansProSemiBoldColorBlack
+                            android:id="@+id/msgReadSelect"
+                            android:layout_width="match_parent"
+                            android:layout_height="45dp"
+                            android:layout_margin="10dp"
+                            android:text="Select All"
+                            android:gravity="right"
+                            android:textSize="18sp"
+                            android:visibility="visible"/>
+                    </RelativeLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:gravity="right|center">
+
+                        <ImageView
+                            android:id="@+id/messageRead"
+                            android:layout_width="25dp"
+                            android:layout_height="25dp"
+                            android:layout_margin="13dp"
+                            android:src="@drawable/check_box_header"
+                            android:visibility="visible" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/listRead"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/mMessageReadList"
+                        android:layout_below="@+id/descriptionTV"
+                        android:layout_width="match_parent"
+                        android:background="@color/white"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_height="wrap_content"/>
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    <include
+        android:id="@+id/progressDialog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        layout="@layout/custom_progress_layout"
+        android:visibility="visible" />
+</RelativeLayout>
