@@ -2,9 +2,6 @@ package com.example.bskl_kotlin.common
 
 import android.content.Context
 import android.preference.PreferenceManager
-import com.google.gson.Gson
-import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
 
 
 @Suppress("DEPRECATION")
@@ -549,5 +546,21 @@ class PreferenceManager {
         )
         return prefs.getBoolean("home_item_click",true)
     }
+    fun setLeaveStudentId(context: Context, mLeaveStudentId: String?) {
+        val prefs = context.getSharedPreferences(PREFSNAME,
+            Context.MODE_PRIVATE
+        )
+        val editor = prefs.edit()
+        editor.putString("LeaveStudentId", mLeaveStudentId)
+        editor.commit()
+    }
 
+    fun getLeaveStudentId(context: Context): String? {
+        var mLeaveStudentId = ""
+        val prefs = context.getSharedPreferences(PREFSNAME,
+            Context.MODE_PRIVATE
+        )
+        mLeaveStudentId = prefs.getString("LeaveStudentId", "").toString()
+        return mLeaveStudentId
+    }
 }

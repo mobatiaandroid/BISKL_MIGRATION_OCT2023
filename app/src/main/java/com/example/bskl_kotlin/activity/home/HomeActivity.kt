@@ -37,6 +37,7 @@ import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.fragment.contactus.ContactUsFragment
 import com.example.bskl_kotlin.fragment.home.HomeScreenFragment
 import com.example.bskl_kotlin.fragment.news.NewsFragment
+import com.example.bskl_kotlin.fragment.safeguarding.SafeGuardingFragment
 import com.mobatia.bskl.R
 import retrofit2.Call
 import retrofit2.Callback
@@ -1371,7 +1372,7 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             imageButton2.setImageResource(R.drawable.settings)
                             imageButton2.visibility = View.VISIBLE
                             mFragment =
-                                NewsFragment(mListItemArray.get(position), bsklTabConstants.TAB_NEWS)
+                                SafeGuardingFragment()
                             replaceFragmentsSelected(position)
                         }
 

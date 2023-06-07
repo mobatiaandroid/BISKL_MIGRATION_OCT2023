@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/rounded_rec_blue">
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProSemiBoldColorSplit
+        android:id="@+id/textViewTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="12dp"
+        android:gravity="center"
+        android:text="STUDENT HAS BEEN SENT TO SCHOOL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitle">
+
+        <com.example.bskl_kotlin.manager.RadioButtonSansProRegular
+            android:id="@+id/radioButton1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/radiobuttonstate"
+            android:textColor="@color/radiobuttonstate"
+
+            android:text="Student caught the school bus"
+            android:textSize="14sp" />
+
+        <com.example.bskl_kotlin.manager.RadioButtonSansProRegular
+            android:id="@+id/radioButton2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/radiobuttonstate"
+            android:buttonTint="@color/radiobuttonstate"
+            android:text="Student was dropped off at school using own transport"
+            android:textSize="14sp" />
+
+        <com.example.bskl_kotlin.manager.RadioButtonSansProRegular
+            android:id="@+id/radioButton3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/radiobuttonstate"
+            android:buttonTint="@color/radiobuttonstate"
+            android:text="Student was dropped off at school using taxi"
+            android:textSize="14sp" />
+        <com.example.bskl_kotlin.manager.RadioButtonSansProRegular
+            android:id="@+id/radioButton4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/radiobuttonstate"
+            android:buttonTint="@color/radiobuttonstate"
+            android:text="Other - Free Text Box"
+            android:textSize="14sp" />
+    </RadioGroup>
+
+    <com.example.bskl_kotlin.manager.EditTextFontSansProRegular
+        android:id="@+id/textViewComments"
+        android:layout_width="0dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/rounded__curve_rec"
+        android:gravity="top|left"
+        android:hint="Comments"
+        android:visibility="gone"
+        android:minLines="4"
+        android:textColorHint="@color/cleargreyColor"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="@+id/textViewTitle"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/textViewTitle"
+        app:layout_constraintTop_toBottomOf="@+id/radioGroup"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.example.bskl_kotlin.manager.ButtonFontSansProRegular
+        android:id="@+id/btnSubmit"
+        android:layout_width="120dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/buttonsubmit_new"
+        android:gravity="center"
+        android:text="Submit"
+
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewComments" />
+</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
+

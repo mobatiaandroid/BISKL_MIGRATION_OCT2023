@@ -100,7 +100,65 @@ class AppUtils {
         strCurrentDate = format.format(newDate)
         return strCurrentDate
     }
+    fun timeParsingToHours(date: String?): String? {
+        var strCurrentDate = ""
+        var format = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+        var newDate: Date? = null
+        try {
+            newDate = format.parse(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        format = SimpleDateFormat("HH", Locale.ENGLISH)
+        strCurrentDate = format.format(newDate)
+        return strCurrentDate
+    }
 
+    fun timeParsingToMinutes(date: String?): String? {
+        var strCurrentDate = ""
+        var format = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+        var newDate: Date? = null
+        try {
+            newDate = format.parse(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        format = SimpleDateFormat("mm", Locale.ENGLISH)
+        strCurrentDate = format.format(newDate)
+        return strCurrentDate
+    }
+
+    fun timeParsingTo12Hour(date: String?): String? {
+        var strCurrentDate = ""
+        var format = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+        var newDate: Date? = null
+        try {
+            newDate = format.parse(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        format = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+        strCurrentDate = format.format(newDate)
+        return strCurrentDate
+    }
+
+    @JvmName("getCurrentDateToday1")
+    fun getCurrentDateToday(): String? {
+        val dateFormat: DateFormat =
+            SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        val calendar = Calendar.getInstance()
+        return dateFormat.format(calendar.time)
+    }
+
+    fun hideKeyBoard(context: Context) {
+        val imm = context
+            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (imm.isAcceptingText) {
+            imm.hideSoftInputFromWindow(
+                (context as Activity).currentFocus!!.getWindowToken(), 0
+            )
+        }
+    }
     fun dateConversionY(inputDate: String?): String {
         var mDate = ""
         try {

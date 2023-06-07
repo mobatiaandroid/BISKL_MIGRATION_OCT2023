@@ -1,8 +1,17 @@
 package com.example.bskl_kotlin.fragment.absence.model
 
-class StudentModel (
-    var abscenceId //attendance Id
-    : String? = null,
+ class StudentModel (
+
+    var VIEW_TYPE1: Int = 1 ,
+
+    var VIEW_TYPE2: Int = 2,
+
+    var VIEW_TYPE3: Int = 3 ,
+
+    var VIEW_TYPE4: Int = 4,
+
+    var registrationComment: String? = null,
+    var abscenceId: String? = null,
     var absenceCodeId: String? = null,
     var abRegister: String? = null,
     var isPresent: String? = null,
