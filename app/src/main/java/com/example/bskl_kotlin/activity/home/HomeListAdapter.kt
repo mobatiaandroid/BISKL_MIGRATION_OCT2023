@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 
 class HomeListAdapter(
     private val context: Activity,

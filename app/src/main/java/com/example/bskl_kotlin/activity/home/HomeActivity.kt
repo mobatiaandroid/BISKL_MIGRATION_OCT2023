@@ -29,6 +29,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.activity.home.model.StudDetailsUsermodel
 import com.example.bskl_kotlin.activity.home.model.TimeTableStudentModel
 import com.example.bskl_kotlin.activity.home.model.UserDetailsModel
@@ -38,7 +39,7 @@ import com.example.bskl_kotlin.fragment.contactus.ContactUsFragment
 import com.example.bskl_kotlin.fragment.home.HomeScreenFragment
 import com.example.bskl_kotlin.fragment.news.NewsFragment
 import com.example.bskl_kotlin.fragment.safeguarding.SafeGuardingFragment
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.fragment.timetable.TimeTableFragment
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -1372,7 +1373,7 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             imageButton2.setImageResource(R.drawable.settings)
                             imageButton2.visibility = View.VISIBLE
                             mFragment =
-                                SafeGuardingFragment()
+                               TimeTableFragment()
                             replaceFragmentsSelected(position)
                         }
 

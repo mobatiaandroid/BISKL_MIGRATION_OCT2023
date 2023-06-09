@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.common.model.CommonResponseModel
 import com.example.bskl_kotlin.fragment.absence.model.StudentModel
@@ -27,7 +28,6 @@ import com.example.bskl_kotlin.fragment.safeguarding.adapter.SafeGuardingAdapter
 import com.example.bskl_kotlin.fragment.safeguarding.model.SafeguardingResponseModel
 import com.example.bskl_kotlin.fragment.safeguarding.model.TypeModel
 import com.example.bskl_kotlin.manager.AppUtils
-import com.mobatia.bskl.R
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -148,7 +148,7 @@ class SafeGuardingFragment:Fragment() {
                             mStudentAttendanceModel.mSection=response.body()!!.response.attendance_data.get(i).form
                             mStudentAttendanceModel.mId=response.body()!!.response.attendance_data.get(i).stud_id
                             mStudentAttendanceModel.mPhoto=response.body()!!.response.attendance_data.get(i).photo
-                            mStudentAttendanceModel.alumini=("0")
+                            mStudentAttendanceModel.alumi=("0")
                             mStudentAttendanceModel.status=response.body()!!.response.attendance_data.get(i).status
                             mStudentAttendanceModel.parent_id=response.body()!!.response.attendance_data.get(i).parent_id
                             mStudentAttendanceModel.parent_name=response.body()!!.response.attendance_data.get(i).parent_name

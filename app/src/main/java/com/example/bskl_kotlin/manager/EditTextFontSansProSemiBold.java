@@ -10,7 +10,7 @@ import android.widget.EditText;
  * Created by gayatri on 24/1/17.
  */
 
-public class EditTextFontSansProSemiBold extends EditText {
+public class EditTextFontSansProSemiBold extends androidx.appcompat.widget.AppCompatEditText {
     public EditTextFontSansProSemiBold(Context context) {
         super(context);
         Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/SourceSansPro-Semibold.otf" );

@@ -5,13 +5,13 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.mobatia.bskl.R;
 
 
 /**
  * Created by gayatri on 24/1/17.
  */
 
+/*
 public class TextViewFontSansProBoldColorSplit extends TextView {
     public TextViewFontSansProBoldColorSplit(Context context) {
         super(context);
@@ -38,3 +38,4 @@ public class TextViewFontSansProBoldColorSplit extends TextView {
 
 
 }
+*/

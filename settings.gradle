@@ -1,5 +1,3 @@
-include ':giraffeplayer'
-include ':ijkplayer-java'
 include ':app'
 rootProject.name = "BISKL_Kotlin"
 

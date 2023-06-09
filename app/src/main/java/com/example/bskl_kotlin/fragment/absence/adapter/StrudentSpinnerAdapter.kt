@@ -9,8 +9,8 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.fragment.absence.model.StudentModel
-import com.mobatia.bskl.R
 
 class StrudentSpinnerAdapter(private val mContext: Context, mStudentList: ArrayList<StudentModel>) :
     RecyclerView.Adapter<StrudentSpinnerAdapter.MyViewHolder>() {
@@ -42,7 +42,7 @@ class StrudentSpinnerAdapter(private val mContext: Context, mStudentList: ArrayL
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
-        if (mStudentList[position].alumini.equals("0")) {
+        if (mStudentList[position].alumi.equals("0")) {
             holder.relSub.visibility = View.VISIBLE
             holder.mTitleTxt.setText(mStudentList[position].mName)
             holder.imgIcon.visibility = View.VISIBLE

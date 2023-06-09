@@ -6,7 +6,7 @@ android {
     compileSdkVersion 33
 
     defaultConfig {
-        applicationId "com.mobatia.bskl"
+        applicationId "com.example.bskl_kotlin"
         minSdkVersion 27
         targetSdkVersion 31
         versionCode 30
@@ -88,6 +88,8 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.ryanharter.android.tooltips:library:0.0.3'
 
     implementation 'com.github.siyamed:android-shape-imageview:0.9.+@aar'
 

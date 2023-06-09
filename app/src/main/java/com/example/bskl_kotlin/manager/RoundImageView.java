@@ -21,7 +21,7 @@ import android.widget.ImageView;
  * @author Rijo K Jose
  *
  */
-public class RoundImageView extends ImageView {
+public class RoundImageView extends androidx.appcompat.widget.AppCompatImageView {
 
 	/**
 	 * @param context

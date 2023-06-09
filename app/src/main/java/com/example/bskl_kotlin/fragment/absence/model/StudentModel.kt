@@ -29,7 +29,7 @@ package com.example.bskl_kotlin.fragment.absence.model
     var mClass: String? = null,
     var mSection: String? = null,
     var progressreport: String? = null,
-    var alumini: String? = null,
+     var  alumi: String? = null,
     var goingStatus: String? = null,
     var mPhoto: String? = null,
     var mHouse: String? = null,

@@ -563,4 +563,44 @@ class PreferenceManager {
         mLeaveStudentId = prefs.getString("LeaveStudentId", "").toString()
         return mLeaveStudentId
     }
+
+    fun setStudIdForCCA(context: Context, result: String?) {
+        val prefs = context.getSharedPreferences(
+            PREFSNAME,
+            Context.MODE_PRIVATE
+        )
+        val editor = prefs.edit()
+        editor.putString("StudIdForCCA", result)
+        editor.commit()
+    }
+
+    //getStudIdForCCA
+    fun getStudIdForCCA(context: Context): String? {
+        var StudIdForCCA = ""
+        val prefs = context.getSharedPreferences(PREFSNAME,
+            Context.MODE_PRIVATE
+        )
+        StudIdForCCA = prefs.getString("StudIdForCCA", "").toString()
+        return StudIdForCCA
+    }
+
+    fun setCCAStudentIdPosition(context: Context, result: String?) {
+        val prefs = context.getSharedPreferences(
+            PREFSNAME,
+            Context.MODE_PRIVATE
+        )
+        val editor = prefs.edit()
+        editor.putString("CCAStudentIdPosition", result)
+        editor.commit()
+    }
+
+    fun getCCAStudentIdPosition(context: Context): String? {
+        var CCAStudentIdPosition = ""
+        val prefs = context.getSharedPreferences(
+            PREFSNAME,
+            Context.MODE_PRIVATE
+        )
+        CCAStudentIdPosition = prefs.getString("CCAStudentIdPosition", "").toString()
+        return CCAStudentIdPosition
+    }
 }

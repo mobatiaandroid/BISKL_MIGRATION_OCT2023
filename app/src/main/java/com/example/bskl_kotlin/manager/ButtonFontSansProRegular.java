@@ -8,7 +8,7 @@ import android.widget.Button;
 /**
  * Created by gayatri on 28/3/17.
  */
-public class ButtonFontSansProRegular extends Button {
+public class ButtonFontSansProRegular extends androidx.appcompat.widget.AppCompatButton {
 
     private Typeface FONT_NAME = null;
 

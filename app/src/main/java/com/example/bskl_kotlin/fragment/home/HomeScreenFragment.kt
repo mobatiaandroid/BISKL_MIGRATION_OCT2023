@@ -15,7 +15,7 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 
 class HomeScreenFragment(title:String,
                          mDrawerLayouts: DrawerLayout, listView: ListView, linearLayout: LinearLayout,

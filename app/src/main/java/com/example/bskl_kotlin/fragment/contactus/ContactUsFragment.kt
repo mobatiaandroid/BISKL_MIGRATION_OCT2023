@@ -15,6 +15,7 @@ import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.fragment.contactus.adapter.ContactusAdapter
 import com.example.bskl_kotlin.fragment.contactus.model.ContactUsListModel
@@ -24,7 +25,6 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.mobatia.bskl.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

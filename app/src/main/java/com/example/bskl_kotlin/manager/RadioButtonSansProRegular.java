@@ -10,7 +10,7 @@ import android.widget.RadioButton;
  * Created by gayatri on 24/1/17.
  */
 
-public class RadioButtonSansProRegular extends RadioButton {
+public class RadioButtonSansProRegular extends androidx.appcompat.widget.AppCompatRadioButton {
     public RadioButtonSansProRegular(Context context) {
         super(context);
         Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/SourceSansPro-Regular.otf" );

@@ -5,14 +5,13 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.mobatia.bskl.R;
 
 
 /**
  * Created by gayatri on 24/1/17.
  */
 
-public class TextViewFontSansProSemiBoldColorWhite extends TextView {
+/*public class TextViewFontSansProSemiBoldColorWhite extends TextView {
     public TextViewFontSansProSemiBoldColorWhite(Context context) {
         super(context);
         Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/SourceSansPro-Semibold.otf" );
@@ -37,4 +36,4 @@ public class TextViewFontSansProSemiBoldColorWhite extends TextView {
     }
 
 
-}
+}*/

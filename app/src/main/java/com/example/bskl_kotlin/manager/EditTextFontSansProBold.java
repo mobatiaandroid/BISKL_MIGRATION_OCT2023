@@ -10,7 +10,7 @@ import android.widget.EditText;
  * Created by gayatri on 24/1/17.
  */
 
-public class EditTextFontSansProBold extends EditText {
+public class EditTextFontSansProBold extends androidx.appcompat.widget.AppCompatEditText {
     public EditTextFontSansProBold(Context context) {
         super(context);
         Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/SourceSansPro-Bold.otf" );

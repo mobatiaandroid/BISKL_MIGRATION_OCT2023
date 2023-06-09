@@ -18,7 +18,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -194,7 +194,19 @@ class AppUtils {
         }
         return mDate
     }
-
+    fun timeParsingToAmPm(date: String?): String? {
+        var strCurrentDate = ""
+        var format = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+        var newDate: Date? = null
+        try {
+            newDate = format.parse(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        format = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+        strCurrentDate = format.format(newDate)
+        return strCurrentDate
+    }
     fun dateConversionYToD(inputDate: String?): String {
         var mDate = ""
         try {

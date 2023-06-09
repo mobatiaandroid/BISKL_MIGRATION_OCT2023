@@ -22,12 +22,12 @@ import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.activity.home.HomeActivity
 import com.example.bskl_kotlin.activity.login.model.LoginModel
 import com.example.bskl_kotlin.activity.login.model.LoginResponseModel
 import com.example.bskl_kotlin.common.InternetCheckClass
 import com.example.bskl_kotlin.common.PreferenceManager
-import com.mobatia.bskl.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

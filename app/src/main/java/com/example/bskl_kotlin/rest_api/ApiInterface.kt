@@ -5,8 +5,10 @@ import com.example.bskl_kotlin.activity.home.model.UserDetailsModel
 import com.example.bskl_kotlin.activity.login.model.LoginResponseModel
 import com.example.bskl_kotlin.activity.splash.TokenResponseModel
 import com.example.bskl_kotlin.common.model.CommonResponseModel
+import com.example.bskl_kotlin.common.model.StudentListResponseModel
 import com.example.bskl_kotlin.fragment.contactus.model.ContactUsModel
 import com.example.bskl_kotlin.fragment.safeguarding.model.SafeguardingResponseModel
+import com.example.bskl_kotlin.fragment.timetable.model.TimetableResponseModel
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Field
@@ -91,4 +93,21 @@ interface ApiInterface {
         @Field("to_date") to_date: String,
         @Field("reason") reason: String
     ): Call<CommonResponseModel>
+
+
+    @POST("api/studentlist")
+    @FormUrlEncoded
+    fun student_list(
+        @Field("access_token") access_token: String,
+        @Field("users_id") users_id: String
+    ): Call<StudentListResponseModel>
+
+
+
+    @POST("api/timetable_v2")
+    @FormUrlEncoded
+    fun timtable_list(
+        @Field("access_token") access_token: String,
+        @Field("student_id") student_id: String
+    ): Call<TimetableResponseModel>
 }

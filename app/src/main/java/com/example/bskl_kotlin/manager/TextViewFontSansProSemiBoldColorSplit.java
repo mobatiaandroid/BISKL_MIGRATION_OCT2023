@@ -5,14 +5,14 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.mobatia.bskl.R;
+import com.example.bskl_kotlin.R;
 
 
 /**
  * Created by gayatri on 24/1/17.
  */
 
-public class TextViewFontSansProSemiBoldColorSplit extends TextView {
+public class TextViewFontSansProSemiBoldColorSplit extends androidx.appcompat.widget.AppCompatTextView {
     public TextViewFontSansProSemiBoldColorSplit(Context context) {
         super(context);
         Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/SourceSansPro-Semibold.otf" );

@@ -15,8 +15,8 @@ import android.widget.TextView
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.fragment.contactus.model.ContactUsListModel
-import com.mobatia.bskl.R
 
 internal class ContactusAdapter(private var context: Context,
     private var aboutuslist: List<ContactUsListModel>

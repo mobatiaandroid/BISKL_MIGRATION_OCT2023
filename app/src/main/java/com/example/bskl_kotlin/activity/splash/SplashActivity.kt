@@ -10,12 +10,12 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.activity.home.HomeActivity
 import com.example.bskl_kotlin.activity.login.LoginActivity
 import com.example.bskl_kotlin.activity.tutorial.TutorialActivity
 import com.example.bskl_kotlin.common.PreferenceManager
 import com.google.firebase.messaging.FirebaseMessaging
-import com.mobatia.bskl.R
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback

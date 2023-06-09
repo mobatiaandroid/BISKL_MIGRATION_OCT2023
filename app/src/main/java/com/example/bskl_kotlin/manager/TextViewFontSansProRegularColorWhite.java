@@ -5,14 +5,14 @@ import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.widget.TextView;
 
-import com.mobatia.bskl.R;
+import com.example.bskl_kotlin.R;
 
 
 /**
  * Created by gayatri on 24/1/17.
  */
 
-public class TextViewFontSansProRegularColorWhite extends TextView {
+public class TextViewFontSansProRegularColorWhite extends androidx.appcompat.widget.AppCompatTextView {
     public TextViewFontSansProRegularColorWhite(Context context) {
         super(context);
         Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/SourceSansPro-Regular.otf" );

@@ -9,7 +9,7 @@ import android.widget.TextView;
 /**
  * Created by gayatri on 30/3/17.
  */
-public class TextViewFontSansProBold extends TextView {
+public class TextViewFontSansProBold extends androidx.appcompat.widget.AppCompatTextView {
     public TextViewFontSansProBold(Context context) {
         super(context);
         Typeface type = Typeface.createFromAsset(context.getAssets(),"fonts/SourceSansPro-Bold.otf" );

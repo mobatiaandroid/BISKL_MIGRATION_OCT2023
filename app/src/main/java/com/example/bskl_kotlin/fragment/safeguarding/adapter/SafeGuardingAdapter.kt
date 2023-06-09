@@ -13,11 +13,11 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.fragment.absence.model.StudentModel
 import com.example.bskl_kotlin.fragment.safeguarding.SafeGuardingFragment
 import com.example.bskl_kotlin.manager.AppUtils
-import com.mobatia.bskl.R
 import com.squareup.picasso.Picasso
 import java.util.*
 
