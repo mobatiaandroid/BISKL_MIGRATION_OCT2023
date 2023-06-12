@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.ConnectivityManager
+import android.os.Build
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -22,7 +23,9 @@ import com.mobatia.bskl.R
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 class AppUtils {
   //  private val getTokenIntrface: GetAccessTokenInterface? = null
@@ -33,6 +36,45 @@ class AppUtils {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val ni = cm.activeNetworkInfo
         return ni != null
+    }
+    fun showAlertFinish(
+        activity: Activity, message: String?,
+        okBtnTitle: String?, cancelBtnTitle: String?, okBtnVisibility: Boolean
+    ) {
+        // custom dialog
+        val dialog = Dialog(activity, R.style.NewDialog)
+        dialog.setContentView(R.layout.custom_alert_dialog)
+        dialog.setCancelable(false)
+
+        // set the custom dialog components - text, image, button
+        val text = dialog.findViewById<TextView>(R.id.text)
+        text.text = message
+        val sdk = Build.VERSION.SDK_INT
+        val dialogCancelButton = dialog
+            .findViewById<Button>(R.id.dialogButtonCancel)
+        dialogCancelButton.text = cancelBtnTitle
+        dialogCancelButton.setOnClickListener {
+            dialog.dismiss()
+            activity.finish()
+        }
+        val dialogOkButton = dialog
+            .findViewById<Button>(R.id.dialogButtonOK)
+        dialogOkButton.visibility = View.GONE
+        dialogOkButton.text = okBtnTitle
+        if (okBtnVisibility) {
+            dialogOkButton.visibility = View.VISIBLE
+            dialogOkButton.setOnClickListener {
+                dialog.dismiss()
+                activity.finish()
+            }
+        }
+        dialog.show()
+    }
+    fun checkInternet(context: Context): Boolean {
+        val connec = context
+            .getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val netInfo = connec.activeNetworkInfo
+        return netInfo != null && netInfo.isConnectedOrConnecting
     }
 
     fun durationInSecondsToString(sec: Int): String {

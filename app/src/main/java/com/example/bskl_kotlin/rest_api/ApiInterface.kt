@@ -5,6 +5,9 @@ import com.example.bskl_kotlin.activity.home.model.UserDetailsModel
 import com.example.bskl_kotlin.activity.login.model.LoginResponseModel
 import com.example.bskl_kotlin.activity.splash.TokenResponseModel
 import com.example.bskl_kotlin.fragment.contactus.model.ContactUsModel
+import com.example.bskl_kotlin.fragment.messages.model.NotificationFavouriteModel
+import com.example.bskl_kotlin.fragment.messages.model.NotificationNewResponseModel
+import com.example.bskl_kotlin.fragment.messages.model.NotificationStatusModel
 import retrofit2.Call
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -48,4 +51,35 @@ interface ApiInterface {
         @Field("access_token") access_token: String
     ): Call<ContactUsModel>
 
+    @POST("api/notifications_new")
+    @FormUrlEncoded
+    fun notifications_new(
+        @Field("access_token") access_token: String,
+        @Field("deviceid") deviceid: String,
+        @Field("devicetype") devicetype: String,
+        @Field("users_id") users_id: String,
+        @Field("type") type: String,
+        @Field("limit") limit: String,
+        @Field("page") page: String
+    ): Call<NotificationNewResponseModel>
+
+
+    @POST("api/notifactionstatuschanged")
+    @FormUrlEncoded
+    fun notification_status(
+        @Field("access_token") access_token: String,
+        @Field("userid") userid: String,
+        @Field("status") status: String,
+        @Field("pushid") pushid: String
+    ): Call<NotificationStatusModel>
+
+
+    @POST("api/favouritechanges")
+    @FormUrlEncoded
+    fun notification_favourite(
+        @Field("access_token") access_token: String,
+        @Field("userid") userid: String,
+        @Field("favourite") status: String,
+        @Field("pushid") pushid: String
+    ): Call<NotificationFavouriteModel>
 }

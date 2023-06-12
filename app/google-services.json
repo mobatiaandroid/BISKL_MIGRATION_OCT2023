@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "106762186042",
+    "project_id": "bskl-bf9de",
+    "storage_bucket": "bskl-bf9de.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:106762186042:android:17cffcf48db289ad157403",
+        "android_client_info": {
+          "package_name": "com.mobatia.bskl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "106762186042-2l8f791oun3vprqprtpnf4i38vmj3j0h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBAvwlpqFCtDRrIr7rmQ-XHQIZW5wARjEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "106762186042-2l8f791oun3vprqprtpnf4i38vmj3j0h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

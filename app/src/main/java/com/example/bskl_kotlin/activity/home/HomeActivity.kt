@@ -38,6 +38,7 @@ import com.example.bskl_kotlin.fragment.contactus.ContactUsFragment
 import com.example.bskl_kotlin.fragment.home.HomeScreenFragment
 import com.example.bskl_kotlin.fragment.messages.NotificationFragmentPagination
 import com.example.bskl_kotlin.fragment.news.NewsFragment
+import com.example.bskl_kotlin.fragment.reports.ReportFragment
 import com.mobatia.bskl.R
 import retrofit2.Call
 import retrofit2.Callback
@@ -1386,17 +1387,17 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                             replaceFragmentsSelected(position)
                         }*/
 
-                        /* 5 -> {
+                         5 -> {
 
                             // Report
                             imageButton2.visibility = View.VISIBLE
                             imageButton2.setImageResource(R.drawable.settings)
                             mFragment = ReportFragment(
                                 mListItemArray.get(position),
-                                TAB_REPORT
+                                bsklTabConstants.TAB_REPORT
                             )
                             replaceFragmentsSelected(position)
-                        }*/
+                        }
 
                         /* 6 -> {
                             // Absence
@@ -2882,16 +2883,16 @@ class HomeActivity:AppCompatActivity() , AdapterView.OnItemLongClickListener {
                                 )
                             }*/
 
-                        /*5 -> {
+                        5 -> {
                             // Report
                             imageButton2.visibility = View.VISIBLE
                             imageButton2.setImageResource(R.drawable.settings)
                             mFragment = ReportFragment(
                                 mListItemArray.get(position),
-                                TAB_REPORT
+                                bsklTabConstants.TAB_REPORT
                             )
                             replaceFragmentsSelected(position)
-                        }*/
+                        }
 
                         6 ->                             // Absence
                             if (PreferenceManager().getHomeListType(mContext).equals("1")) {

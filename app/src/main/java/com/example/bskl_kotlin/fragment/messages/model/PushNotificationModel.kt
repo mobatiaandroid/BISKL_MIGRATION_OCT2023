@@ -15,7 +15,6 @@ class PushNotificationModel (
     @SerializedName("studentArray")var studentArray:ArrayList<String>,
     @SerializedName("status")var status:String,
     @SerializedName("pushtime")var pushtime:String,
-    @SerializedName("mMessageUnreadList")var mMessageUnreadList:ArrayList<PushNotificationModel>,
     @SerializedName("date")var date:String,
     @SerializedName("push_from")var push_from:String,
     @SerializedName("type")var type:String,

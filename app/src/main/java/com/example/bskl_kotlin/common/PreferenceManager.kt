@@ -1,10 +1,9 @@
 package com.example.bskl_kotlin.common
 
 import android.content.Context
-import android.preference.PreferenceManager
+import com.example.bskl_kotlin.fragment.messages.model.PushNotificationModel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
-import java.lang.reflect.Type
 
 
 @Suppress("DEPRECATION")
@@ -565,6 +564,44 @@ class PreferenceManager {
             Context.MODE_PRIVATE
         )
         return prefs.getBoolean("result",true)
+    }
+    fun setmMessageUnreadList(context: Context, mMessageUnreadList: ArrayList<PushNotificationModel>) {
+        val prefs = context.getSharedPreferences(PREFSNAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        val gson = Gson()
+        val json = gson.toJson(mMessageUnreadList)
+        editor.putString("mMessageUnreadList", json)
+        editor.apply()
+    }
+    /*GET ALREADY TRIGGERED*/
+    fun getmMessageUnreadList(context: Context): ArrayList<PushNotificationModel> {
+        val prefs = context.getSharedPreferences(
+            PREFSNAME,
+            Context.MODE_PRIVATE
+        )
+        val gson = Gson()
+        val json = prefs.getString("mMessageUnreadList", null)
+        val type = object : TypeToken<ArrayList<PushNotificationModel?>?>() {}.type
+        return  gson.fromJson(json,type)
+    }
+    fun setmMessageReadList(context: Context, mMessageReadList: ArrayList<PushNotificationModel>) {
+        val prefs = context.getSharedPreferences(PREFSNAME, Context.MODE_PRIVATE)
+        val editor = prefs.edit()
+        val gson = Gson()
+        val json = gson.toJson(mMessageReadList)
+        editor.putString("mMessageReadList", json)
+        editor.apply()
+    }
+    /*GET ALREADY TRIGGERED*/
+    fun getmMessageReadList(context: Context): ArrayList<PushNotificationModel> {
+        val prefs = context.getSharedPreferences(
+            PREFSNAME,
+            Context.MODE_PRIVATE
+        )
+        val gson = Gson()
+        val json = prefs.getString("mMessageReadList", null)
+        val type = object : TypeToken<ArrayList<PushNotificationModel?>?>() {}.type
+        return  gson.fromJson(json,type)
     }
 
 }

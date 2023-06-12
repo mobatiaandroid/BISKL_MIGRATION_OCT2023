@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <RelativeLayout
+        android:id="@+id/relSub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+
+        <ImageView
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:src="@drawable/student"
+
+            android:id="@+id/imagicon"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentLeft="true"
+            />
+
+
+
+        <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+            android:id="@+id/studName"
+            style="@style/textstyleblack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="name"
+            android:textColor="@color/grey"
+            android:gravity="center_vertical"
+            android:layout_centerInParent="true"
+            android:layout_toRightOf="@+id/imagicon"
+            android:singleLine="true" />
+
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="2dp"
+        android:background="@color/black"
+        android:layout_below="@+id/relSub"/>
+
+</RelativeLayout>
