@@ -30,7 +30,6 @@ class SafeGuardingAdapter(data: ArrayList<StudentModel>, context: Context) :
     var mHour = 0
     var mMinute = 0
 
-
     class PresentType1ViewHolder(itemView: View) : ViewHolder(itemView) {
         var textViewStudentName: TextView
         var textViewStudentYear: TextView

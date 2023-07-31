@@ -5,7 +5,6 @@ import com.google.gson.annotations.SerializedName
 
 class NotificationNewResponseModel  (
 class StudentListResponseModel (
-
     @SerializedName("responsecode")var responsecode:String,
     @SerializedName("response")var response: StudentResponseModel
         )

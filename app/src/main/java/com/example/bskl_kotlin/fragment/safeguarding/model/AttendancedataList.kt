@@ -1,7 +1,6 @@
 package com.example.bskl_kotlin.fragment.safeguarding.model
 
 class AttendancedataList (
-
     var id: String? = null,
     var absenceCodeId: String? = null,
     var isPresent: String? = null,
