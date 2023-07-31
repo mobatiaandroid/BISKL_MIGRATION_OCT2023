@@ -1,7 +1,6 @@
 package com.example.bskl_kotlin.fragment.timetable.model
 
 class FieldModel (
-
     var sortname: String? = null,
     var starttime: String? = null,
     var endtime: String? = null,

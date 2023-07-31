@@ -1,7 +1,6 @@
 package com.example.bskl_kotlin.fragment.timetable.model
 
 class DayModel (
-
     var id: String? = null,
     var day: String? = null,
     var period_id: String? = null,

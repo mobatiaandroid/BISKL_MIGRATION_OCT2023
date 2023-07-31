@@ -20,7 +20,6 @@ import com.ryanharter.android.tooltips.ToolTip
 import com.ryanharter.android.tooltips.ToolTipLayout
 
 class TimeTableAllWeekSelectionAdapterNew(
-
     private val mContext: Context,
    private var mPeriodList: ArrayList<PeriodModel>,
   private var mFeildList: ArrayList<FieldModel>,
