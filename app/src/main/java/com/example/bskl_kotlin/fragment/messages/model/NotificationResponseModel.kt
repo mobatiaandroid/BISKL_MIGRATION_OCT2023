@@ -9,6 +9,7 @@ import com.google.gson.annotations.SerializedName
 
 class NotificationResponseModel  (
 class StudentResponseModel (
+
     @SerializedName("response")var response:String,
     @SerializedName("statuscode")var statuscode:String,
     @SerializedName("data")var data: ArrayList<NotificationNewDataModel>
