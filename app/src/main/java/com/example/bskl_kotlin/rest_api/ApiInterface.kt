@@ -105,6 +105,7 @@ interface ApiInterface {
 
 
 
+
     @POST("api/timetable_v2")
     @FormUrlEncoded
     fun timtable_list(
