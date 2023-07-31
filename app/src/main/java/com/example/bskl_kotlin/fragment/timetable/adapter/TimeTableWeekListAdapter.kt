@@ -48,6 +48,7 @@ class TimeTableWeekListAdapter(
         if (mWeekList[position].positionSelected !== -1) {
             holder.weekTxt.setTextColor(mContext.resources.getColor(R.color.timetableblue))
             holder.lineImage.visibility = View.VISIBLE
+
             holder.downArrowImage.visibility = View.VISIBLE
         } else {
             holder.weekTxt.setTextColor(mContext.resources.getColor(R.color.dark_grey1))

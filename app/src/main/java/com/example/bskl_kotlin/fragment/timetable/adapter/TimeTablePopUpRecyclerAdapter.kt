@@ -12,6 +12,7 @@ import com.example.bskl_kotlin.fragment.timetable.model.DayModel
 import com.example.bskl_kotlin.manager.AppUtils
 
 class TimeTablePopUpRecyclerAdapter(
+
     private val mContext: Context,
     timeTableList: ArrayList<DayModel?>?
 ) :

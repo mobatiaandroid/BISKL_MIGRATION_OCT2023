@@ -77,6 +77,7 @@ class TimeTableSingleWeekSelectionAdapter(
         if (mRangeModel[position].staff.equals("")) {
             Log.e("sucess","Failed")
 
+
             holder.llread.visibility = View.GONE
             holder.llreadbreak.visibility = View.VISIBLE
             holder.starLinear.visibility = View.INVISIBLE

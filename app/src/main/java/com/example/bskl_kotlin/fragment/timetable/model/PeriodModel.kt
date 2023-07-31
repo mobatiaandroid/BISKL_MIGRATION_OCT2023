@@ -1,6 +1,7 @@
 package com.example.bskl_kotlin.fragment.timetable.model
 
 class PeriodModel (
+
     var sortname: String? = null,
     var starttime: String? = null,
     var endtime: String? = null,
