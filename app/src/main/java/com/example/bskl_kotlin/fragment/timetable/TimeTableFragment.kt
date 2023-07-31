@@ -42,6 +42,7 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class TimeTableFragment:Fragment() {
+
     var alertTxtRelative: RelativeLayout? = null
     var CCAFRegisterRel: RelativeLayout? = null
    lateinit var studentsModelArrayList: ArrayList<StudentModel>
