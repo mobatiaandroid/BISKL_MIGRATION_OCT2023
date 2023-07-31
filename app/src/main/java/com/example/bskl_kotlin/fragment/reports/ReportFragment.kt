@@ -12,6 +12,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bskl_kotlin.R
 import com.mobatia.bskl.R
 
 class ReportFragment(title: String, tabId: String) : Fragment() {
