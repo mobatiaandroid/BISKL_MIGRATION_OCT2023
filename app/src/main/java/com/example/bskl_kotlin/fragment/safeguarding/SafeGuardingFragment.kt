@@ -103,6 +103,7 @@ class SafeGuardingFragment:Fragment() {
     }
 
     fun callSafeGuarding() {
+
         val call: Call<SafeguardingResponseModel> = ApiClient.getClient.safeguarding( PreferenceManager().getaccesstoken(mContext).toString(),
              PreferenceManager().getUserId(mContext).toString())
 
