@@ -120,6 +120,7 @@ class SafeGuardingFragment:Fragment() {
                  val responsedata = response.body()
                  Log.e("Response Signup", responsedata.toString())
 
+
                  if (response.body()!!.responsecode.equals("200")) {
                      if (response.body()!!.response.statuscode.equals("303")) {
                          typeArrayList = ArrayList<TypeModel>()
