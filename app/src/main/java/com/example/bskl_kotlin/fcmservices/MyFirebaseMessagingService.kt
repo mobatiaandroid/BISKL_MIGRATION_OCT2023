@@ -15,7 +15,7 @@ import com.example.bskl_kotlin.activity.home.HomeActivity
 import com.example.bskl_kotlin.manager.NotificationID
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 import org.json.JSONObject
 
 class MyFirebaseMessagingService : FirebaseMessagingService() {

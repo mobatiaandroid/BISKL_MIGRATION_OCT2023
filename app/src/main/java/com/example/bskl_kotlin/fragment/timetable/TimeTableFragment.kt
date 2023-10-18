@@ -1,6 +1,7 @@
 package com.example.bskl_kotlin.fragment.timetable
 
 import ApiClient
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -19,11 +20,13 @@ import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.common.model.StudentListModel
 import com.example.bskl_kotlin.common.model.StudentListResponseModel
+import com.example.bskl_kotlin.fragment.absence.adapter.StudentSpinnerAdapter
 import com.example.bskl_kotlin.fragment.absence.model.StudentModel
-import com.example.bskl_kotlin.fragment.report.StudentSpinnerAdapter
 import com.example.bskl_kotlin.fragment.timetable.adapter.TimeTableAllWeekSelectionAdapterNew
 import com.example.bskl_kotlin.fragment.timetable.adapter.TimeTableSingleWeekSelectionAdapter
 import com.example.bskl_kotlin.fragment.timetable.adapter.TimeTableWeekListAdapter
@@ -32,7 +35,7 @@ import com.example.bskl_kotlin.manager.AppUtils
 import com.example.bskl_kotlin.recyclerviewmanager.DividerItemDecoration
 import com.example.bskl_kotlin.recyclerviewmanager.RecyclerItemListener
 import com.ryanharter.android.tooltips.ToolTipLayout
-import com.squareup.picasso.Picasso
+import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
 import retrofit2.Call
@@ -41,15 +44,15 @@ import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
 
-class TimeTableFragment:Fragment() {
+class TimeTableFragment(title: String, tabId: String):Fragment() {
 
     var alertTxtRelative: RelativeLayout? = null
     var CCAFRegisterRel: RelativeLayout? = null
-   lateinit var studentsModelArrayList: ArrayList<StudentModel>
-    var studentsModelArrayListCopy: ArrayList<StudentModel>? = null
-  lateinit  var studentDetail: ListView
-   lateinit var studentName: TextView
-   lateinit var textViewYear: TextView
+    lateinit var studentsModelArrayList: ArrayList<StudentListModel>
+    var studentsModelArrayListCopy: ArrayList<StudentListModel>? = null
+    lateinit  var studentDetail: ListView
+    lateinit var studentName: TextView
+    lateinit var textViewYear: TextView
     var stud_id = ""
     var stud_class = ""
     var stud_name = ""
@@ -58,19 +61,19 @@ class TimeTableFragment:Fragment() {
     var section = ""
     var alumini = ""
     var type = ""
-   lateinit var noDataRelative: RelativeLayout
-   lateinit var noDataTxt: TextView
-   lateinit var noDataImg: ImageView
-   lateinit var mStudentSpinner: LinearLayout
-   lateinit var back: ImageView
-   lateinit var home: ImageView
-   lateinit  var studImg: ImageView
+    lateinit var noDataRelative: RelativeLayout
+    lateinit var noDataTxt: TextView
+    lateinit var noDataImg: ImageView
+    lateinit var mStudentSpinner: LinearLayout
+    lateinit var back: ImageView
+    lateinit var home: ImageView
+    lateinit  var studImg: ImageView
     var extras: Bundle? = null
     private var mRootView: View? = null
-   lateinit var mContext: Context
+    lateinit var mContext: Context
     private val mTitle: String? = null
     private val mTabId: String? = null
-   lateinit var relMain: RelativeLayout
+    lateinit var relMain: RelativeLayout
     lateinit var mBannerImage: ImageView
     lateinit var timeTableSingleRecycler: RecyclerView
     lateinit var timeTableAllRecycler: RecyclerView
@@ -79,7 +82,7 @@ class TimeTableFragment:Fragment() {
     private var weekListArray: ArrayList<WeekModel>? = null
     var mRangeModel: ArrayList<RangeModel>? = null
     var mFridayModelArraylist: ArrayList<DayModel>? = null
-   lateinit var mPeriodModel: ArrayList<PeriodModel>
+    lateinit var mPeriodModel: ArrayList<PeriodModel>
     var breakArrayList: ArrayList<String>? = null
     var mBreakArrayList: ArrayList<FieldModel>? = null
     var timeTableArrayList: ArrayList<StudentModel>? = null
@@ -100,7 +103,7 @@ class TimeTableFragment:Fragment() {
 
 
     lateinit var card_viewAll: CardView
-   lateinit var mFieldModel: ArrayList<FieldModel>
+    lateinit var mFieldModel: ArrayList<FieldModel>
     var mTimeTableModelArrayList: ArrayList<TimeTableModel>? = null
     var weekPosition = 0
     var TimeTableWeekListAdapter: TimeTableWeekListAdapter? = null
@@ -108,7 +111,7 @@ class TimeTableFragment:Fragment() {
     lateinit var tipContainer: ToolTipLayout
 
     //var quickAction: QuickAction? = null
-   // var quickIntent: QuickAction? = null
+    // var quickIntent: QuickAction? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -142,7 +145,8 @@ class TimeTableFragment:Fragment() {
         TimeTableWeekListAdapter = TimeTableWeekListAdapter(mContext!!,
             weekListArray!!, weekPosition)
         weekRecyclerList!!.adapter = TimeTableWeekListAdapter
-        mStudentSpinner!!.setOnClickListener { showSocialmediaList(studentsModelArrayList!!) }
+        mStudentSpinner!!.setOnClickListener {
+            showSocialmediaList(studentsModelArrayList!!) }
         if (AppUtils().isNetworkConnected(mContext)) {
             getStudentsListAPI()
         } else {
@@ -154,337 +158,339 @@ class TimeTableFragment:Fragment() {
                 R.drawable.roundred
             )
         }
-}
+    }
 
-     fun getStudentsListAPI() {
-         studentsModelArrayList= ArrayList()
-         val call: Call<StudentListResponseModel> = ApiClient.getClient.student_list( PreferenceManager().getaccesstoken(mContext).toString(),
-                     PreferenceManager().getUserId(mContext).toString())
+    @SuppressLint("SuspiciousIndentation")
+    fun getStudentsListAPI() {
+        studentsModelArrayList= ArrayList()
+        val call: Call<StudentListResponseModel> = ApiClient.getClient.student_list( PreferenceManager().getaccesstoken(mContext).toString(),
+            PreferenceManager().getUserId(mContext).toString())
 
-                 call.enqueue(object : Callback<StudentListResponseModel> {
-                     override fun onFailure(call: Call<StudentListResponseModel>, t: Throwable) {
-                         Log.e("Failed", t.localizedMessage)
+        call.enqueue(object : Callback<StudentListResponseModel> {
+            override fun onFailure(call: Call<StudentListResponseModel>, t: Throwable) {
+                Log.e("Failed", t.localizedMessage)
 
-                     }
+            }
 
-                     override fun onResponse(
-                         call: Call<StudentListResponseModel>,
-                         response: Response<StudentListResponseModel>
-                     ) {
+            override fun onResponse(
+                call: Call<StudentListResponseModel>,
+                response: Response<StudentListResponseModel>
+            ) {
 
-                         val responsedata = response.body()
+                val responsedata = response.body()
 
-                         Log.e("Response Signup", responsedata.toString())
+                Log.e("Response Signup", responsedata.toString())
 
-                         if (response.body()!!.responsecode.equals("200")) {
-                             if (response.body()!!.response.statuscode.equals("303")) {
+                if (response.body()!!.responsecode.equals("200")) {
+                    if (response.body()!!.response.statuscode.equals("303")) {
 
-                                 if(response.body()!!.response.data.size>0)
-                                 {
-                                     for (i in response.body()!!.response.data.indices) {
-                                         Log.e("alumi",
-                                             response.body()!!.response.data.get(i).alumi.toString()
-                                         )
-                                         if(response.body()!!.response.data.get(i).alumi.equals("0"))
-                                         {
-                                            // studentsModelArrayListCopy!!.add(addStudentDetails(response.body()!!.response.data.get(i))!!)
-                                             println("Student list size first" + response.body()!!.response.data.size)
-                                             studentsModelArrayList!!.addAll(response.body()!!.response.data)
+                        if(response.body()!!.response.data.size>0)
+                        {
+                            for (i in response.body()!!.response.data.indices) {
+                                Log.e("alumi",
+                                    response.body()!!.response.data.get(i).alumi.toString()
+                                )
+                                if(response.body()!!.response.data.get(i).alumi.equals("0"))
+                                {
+                                    // studentsModelArrayListCopy!!.add(addStudentDetails(response.body()!!.response.data.get(i))!!)
+                                    println("Student list size first" + response.body()!!.response.data.size)
+                                    studentsModelArrayList!!.addAll(response.body()!!.response.data)
 
-                                             println("Student list size first" + studentsModelArrayList!!.size)
-                                         }
-                                     }
-
-
-                                     if (PreferenceManager().getStudIdForCCA(mContext)
-                                             .equals("")
-                                     ) {
-                                         studentName.setText(studentsModelArrayList!![0].mName)
-                                         stud_id = studentsModelArrayList!![0].mId.toString()
-                                         stud_name = studentsModelArrayList!![0].mName.toString()
-                                         stud_class = studentsModelArrayList!![0].mClass.toString()
-                                         stud_img = studentsModelArrayList!![0].mPhoto.toString()
-                                         progressReport =
-                                             studentsModelArrayList!![0].progressreport.toString()
-                                         section = studentsModelArrayList!![0].mSection.toString()
-                                         alumini = studentsModelArrayList!![0].alumi.toString()
-                                         type = studentsModelArrayList!![0].type.toString()
-                                         if (stud_img != "") {
-                                             Picasso.with(mContext).load(AppUtils().replace(stud_img))
-                                                 .placeholder(R.drawable.boy).fit().into(studImg)
-                                         } else {
-                                             studImg.setImageResource(R.drawable.boy)
-                                         }
-                                         textViewYear.text =
-                                             "Class : " + studentsModelArrayList!![0].mClass
-                                         PreferenceManager().setCCAStudentIdPosition(mContext, "0")
-                                     } else {
-                                         val studentSelectPosition: Int = Integer.valueOf(
-                                             PreferenceManager().getCCAStudentIdPosition(mContext)
-                                         )
-                                         studentName.setText(studentsModelArrayList!![studentSelectPosition].mName)
-                                         stud_id =
-                                             studentsModelArrayList!![studentSelectPosition].mId.toString()
-                                         stud_name =
-                                             studentsModelArrayList!![studentSelectPosition].mName.toString()
-                                         stud_class =
-                                             studentsModelArrayList!![studentSelectPosition].mClass.toString()
-                                         progressReport =
-                                             studentsModelArrayList!![studentSelectPosition].progressreport.toString()
-                                         stud_img =
-                                             studentsModelArrayList!![studentSelectPosition].mPhoto.toString()
-                                         alumini =
-                                             studentsModelArrayList!![studentSelectPosition].alumi.toString()
-                                         type =
-                                             studentsModelArrayList!![studentSelectPosition].type.toString()
-                                         System.out.println("selected student image" + studentsModelArrayList!![studentSelectPosition].mPhoto)
-                                         if (stud_img != "") {
-                                             Picasso.with(mContext).load(AppUtils().replace(stud_img))
-                                                 .placeholder(R.drawable.boy).fit().into(studImg)
-                                         } else {
-                                             studImg.setImageResource(R.drawable.boy)
-                                         }
-                                         textViewYear.text =
-                                             "Class : " + studentsModelArrayList!![studentSelectPosition].mClass
-                                     }
-
-                                     Log.e("TYPE ", type)
-                                     if (PreferenceManager().getTimeTableGroup(mContext)
-                                             .equals("1")
-                                     ) {
-                                         if (type.equals("Primary", ignoreCase = true)) {
-                                             timeTableSingleRecycler.visibility = View.VISIBLE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                             if (AppUtils().isNetworkConnected(mContext)) {
-                                                 println("test working")
-                                                 getReportListAPI( 0)
-                                             } else {
-                                                 AppUtils().showDialogAlertDismiss(
-                                                     mContext as Activity,
-                                                     "Network Error",
-                                                     getString(R.string.no_internet),
-                                                     R.drawable.nonetworkicon,
-                                                     R.drawable.roundred
-                                                 )
-                                             }
-                                         } else {
-                                             timeTableSingleRecycler.visibility = View.GONE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                             AppUtils().showDialogAlertDismiss(
-                                                 mContext as Activity,
-                                                 getString(R.string.alert_heading),
-                                                 getString(R.string.not_available_feature),
-                                                 R.drawable.exclamationicon,
-                                                 R.drawable.round
-                                             )
-                                         }
-                                     } else if (PreferenceManager().getTimeTableGroup(mContext)
-                                             .equals("2")
-                                     ) {
-                                         Log.e("TYPE1 ", type)
-                                         if (type.equals("Secondary", ignoreCase = true)) {
-                                             Log.e("TYPE2 ", type)
-                                             timeTableSingleRecycler.visibility = View.VISIBLE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                             if (AppUtils().isNetworkConnected(mContext)) {
-                                                 println("test working")
-                                                 getReportListAPI( 0)
-                                             } else {
-                                                 AppUtils().showDialogAlertDismiss(
-                                                     mContext as Activity,
-                                                     "Network Error",
-                                                     getString(R.string.no_internet),
-                                                     R.drawable.nonetworkicon,
-                                                     R.drawable.roundred
-                                                 )
-                                             }
-                                         } else {
-                                             timeTableSingleRecycler.visibility = View.GONE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                             AppUtils().showDialogAlertDismiss(
-                                                 mContext as Activity,
-                                                 getString(R.string.alert_heading),
-                                                 getString(R.string.not_available_feature),
-                                                 R.drawable.exclamationicon,
-                                                 R.drawable.round
-                                             )
-                                         }
-                                     } else if (PreferenceManager().getTimeTableGroup(mContext)
-                                             .equals("3")
-                                     ) {
-                                         if (type.equals(
-                                                 "Primary",
-                                                 ignoreCase = true
-                                             ) || type.equals(
-                                                 "Secondary",
-                                                 ignoreCase = true
-                                             ) || type.equals("EYFS", ignoreCase = true)
-                                         ) {
-                                             timeTableSingleRecycler.visibility = View.VISIBLE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                             if (AppUtils().isNetworkConnected(mContext)) {
-                                                 println("test working")
-                                                 getReportListAPI( 0)
-                                             } else {
-                                                 AppUtils().showDialogAlertDismiss(
-                                                     mContext as Activity,
-                                                     "Network Error",
-                                                     getString(R.string.no_internet),
-                                                     R.drawable.nonetworkicon,
-                                                     R.drawable.roundred
-                                                 )
-                                             }
-                                         } else {
-                                             timeTableSingleRecycler.visibility = View.GONE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                         }
-                                     } else if (PreferenceManager().getTimeTableGroup(mContext)
-                                             .equals("4")
-                                     ) {
-                                         if (type.equals("EYFS", ignoreCase = true)) {
-                                             timeTableSingleRecycler.visibility = View.VISIBLE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                             if (AppUtils().isNetworkConnected(mContext)) {
-                                                 println("test working")
-                                                 getReportListAPI( 0)
-                                             } else {
-                                                 AppUtils().showDialogAlertDismiss(
-                                                     mContext as Activity,
-                                                     "Network Error",
-                                                     getString(R.string.no_internet),
-                                                     R.drawable.nonetworkicon,
-                                                     R.drawable.roundred
-                                                 )
-                                             }
-                                         } else {
-                                             timeTableSingleRecycler.visibility = View.GONE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                             AppUtils().showDialogAlertDismiss(
-                                                 mContext as Activity,
-                                                 getString(R.string.alert_heading),
-                                                 getString(R.string.not_available_feature),
-                                                 R.drawable.exclamationicon,
-                                                 R.drawable.round
-                                             )
-                                         }
-                                     } else if (PreferenceManager().getTimeTableGroup(mContext)
-                                             .equals("5")
-                                     ) {
-                                         if (type.equals(
-                                                 "Primary",
-                                                 ignoreCase = true
-                                             ) || type.equals("Secondary", ignoreCase = true)
-                                         ) {
-                                             timeTableSingleRecycler.visibility = View.VISIBLE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                             if (AppUtils().isNetworkConnected(mContext)) {
-                                                 println("test working")
-                                                 getReportListAPI( 0)
-                                             } else {
-                                                 AppUtils().showDialogAlertDismiss(
-                                                     mContext as Activity,
-                                                     "Network Error",
-                                                     getString(R.string.no_internet),
-                                                     R.drawable.nonetworkicon,
-                                                     R.drawable.roundred
-                                                 )
-                                             }
-                                         } else {
-                                             timeTableSingleRecycler.visibility = View.GONE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                             AppUtils().showDialogAlertDismiss(
-                                                 mContext as Activity,
-                                                 getString(R.string.alert_heading),
-                                                 getString(R.string.not_available_feature),
-                                                 R.drawable.exclamationicon,
-                                                 R.drawable.round
-                                             )
-                                         }
-                                     } else if (PreferenceManager().getTimeTableGroup(mContext)
-                                             .equals("6")
-                                     ) {
-                                         if (type.equals(
-                                                 "Primary",
-                                                 ignoreCase = true
-                                             ) || type.equals("EYFS", ignoreCase = true)
-                                         ) {
-                                             timeTableSingleRecycler.visibility = View.VISIBLE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                             if (AppUtils().isNetworkConnected(mContext)) {
-                                                 println("test working")
-                                                 getReportListAPI( 0)
-                                             } else {
-                                                 AppUtils().showDialogAlertDismiss(
-                                                     mContext as Activity,
-                                                     "Network Error",
-                                                     getString(R.string.no_internet),
-                                                     R.drawable.nonetworkicon,
-                                                     R.drawable.roundred
-                                                 )
-                                             }
-                                         } else {
-                                             timeTableSingleRecycler.visibility = View.GONE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                         }
-                                     } else if (PreferenceManager().getTimeTableGroup(mContext)
-                                             .equals("7")
-                                     ) {
-                                         if (type.equals(
-                                                 "EYFS",
-                                                 ignoreCase = true
-                                             ) || type.equals("Secondary", ignoreCase = true)
-                                         ) {
-                                             timeTableSingleRecycler.visibility = View.VISIBLE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                             if (AppUtils().isNetworkConnected(mContext)) {
-                                                 println("test working")
-                                                 getReportListAPI( 0)
-                                             } else {
-                                                 AppUtils().showDialogAlertDismiss(
-                                                     mContext as Activity,
-                                                     "Network Error",
-                                                     getString(R.string.no_internet),
-                                                     R.drawable.nonetworkicon,
-                                                     R.drawable.roundred
-                                                 )
-                                             }
-                                         } else {
-                                             timeTableSingleRecycler.visibility = View.GONE
-                                             timeTableAllRecycler.visibility = View.GONE
-                                         }
-                                     }
+                                    println("Student list size first" + studentsModelArrayList!!.size)
+                                }
+                            }
 
 
-                                 } else {
-                                     AppUtils().showDialogAlertDismiss(
-                                         mContext as Activity,
-                                         "Alert",
-                                         getString(R.string.student_not_available),
-                                         R.drawable.exclamationicon,
-                                         R.drawable.round
-                                     )
-                                 }
-                             }
-                             } else if (response.body()!!.responsecode.equals("500")) {
-                             AppUtils().showDialogAlertDismiss(
-                                 mContext as Activity,
-                                 "Alert",
-                                 getString(R.string.common_error),
-                                 R.drawable.exclamationicon,
-                                 R.drawable.round
-                             )
-                         } else {
-                             AppUtils().showDialogAlertDismiss(
-                                 mContext as Activity,
-                                 "Alert",
-                                 getString(R.string.common_error),
-                                 R.drawable.exclamationicon,
-                                 R.drawable.round
-                             )
-                         }
-                     }
+                            if (PreferenceManager().getStudIdForCCA(mContext)
+                                    .equals("")
+                            ) {
+                                studentName.setText(studentsModelArrayList!![0].name)
+                                stud_id = studentsModelArrayList!![0].id.toString()
+                                stud_name = studentsModelArrayList!![0].name.toString()
+                                stud_class = studentsModelArrayList!![0].mClass.toString()
+                                stud_img = studentsModelArrayList!![0].photo.toString()
+                                progressReport =
+                                    studentsModelArrayList!![0].progressreport.toString()
+                                section = studentsModelArrayList!![0].section.toString()
+                                alumini = studentsModelArrayList!![0].alumi.toString()
+                                type = studentsModelArrayList!![0].type.toString()
+                                if (stud_img != "") {
 
-                 })
+                                    Glide.with(mContext).load(AppUtils().replace(stud_img))
+                                        .placeholder(R.drawable.boy).into(studImg)
+                                } else {
+                                    studImg.setImageResource(R.drawable.boy)
+                                }
+                                textViewYear.text =
+                                    "Class : " + studentsModelArrayList!![0].mClass
+                                PreferenceManager().setCCAStudentIdPosition(mContext, "0")
+                            } else {
+                                val studentSelectPosition: Int = Integer.valueOf(
+                                    PreferenceManager().getCCAStudentIdPosition(mContext)
+                                )
+                                studentName.setText(studentsModelArrayList!![studentSelectPosition].name)
+                                stud_id =
+                                    studentsModelArrayList!![studentSelectPosition].id.toString()
+                                stud_name =
+                                    studentsModelArrayList!![studentSelectPosition].name.toString()
+                                stud_class =
+                                    studentsModelArrayList!![studentSelectPosition].mClass.toString()
+                                progressReport =
+                                    studentsModelArrayList!![studentSelectPosition].progressreport.toString()
+                                stud_img =
+                                    studentsModelArrayList!![studentSelectPosition].photo.toString()
+                                alumini =
+                                    studentsModelArrayList!![studentSelectPosition].alumi.toString()
+                                type =
+                                    studentsModelArrayList!![studentSelectPosition].type.toString()
+                                System.out.println("selected student image" + studentsModelArrayList!![studentSelectPosition].photo)
+                                if (stud_img != "") {
+                                    Glide.with(mContext).load(AppUtils().replace(stud_img))
+                                        .placeholder(R.drawable.boy).into(studImg)
+                                } else {
+                                    studImg.setImageResource(R.drawable.boy)
+                                }
+                                textViewYear.text =
+                                    "Class : " + studentsModelArrayList!![studentSelectPosition].mClass
+                            }
+
+                            Log.e("TYPE ", type)
+                            if (PreferenceManager().getTimeTableGroup(mContext)
+                                    .equals("1")
+                            ) {
+                                if (type.equals("Primary", ignoreCase = true)) {
+                                    timeTableSingleRecycler.visibility = View.VISIBLE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                    if (AppUtils().isNetworkConnected(mContext)) {
+                                        println("test working")
+                                        getReportListAPI( 0)
+                                    } else {
+                                        AppUtils().showDialogAlertDismiss(
+                                            mContext as Activity,
+                                            "Network Error",
+                                            getString(R.string.no_internet),
+                                            R.drawable.nonetworkicon,
+                                            R.drawable.roundred
+                                        )
+                                    }
+                                } else {
+                                    timeTableSingleRecycler.visibility = View.GONE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                    AppUtils().showDialogAlertDismiss(
+                                        mContext as Activity,
+                                        getString(R.string.alert_heading),
+                                        getString(R.string.not_available_feature),
+                                        R.drawable.exclamationicon,
+                                        R.drawable.round
+                                    )
+                                }
+                            } else if (PreferenceManager().getTimeTableGroup(mContext)
+                                    .equals("2")
+                            ) {
+                                Log.e("TYPE1 ", type)
+                                if (type.equals("Secondary", ignoreCase = true)) {
+                                    Log.e("TYPE2 ", type)
+                                    timeTableSingleRecycler.visibility = View.VISIBLE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                    if (AppUtils().isNetworkConnected(mContext)) {
+                                        println("test working")
+                                        getReportListAPI( 0)
+                                    } else {
+                                        AppUtils().showDialogAlertDismiss(
+                                            mContext as Activity,
+                                            "Network Error",
+                                            getString(R.string.no_internet),
+                                            R.drawable.nonetworkicon,
+                                            R.drawable.roundred
+                                        )
+                                    }
+                                } else {
+                                    timeTableSingleRecycler.visibility = View.GONE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                    AppUtils().showDialogAlertDismiss(
+                                        mContext as Activity,
+                                        getString(R.string.alert_heading),
+                                        getString(R.string.not_available_feature),
+                                        R.drawable.exclamationicon,
+                                        R.drawable.round
+                                    )
+                                }
+                            } else if (PreferenceManager().getTimeTableGroup(mContext)
+                                    .equals("3")
+                            ) {
+                                if (type.equals(
+                                        "Primary",
+                                        ignoreCase = true
+                                    ) || type.equals(
+                                        "Secondary",
+                                        ignoreCase = true
+                                    ) || type.equals("EYFS", ignoreCase = true)
+                                ) {
+                                    timeTableSingleRecycler.visibility = View.VISIBLE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                    if (AppUtils().isNetworkConnected(mContext)) {
+                                        println("test working")
+                                        getReportListAPI( 0)
+                                    } else {
+                                        AppUtils().showDialogAlertDismiss(
+                                            mContext as Activity,
+                                            "Network Error",
+                                            getString(R.string.no_internet),
+                                            R.drawable.nonetworkicon,
+                                            R.drawable.roundred
+                                        )
+                                    }
+                                } else {
+                                    timeTableSingleRecycler.visibility = View.GONE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                }
+                            } else if (PreferenceManager().getTimeTableGroup(mContext)
+                                    .equals("4")
+                            ) {
+                                if (type.equals("EYFS", ignoreCase = true)) {
+                                    timeTableSingleRecycler.visibility = View.VISIBLE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                    if (AppUtils().isNetworkConnected(mContext)) {
+                                        println("test working")
+                                        getReportListAPI( 0)
+                                    } else {
+                                        AppUtils().showDialogAlertDismiss(
+                                            mContext as Activity,
+                                            "Network Error",
+                                            getString(R.string.no_internet),
+                                            R.drawable.nonetworkicon,
+                                            R.drawable.roundred
+                                        )
+                                    }
+                                } else {
+                                    timeTableSingleRecycler.visibility = View.GONE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                    AppUtils().showDialogAlertDismiss(
+                                        mContext as Activity,
+                                        getString(R.string.alert_heading),
+                                        getString(R.string.not_available_feature),
+                                        R.drawable.exclamationicon,
+                                        R.drawable.round
+                                    )
+                                }
+                            } else if (PreferenceManager().getTimeTableGroup(mContext)
+                                    .equals("5")
+                            ) {
+                                if (type.equals(
+                                        "Primary",
+                                        ignoreCase = true
+                                    ) || type.equals("Secondary", ignoreCase = true)
+                                ) {
+                                    timeTableSingleRecycler.visibility = View.VISIBLE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                    if (AppUtils().isNetworkConnected(mContext)) {
+                                        println("test working")
+                                        getReportListAPI( 0)
+                                    } else {
+                                        AppUtils().showDialogAlertDismiss(
+                                            mContext as Activity,
+                                            "Network Error",
+                                            getString(R.string.no_internet),
+                                            R.drawable.nonetworkicon,
+                                            R.drawable.roundred
+                                        )
+                                    }
+                                } else {
+                                    timeTableSingleRecycler.visibility = View.GONE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                    AppUtils().showDialogAlertDismiss(
+                                        mContext as Activity,
+                                        getString(R.string.alert_heading),
+                                        getString(R.string.not_available_feature),
+                                        R.drawable.exclamationicon,
+                                        R.drawable.round
+                                    )
+                                }
+                            } else if (PreferenceManager().getTimeTableGroup(mContext)
+                                    .equals("6")
+                            ) {
+                                if (type.equals(
+                                        "Primary",
+                                        ignoreCase = true
+                                    ) || type.equals("EYFS", ignoreCase = true)
+                                ) {
+                                    timeTableSingleRecycler.visibility = View.VISIBLE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                    if (AppUtils().isNetworkConnected(mContext)) {
+                                        println("test working")
+                                        getReportListAPI( 0)
+                                    } else {
+                                        AppUtils().showDialogAlertDismiss(
+                                            mContext as Activity,
+                                            "Network Error",
+                                            getString(R.string.no_internet),
+                                            R.drawable.nonetworkicon,
+                                            R.drawable.roundred
+                                        )
+                                    }
+                                } else {
+                                    timeTableSingleRecycler.visibility = View.GONE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                }
+                            } else if (PreferenceManager().getTimeTableGroup(mContext)
+                                    .equals("7")
+                            ) {
+                                if (type.equals(
+                                        "EYFS",
+                                        ignoreCase = true
+                                    ) || type.equals("Secondary", ignoreCase = true)
+                                ) {
+                                    timeTableSingleRecycler.visibility = View.VISIBLE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                    if (AppUtils().isNetworkConnected(mContext)) {
+                                        println("test working")
+                                        getReportListAPI( 0)
+                                    } else {
+                                        AppUtils().showDialogAlertDismiss(
+                                            mContext as Activity,
+                                            "Network Error",
+                                            getString(R.string.no_internet),
+                                            R.drawable.nonetworkicon,
+                                            R.drawable.roundred
+                                        )
+                                    }
+                                } else {
+                                    timeTableSingleRecycler.visibility = View.GONE
+                                    timeTableAllRecycler.visibility = View.GONE
+                                }
+                            }
+
+
+                        } else {
+                            AppUtils().showDialogAlertDismiss(
+                                mContext as Activity,
+                                "Alert",
+                                getString(R.string.student_not_available),
+                                R.drawable.exclamationicon,
+                                R.drawable.round
+                            )
+                        }
+                    }
+                } else if (response.body()!!.responsecode.equals("500")) {
+                    AppUtils().showDialogAlertDismiss(
+                        mContext as Activity,
+                        "Alert",
+                        getString(R.string.common_error),
+                        R.drawable.exclamationicon,
+                        R.drawable.round
+                    )
+                } else {
+                    AppUtils().showDialogAlertDismiss(
+                        mContext as Activity,
+                        "Alert",
+                        getString(R.string.common_error),
+                        R.drawable.exclamationicon,
+                        R.drawable.round
+                    )
+                }
+            }
+
+        })
     }
 
     private fun getReportListAPI( i: Int) {
@@ -496,7 +502,7 @@ class TimeTableFragment:Fragment() {
         mFridayArrayList = ArrayList()
         mFieldModel= ArrayList()
         val call: Call<TimetableResponseModel> = ApiClient.getClient.timtable_list(PreferenceManager().getaccesstoken(mContext).toString(),
-           "3801")
+            "3801")
 
         call.enqueue(object : Callback<TimetableResponseModel> {
             override fun onFailure(call: Call<TimetableResponseModel>, t: Throwable) {
@@ -513,331 +519,334 @@ class TimeTableFragment:Fragment() {
                 try {
 
 
-                val obj = JSONObject(responsedata)
-                val response_code = obj.getString("responsecode")
-                Log.e("Response Signup", obj.toString())
-                if (response.body()!!.responsecode.equals("200")) {
-                    val secobj = obj.getJSONObject("response")
+                    val obj = JSONObject(responsedata)
+                    val response_code = obj.getString("responsecode")
+                    Log.e("Response Signup", obj.toString())
+                    if (response.body()!!.responsecode.equals("200")) {
+                        val secobj = obj.getJSONObject("response")
 
-                    if (response.body()!!.response.statuscode.equals("303")) {
+                        if (response.body()!!.response.statuscode.equals("303")) {
 
 
-                       /* weekRecyclerList.visibility=View.VISIBLE
+                            weekRecyclerList.visibility=View.VISIBLE
 
-                        feildAPIArrayList.addAll(response.body()!!.response.field)
-                        for (i in 0..feildAPIArrayList.size - 1) {
-                            var model = FieldModel(
-                                feildAPIArrayList.get(i).sortname,
-                                feildAPIArrayList.get(i).starttime,
-                                feildAPIArrayList.get(i).endtime
-                            )
-                            mFieldModel.add(model)
-                        }
+                            feildAPIArrayList.addAll(response.body()!!.response.field)
+                            for (i in 0..feildAPIArrayList.size - 1) {
+                                var model = FieldModel(
+                                    feildAPIArrayList.get(i).sortname,
+                                    feildAPIArrayList.get(i).starttime,
+                                    feildAPIArrayList.get(i).endtime
+                                )
+                                mFieldModel.add(model)
+                            }
 
-                        if (response.body()!!.response.range.Monday.isEmpty()&&response.body()!!.response.range.Tuesday.isEmpty()&&
-                            response.body()!!.response.range.Wednesday.isEmpty()&&response.body()!!.response.range.Thursday.isEmpty()&&
-                            response.body()!!.response.range.Friday.isEmpty())
-                        {
+                            if (response.body()!!.response.range.Monday.isEmpty()&&response.body()!!.response.range.Tuesday.isEmpty()&&
+                                response.body()!!.response.range.Wednesday.isEmpty()&&response.body()!!.response.range.Thursday.isEmpty()&&
+                                response.body()!!.response.range.Friday.isEmpty())
+                            {
+
+                                timeTableSingleRecycler.visibility = View.GONE
+                                timeTableAllRecycler.visibility = View.GONE
+                                card_viewAll.visibility = View.GONE
+                                weekRecyclerList.visibility = View.GONE
+                                // Toast.makeText(ncontext, "No Data", Toast.LENGTH_SHORT).show()
+                            }
+
+                            else
+                            {
+                                mMondayArrayList.addAll(response.body()!!.response.range.Monday)
+                                Log.e("monday", mMondayArrayList.get(0).day.toString())
+
+                                mTuesdayArrayList.addAll(response.body()!!.response.range.Tuesday)
+                                Log.e("tuesday", mTuesdayArrayList.get(0).day.toString())
+
+
+                                mwednesdayArrayList.addAll(response.body()!!.response.range.Wednesday)
+                                Log.e("wednesday", mwednesdayArrayList.get(0).day.toString())
+
+
+                                mThurdayArrayList.addAll(response.body()!!.response.range.Thursday)
+                                Log.e("thursday", mThurdayArrayList.get(0).day.toString())
+
+
+                                mFridayArrayList.addAll(response.body()!!.response.range.Friday)
+                                Log.e("friday", mFridayArrayList.get(0).day.toString())
+
+                            }
+
 
                             timeTableSingleRecycler.visibility = View.GONE
-                            timeTableAllRecycler.visibility = View.GONE
-                            card_viewAll.visibility = View.GONE
-                            weekRecyclerList.visibility = View.GONE
-                           // Toast.makeText(ncontext, "No Data", Toast.LENGTH_SHORT).show()
-                        }
-
-                        else
-                        {
-                            mMondayArrayList.addAll(response.body()!!.response.range.Monday)
-                            Log.e("monday", mMondayArrayList.get(0).day.toString())
-
-                            mTuesdayArrayList.addAll(response.body()!!.response.range.Tuesday)
-                            Log.e("tuesday", mTuesdayArrayList.get(0).day.toString())
+                            timeTableAllRecycler.visibility = View.VISIBLE
+                            card_viewAll.visibility = View.VISIBLE
+                            mTimetableApiArrayList = ArrayList()
 
 
-                            mwednesdayArrayList.addAll(response.body()!!.response.range.Wednesday)
-                            Log.e("wednesday", mwednesdayArrayList.get(0).day.toString())
+                            mTimetableApiArrayList.addAll(response.body()!!.response.Timetable)
+                            mPeriodModel = ArrayList()
+                            var mDataModelArrayList = ArrayList<DayModel>()
+
+                            var m = 0
+                            var tu = 0
+                            var w = 0
+                            var th = 0
+                            var fr = 0
+                            for (f in 0..feildAPIArrayList.size - 1) {
+                                var mDayModel: DayModel = DayModel()
+                                var mPeriod: PeriodModel = PeriodModel()
+
+                                var timeTableListM = ArrayList<DayModel?>()
+                                var timeTableListT = ArrayList<DayModel?>()
+                                var timeTableListW = ArrayList<DayModel?>()
+                                var timeTableListTh = ArrayList<DayModel?>()
+                                var timeTableListF = ArrayList<DayModel?>()
 
 
-                            mThurdayArrayList.addAll(response.body()!!.response.range.Thursday)
-                            Log.e("thursday", mThurdayArrayList.get(0).day.toString())
-
-
-                            mFridayArrayList.addAll(response.body()!!.response.range.Friday)
-                            Log.e("friday", mFridayArrayList.get(0).day.toString())
-
-                        }
-
-
-                        timeTableSingleRecycler.visibility = View.GONE
-                        timeTableAllRecycler.visibility = View.VISIBLE
-                        card_viewAll.visibility = View.VISIBLE
-                        mTimetableApiArrayList = ArrayList()
-
-
-                        mTimetableApiArrayList.addAll(response.body()!!.response.Timetable)
-                        mPeriodModel = ArrayList()
-                        var mDataModelArrayList = ArrayList<DayModel>()
-
-                        var m = 0
-                        var tu = 0
-                        var w = 0
-                        var th = 0
-                        var fr = 0
-                        for (f in 0..feildAPIArrayList.size - 1) {
-                            var mDayModel: DayModel = DayModel()
-                            var mPeriod: PeriodModel = PeriodModel()
-
-                            var timeTableListM = ArrayList<DayModel?>()
-                            var timeTableListT = ArrayList<DayModel?>()
-                            var timeTableListW = ArrayList<DayModel?>()
-                            var timeTableListTh = ArrayList<DayModel?>()
-                            var timeTableListF = ArrayList<DayModel?>()
-
-
-                            for (t in 0..mTimetableApiArrayList.size - 1) {
-                                if (feildAPIArrayList.get(f).sortname.equals(
-                                        mTimetableApiArrayList.get(t).sortname
-                                    )
-                                ) {
-                                    Log.e(
-                                        "Sortname",
-                                        mTimetableApiArrayList.get(t).sortname!!
-                                    )
-
-                                    mDayModel.id = mTimetableApiArrayList.get(t).id
-                                    mDayModel.period_id =
-                                        mTimetableApiArrayList.get(t).period_id
-                                    mDayModel.day = mTimetableApiArrayList.get(t).day
-                                    mDayModel.sortname =
-                                        mTimetableApiArrayList.get(t).sortname
-                                    mDayModel.starttime =
-                                        mTimetableApiArrayList.get(t).starttime
-                                    mDayModel.endtime =
-                                        mTimetableApiArrayList.get(t).endtime
-                                    mDayModel.subject_name =
-                                        mTimetableApiArrayList.get(t).subject_name
-
-
-                                    //    mDayModel.staff=mTimetableApiArrayList.get(t).staff
-
-                                    if (mTimetableApiArrayList.get(t).day.equals("Monday")) {
-                                        m = m + 1
-                                        var dayModel = DayModel()
-                                        dayModel.id = mTimetableApiArrayList.get(t).id
-                                        dayModel.period_id =
-                                            mTimetableApiArrayList.get(t).period_id
-                                        dayModel.day = mTimetableApiArrayList.get(t).day
-                                        dayModel.sortname =
+                                for (t in 0..mTimetableApiArrayList.size - 1) {
+                                    if (feildAPIArrayList.get(f).sortname.equals(
                                             mTimetableApiArrayList.get(t).sortname
-                                        dayModel.starttime =
-                                            mTimetableApiArrayList.get(t).starttime
-                                        dayModel.endtime =
-                                            mTimetableApiArrayList.get(t).endtime
-                                        dayModel.subject_name =
-                                            mTimetableApiArrayList.get(t).subject_name
-
-                                        dayModel.staff = mTimetableApiArrayList.get(t).staff
-                                        timeTableListM.add(dayModel)
-                                        mPeriod.monday =
-                                            mTimetableApiArrayList.get(t).subject_name
-                                       *//* Log.e(
-                                            "staffname",
-                                            mTimetableApiArrayList.get(t).staff!!
                                         )
-                                        if (mTimetableApiArrayList.get(t).staff!!.equals("")) {
-                                            mDayModel.isBreak=1
+                                    ) {
+                                        Log.e(
+                                            "Sortname",
+                                            mTimetableApiArrayList.get(t).sortname!!
+                                        )
+
+                                        mDayModel.id = mTimetableApiArrayList.get(t).id
+                                        mDayModel.period_id =
+                                            mTimetableApiArrayList.get(t).period_id
+                                        mDayModel.day = mTimetableApiArrayList.get(t).day
+                                        mDayModel.sortname =
+                                            mTimetableApiArrayList.get(t).sortname
+                                        mDayModel.starttime =
+                                            mTimetableApiArrayList.get(t).starttime
+                                        mDayModel.endtime =
+                                            mTimetableApiArrayList.get(t).endtime
+                                        mDayModel.subject_name =
+                                            mTimetableApiArrayList.get(t).subject_name
+
+
+                                        //    mDayModel.staff=mTimetableApiArrayList.get(t).staff
+
+                                        if (mTimetableApiArrayList.get(t).day.equals("Monday")) {
+                                            m = m + 1
+                                            var dayModel = DayModel()
+                                            dayModel.id = mTimetableApiArrayList.get(t).id
+                                            dayModel.period_id =
+                                                mTimetableApiArrayList.get(t).period_id
+                                            dayModel.day = mTimetableApiArrayList.get(t).day
+                                            dayModel.sortname =
+                                                mTimetableApiArrayList.get(t).sortname
+                                            dayModel.starttime =
+                                                mTimetableApiArrayList.get(t).starttime
+                                            dayModel.endtime =
+                                                mTimetableApiArrayList.get(t).endtime
+                                            dayModel.subject_name =
+                                                mTimetableApiArrayList.get(t).subject_name
+
+                                            dayModel.staff = mTimetableApiArrayList.get(t).staff
+                                            timeTableListM.add(dayModel)
+                                            mPeriod.monday =
+                                                mTimetableApiArrayList.get(t).subject_name
+
+                                            Log.e(
+                                                "staffname",
+                                                mTimetableApiArrayList.get(t).staff!!
+                                            )
+                                            if (mTimetableApiArrayList.get(t).staff!!.equals("")) {
+                                                mDayModel.isBreak=1
+                                            } else {
+                                                mDayModel.isBreak=0
+
+                                            }
+                                        } else if (mTimetableApiArrayList.get(t).day.equals("Tuesday")) {
+                                            tu = tu + 1
+                                            var dayModel = DayModel()
+                                            dayModel.id = mTimetableApiArrayList.get(t).id
+                                            dayModel.period_id =
+                                                mTimetableApiArrayList.get(t).period_id
+                                            dayModel.subject_name =
+                                                mTimetableApiArrayList.get(t).subject_name
+                                            dayModel.staff = mTimetableApiArrayList.get(t).staff
+
+                                            dayModel.day = mTimetableApiArrayList.get(t).day
+                                            dayModel.sortname =
+                                                mTimetableApiArrayList.get(t).sortname
+                                            dayModel.starttime =
+                                                mTimetableApiArrayList.get(t).starttime
+                                            dayModel.endtime =
+                                                mTimetableApiArrayList.get(t).endtime
+                                            timeTableListT.add(dayModel)
+                                            mPeriod.tuesday =
+                                                mTimetableApiArrayList.get(t).subject_name
+                                        } else if (mTimetableApiArrayList.get(t).day.equals("Wednesday")) {
+                                            w = w + 1
+                                            var dayModel = DayModel()
+                                            dayModel.id = mTimetableApiArrayList.get(t).id
+                                            dayModel.period_id =
+                                                mTimetableApiArrayList.get(t).period_id
+                                            dayModel.day = mTimetableApiArrayList.get(t).day
+                                            dayModel.sortname =
+                                                mTimetableApiArrayList.get(t).sortname
+                                            dayModel.starttime =
+                                                mTimetableApiArrayList.get(t).starttime
+                                            dayModel.endtime =
+                                                mTimetableApiArrayList.get(t).endtime
+                                            dayModel.subject_name =
+                                                mTimetableApiArrayList.get(t).subject_name
+
+                                            dayModel.staff = mTimetableApiArrayList.get(t).staff
+                                            timeTableListW.add(dayModel)
+                                            mPeriod.wednesday =
+                                                mTimetableApiArrayList.get(t).subject_name
+                                        } else if (mTimetableApiArrayList.get(t).day.equals("Thursday")) {
+                                            th = th + 1
+                                            var dayModel = DayModel()
+                                            dayModel.id = mTimetableApiArrayList.get(t).id
+                                            dayModel.period_id =
+                                                mTimetableApiArrayList.get(t).period_id
+                                            dayModel.day = mTimetableApiArrayList.get(t).day
+                                            dayModel.sortname =
+                                                mTimetableApiArrayList.get(t).sortname
+                                            dayModel.starttime =
+                                                mTimetableApiArrayList.get(t).starttime
+                                            dayModel.endtime =
+                                                mTimetableApiArrayList.get(t).endtime
+                                            dayModel.subject_name =
+                                                mTimetableApiArrayList.get(t).subject_name
+
+                                            dayModel.staff = mTimetableApiArrayList.get(t).staff
+                                            timeTableListTh.add(dayModel)
+                                            mPeriod.thursday =
+                                                mTimetableApiArrayList.get(t).subject_name
+                                        } else if (mTimetableApiArrayList.get(t).day.equals("Friday")) {
+                                            fr = f + 1
+                                            var dayModel = DayModel()
+                                            dayModel.id = mTimetableApiArrayList.get(t).id
+                                            dayModel.period_id =
+                                                mTimetableApiArrayList.get(t).period_id
+                                            dayModel.day = mTimetableApiArrayList.get(t).day
+                                            dayModel.sortname =
+                                                mTimetableApiArrayList.get(t).sortname
+                                            dayModel.starttime =
+                                                mTimetableApiArrayList.get(t).starttime
+                                            dayModel.endtime =
+                                                mTimetableApiArrayList.get(t).endtime
+                                            dayModel.subject_name =
+                                                mTimetableApiArrayList.get(t).subject_name
+                                            dayModel.staff = mTimetableApiArrayList.get(t).staff
+                                            timeTableListF.add(dayModel)
+                                            mPeriod.friday =
+                                                mTimetableApiArrayList.get(t).subject_name
                                         } else {
-                                            mDayModel.isBreak=0
 
-                                        }*//*
-                                    } else if (mTimetableApiArrayList.get(t).day.equals("Tuesday")) {
-                                        tu = tu + 1
-                                        var dayModel = DayModel()
-                                        dayModel.id = mTimetableApiArrayList.get(t).id
-                                        dayModel.period_id =
-                                            mTimetableApiArrayList.get(t).period_id
-                                        dayModel.subject_name =
-                                            mTimetableApiArrayList.get(t).subject_name
-                                        dayModel.staff = mTimetableApiArrayList.get(t).staff
+                                            mPeriod.monday = ""
+                                            mPeriod.tuesday = ""
+                                            mPeriod.wednesday = ""
+                                            mPeriod.thursday = ""
+                                            mPeriod.friday = ""
+                                        }
+                                        mPeriod.countM = m
+                                        mPeriod.countT = tu
+                                        mPeriod.countW = w
+                                        mPeriod.countTh = th
+                                        mPeriod.countF = fr
 
-                                        dayModel.day = mTimetableApiArrayList.get(t).day
-                                        dayModel.sortname =
-                                            mTimetableApiArrayList.get(t).sortname
-                                        dayModel.starttime =
-                                            mTimetableApiArrayList.get(t).starttime
-                                        dayModel.endtime =
-                                            mTimetableApiArrayList.get(t).endtime
-                                        timeTableListT.add(dayModel)
-                                        mPeriod.tuesday =
-                                            mTimetableApiArrayList.get(t).subject_name
-                                    } else if (mTimetableApiArrayList.get(t).day.equals("Wednesday")) {
-                                        w = w + 1
-                                        var dayModel = DayModel()
-                                        dayModel.id = mTimetableApiArrayList.get(t).id
-                                        dayModel.period_id =
-                                            mTimetableApiArrayList.get(t).period_id
-                                        dayModel.day = mTimetableApiArrayList.get(t).day
-                                        dayModel.sortname =
-                                            mTimetableApiArrayList.get(t).sortname
-                                        dayModel.starttime =
-                                            mTimetableApiArrayList.get(t).starttime
-                                        dayModel.endtime =
-                                            mTimetableApiArrayList.get(t).endtime
-                                        dayModel.subject_name =
-                                            mTimetableApiArrayList.get(t).subject_name
 
-                                        dayModel.staff = mTimetableApiArrayList.get(t).staff
-                                        timeTableListW.add(dayModel)
-                                        mPeriod.wednesday =
-                                            mTimetableApiArrayList.get(t).subject_name
-                                    } else if (mTimetableApiArrayList.get(t).day.equals("Thursday")) {
-                                        th = th + 1
-                                        var dayModel = DayModel()
-                                        dayModel.id = mTimetableApiArrayList.get(t).id
-                                        dayModel.period_id =
-                                            mTimetableApiArrayList.get(t).period_id
-                                        dayModel.day = mTimetableApiArrayList.get(t).day
-                                        dayModel.sortname =
-                                            mTimetableApiArrayList.get(t).sortname
-                                        dayModel.starttime =
-                                            mTimetableApiArrayList.get(t).starttime
-                                        dayModel.endtime =
-                                            mTimetableApiArrayList.get(t).endtime
-                                        dayModel.subject_name =
-                                            mTimetableApiArrayList.get(t).subject_name
+                                        mPeriod.timeTableListM = timeTableListM
+                                        mPeriod.timeTableListT = timeTableListT
+                                        mPeriod.timeTableListW = timeTableListW
+                                        mPeriod.timeTableListTh = timeTableListTh
+                                        mPeriod.timeTableListF = timeTableListF
 
-                                        dayModel.staff = mTimetableApiArrayList.get(t).staff
-                                        timeTableListTh.add(dayModel)
-                                        mPeriod.thursday =
-                                            mTimetableApiArrayList.get(t).subject_name
-                                    } else if (mTimetableApiArrayList.get(t).day.equals("Friday")) {
-                                        fr = f + 1
-                                        var dayModel = DayModel()
-                                        dayModel.id = mTimetableApiArrayList.get(t).id
-                                        dayModel.period_id =
-                                            mTimetableApiArrayList.get(t).period_id
-                                        dayModel.day = mTimetableApiArrayList.get(t).day
-                                        dayModel.sortname =
-                                            mTimetableApiArrayList.get(t).sortname
-                                        dayModel.starttime =
-                                            mTimetableApiArrayList.get(t).starttime
-                                        dayModel.endtime =
-                                            mTimetableApiArrayList.get(t).endtime
-                                        dayModel.subject_name =
-                                            mTimetableApiArrayList.get(t).subject_name
-                                        dayModel.staff = mTimetableApiArrayList.get(t).staff
-                                        timeTableListF.add(dayModel)
-                                        mPeriod.friday =
-                                            mTimetableApiArrayList.get(t).subject_name
-                                    } else {
-
-                                        mPeriod.monday = ""
-                                        mPeriod.tuesday = ""
-                                        mPeriod.wednesday = ""
-                                        mPeriod.thursday = ""
-                                        mPeriod.friday = ""
                                     }
-                                    mPeriod.countM = m
-                                    mPeriod.countT = tu
-                                    mPeriod.countW = w
-                                    mPeriod.countTh = th
-                                    mPeriod.countF = fr
-
-
-                                    mPeriod.timeTableListM = timeTableListM
-                                    mPeriod.timeTableListT = timeTableListT
-                                    mPeriod.timeTableListW = timeTableListW
-                                    mPeriod.timeTableListTh = timeTableListTh
-                                    mPeriod.timeTableListF = timeTableListF
-
                                 }
                             }
-                        }
-                        if (weekPosition != 0) {
-                            timeTableAllRecycler.visibility = View.GONE
-                            card_viewAll.visibility = View.GONE
-                            //  timeTableAllRecycler.visibility=View.GONE
-                            tipContainer.visibility = View.GONE
-                            timeTableSingleRecycler.visibility = View.VISIBLE
+                            if (weekPosition != 0) {
+                                timeTableAllRecycler.visibility = View.GONE
+                                card_viewAll.visibility = View.GONE
+                                //  timeTableAllRecycler.visibility=View.GONE
+                                tipContainer.visibility = View.GONE
+                                timeTableSingleRecycler.visibility = View.VISIBLE
 //                    if (mRangeModel.size>0)
 //                    {
-                            //card_viewAll.visibility = View.GONE
-                            // timeTableAllRecycler.visibility = View.GONE
-                            timeTableSingleRecycler.visibility = View.VISIBLE
-                            // timeTableAllRecycler.visibility = View.VISIBLE
-                            Log.e("weekposition", weekPosition.toString())
-                            if (weekPosition == 1) {
+                                //card_viewAll.visibility = View.GONE
+                                // timeTableAllRecycler.visibility = View.GONE
+                                timeTableSingleRecycler.visibility = View.VISIBLE
+                                // timeTableAllRecycler.visibility = View.VISIBLE
+                                Log.e("weekposition", weekPosition.toString())
+                                if (weekPosition == 1) {
 
-                                var mRecyclerViewMainAdapter =
-                                    TimeTableSingleWeekSelectionAdapter(mContext, mMondayArrayList)
-                                timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
-                            } else if (weekPosition == 2) {
-                                Log.e("week","Successs")
-                                var mRecyclerViewMainAdapter =
-                                    TimeTableSingleWeekSelectionAdapter(mContext, mTuesdayArrayList)
-                                timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+                                    var mRecyclerViewMainAdapter =
+                                        TimeTableSingleWeekSelectionAdapter(mContext, mMondayArrayList)
+                                    timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+                                } else if (weekPosition == 2) {
+                                    Log.e("week","Successs")
+                                    var mRecyclerViewMainAdapter =
+                                        TimeTableSingleWeekSelectionAdapter(mContext, mTuesdayArrayList)
+                                    timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
 
-                            } else if (weekPosition == 3) {
-                                Log.e("Success","Successs")
-                                var mRecyclerViewMainAdapter =
-                                    TimeTableSingleWeekSelectionAdapter(mContext, mwednesdayArrayList)
-                                timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
-                            } else if (weekPosition == 4) {
-                                Log.e("Failed","Successs")
-                                var mRecyclerViewMainAdapter =
-                                    TimeTableSingleWeekSelectionAdapter(mContext, mThurdayArrayList)
-                                timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
-                            } else if (weekPosition == 5) {
+                                } else if (weekPosition == 3) {
+                                    Log.e("Success","Successs")
+                                    var mRecyclerViewMainAdapter =
+                                        TimeTableSingleWeekSelectionAdapter(mContext, mwednesdayArrayList)
+                                    timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+                                } else if (weekPosition == 4) {
+                                    Log.e("Failed","Successs")
+                                    var mRecyclerViewMainAdapter =
+                                        TimeTableSingleWeekSelectionAdapter(mContext, mThurdayArrayList)
+                                    timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+                                } else if (weekPosition == 5) {
 
-                                var mRecyclerViewMainAdapter =
-                                    TimeTableSingleWeekSelectionAdapter(mContext, mFridayArrayList)
-                                timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
-                            }
-                        }
-                        else {
-                            timeTableSingleRecycler.visibility = View.GONE
-                            // timeTableAllRecycler.visibility = View.VISIBLE
-                            tipContainer.visibility = View.VISIBLE
-
-                            card_viewAll.visibility = View.VISIBLE
-
-
-                            timeTableAllRecycler.visibility = View.VISIBLE
-                            // timeTableListS.shuffle()
-                            var mRecyclerAllAdapter =
-                                TimeTableAllWeekSelectionAdapterNew(mContext, mPeriodModel, feildAPIArrayList,tipContainer)
-                            timeTableAllRecycler.adapter = mRecyclerAllAdapter
-
-                        }*/
-                        val feildArray = secobj.getJSONArray("field1")
-
-                        mFieldModel = ArrayList()
-                        if (response.body()!!.response.field1.size > 0) {
-                            var lun = 0
-                            for (i in response.body()!!.response.field1.indices) {
-                                val listObject: JSONObject = feildArray.optJSONObject(i)
-                                val xmodel = FieldModel()
-                                xmodel.sortname=(response.body()!!.response.field1.get(i).sortname)
-                                xmodel.starttime=(response.body()!!.response.field1.get(i).starttime)
-                                xmodel.endtime=(response.body()!!.response.field1.get(i).endtime)
-                                Log.e("jsonobjet",
-                                    listObject.toString()
-                                )
-                                System.out.print("jsonobjet"+response.body()!!.response.field1.get(i))
-                                if (listObject.has("period_id")) {
-                                    xmodel.periodId=(response.body()!!.response.field1.get(i).periodId)
-                                    lun = lun + 1
-                                    println("lun::$lun")
-                                    xmodel.countBreak=(lun)
-                                } else {
-                                    xmodel.periodId=""
+                                    var mRecyclerViewMainAdapter =
+                                        TimeTableSingleWeekSelectionAdapter(mContext, mFridayArrayList)
+                                    timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
                                 }
-                                mFieldModel.add(xmodel)
+                            }
+                            else {
+                                timeTableSingleRecycler.visibility = View.GONE
+                                // timeTableAllRecycler.visibility = View.VISIBLE
+                                tipContainer.visibility = View.VISIBLE
+
+                                card_viewAll.visibility = View.VISIBLE
+
+
+                                timeTableAllRecycler.visibility = View.VISIBLE
+                                // timeTableListS.shuffle()
+                                var mRecyclerAllAdapter =
+                                    TimeTableAllWeekSelectionAdapterNew(mContext, mPeriodModel, feildAPIArrayList,tipContainer)
+                                timeTableAllRecycler.adapter = mRecyclerAllAdapter
+
+                            }
+
+                            val feildArray = secobj.getJSONArray("field1")
+
+                            mFieldModel = ArrayList()
+                            if (response.body()!!.response.field1.size > 0) {
+                                var lun = 0
+                                for (i in response.body()!!.response.field1.indices) {
+                                    val listObject: JSONObject = feildArray.optJSONObject(i)
+                                    val xmodel = FieldModel()
+                                    xmodel.sortname=(response.body()!!.response.field1.get(i).sortname)
+                                    xmodel.starttime=(response.body()!!.response.field1.get(i).starttime)
+                                    xmodel.endtime=(response.body()!!.response.field1.get(i).endtime)
+                                    Log.e("jsonobjet",
+                                        listObject.toString()
+                                    )
+                                    System.out.print("jsonobjet"+response.body()!!.response.field1.get(i))
+                                    if (listObject.has("period_id")) {
+                                        xmodel.periodId=(response.body()!!.response.field1.get(i).periodId)
+                                        lun = lun + 1
+                                        println("lun::$lun")
+                                        xmodel.countBreak=(lun)
+                                    } else {
+                                        xmodel.periodId=""
+                                    }
+                                    mFieldModel.add(xmodel)
+                                }
                             }
                         }
-                    }
 
+                        val rangeObj = secobj.getJSONObject("range")
                         val days = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
                         mRangeModel = ArrayList()
                         mFridayModelArraylist = ArrayList()
@@ -845,11 +854,11 @@ class TimeTableFragment:Fragment() {
 
                         for (i in 0..4) {
                             println("i value$i")
-
-                          //  println("size of monday array" + monday.length())
-                            var monday1: ArrayList<DayModel>
-                            monday1= ArrayList()
-                           // monday1= response.body()!!.response.range
+                            val monday: JSONArray? = rangeObj.optJSONArray(days[i])
+                            //  println("size of monday array" + monday.length())
+                            //  var monday: ArrayList<DayModel>
+                            //  monday= ArrayList()
+                            // monday1= response.body()!!.response.range
                             val rangeModel = RangeModel()
                             val mDayModel = ArrayList<DayModel>()
 
@@ -857,38 +866,42 @@ class TimeTableFragment:Fragment() {
                             if (response.body()!!.response.range.equals("")) {
                                 timeTableSingleRecycler.visibility = View.VISIBLE
                                 println("working success")
-                                /*for (j in 0 until monday.length()) {
-                                    val dataObject = monday.getJSONObject(j)
+                                for (j in 0 until monday!!.length()) {
+                                    val dataObject = monday!!.getJSONObject(j)
                                     val model = DayModel()
-                                    model.setId(dataObject.optString("id"))
-                                    model.setPeriod_id(dataObject.optString("period_id"))
-                                    model.setEndtime(dataObject.optString("endtime"))
-                                    model.setStarttime(dataObject.optString("starttime"))
+                                    model.id=dataObject.optString("id")
+                                    model.period_id=dataObject.optString("period_id")
+                                    model.endtime=dataObject.optString("endtime")
+                                    model.starttime=dataObject.optString("starttime")
+
                                     if (dataObject.has("staff")) {
-                                        model.setIsBreak(0)
+                                        model.isBreak=0
+
                                     } else {
-                                        model.setIsBreak(1)
+                                        model.isBreak=1
                                     }
-                                    model.setSubject_name(dataObject.optString("subject_name"))
-                                    model.setStaff(dataObject.optString("staff"))
-                                    model.setSortname(dataObject.optString("sortname"))
-                                    model.setStudent_id(dataObject.optString("student_id"))
-                                    model.setDay(dataObject.optString("day"))
+                                    model.subject_name=dataObject.optString("subject_name")
+                                    model.staff=dataObject.optString("staff")
+                                    model.sortname=dataObject.optString("sortname")
+                                    model.student_id=dataObject.optString("student_id")
+                                    model.day=dataObject.optString("day")
+
                                     if (i == 4) {
                                         mFridayModelArraylist!!.add(model)
                                     }
                                     if (!dataObject.optString("sortname")
-                                            .equals("BUS", ignoreCase = true)
+                                            .equals("BUS")
                                     ) mDayModel.add(model)
-                                }*/
+                                }
+
                             }
                             println("table range model size" + mDayModel.size)
-                          //  rangeModel.setTimeTableDayModel(mDayModel)
+                            //  rangeModel.setTimeTableDayModel(mDayModel)
                             mRangeModel!!.add(rangeModel)
                         }
                     }
                 }catch (e: JSONException) {
-            }
+                }
             }
         })
     }
@@ -934,7 +947,8 @@ class TimeTableFragment:Fragment() {
         val llmAll = LinearLayoutManager(activity)
         llmAll.orientation = LinearLayoutManager.VERTICAL
         timeTableAllRecycler.layoutManager = llmAll
-        /*LayoutInflater.from(mContext).inflate(R.layout.layout_timetable_popup, null);*/
+        LayoutInflater.from(mContext).inflate(R.layout.layout_timetable_popup, null);
+
 
 //        timeTableAllRecycler.addOnItemTouchListener(new RecyclerItemListener(mContext, timeTableAllRecycler, new RecyclerItemListener.RecyclerTouchListener() {
 //            @Override
@@ -1015,7 +1029,7 @@ class TimeTableFragment:Fragment() {
                 })
         )
     }
-    fun showSocialmediaList(mStudentArray: java.util.ArrayList<StudentModel>) {
+    fun showSocialmediaList(mStudentArray: ArrayList<StudentListModel>) {
         val dialog = Dialog(mContext!!)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setContentView(R.layout.dialog_student_list)
@@ -1023,7 +1037,7 @@ class TimeTableFragment:Fragment() {
         val dialogDismiss = dialog.findViewById<Button>(R.id.btn_dismiss)
         val iconImageView = dialog.findViewById<ImageView>(R.id.iconImageView)
         iconImageView.setImageResource(R.drawable.boy)
-        val socialMediaList = dialog.findViewById<RecyclerView>(R.id.recycler_view_social_media)
+        val socialMediaList = dialog.findViewById<RecyclerView>(R.id.studentListRecycler)
         //if(mSocialMediaArray.get())
         val sdk = Build.VERSION.SDK_INT
         if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
@@ -1044,19 +1058,19 @@ class TimeTableFragment:Fragment() {
                 object : RecyclerItemListener.RecyclerTouchListener {
                     override fun onClickItem(v: View?, position: Int) {
                         dialog.dismiss()
-                        studentName.setText(mStudentArray[position].mName)
-                        stud_id = mStudentArray[position].mId.toString()
-                        stud_name = mStudentArray[position].mName.toString()
+                        studentName.setText(mStudentArray[position].name)
+                        stud_id = mStudentArray[position].id.toString()
+                        stud_name = mStudentArray[position].name.toString()
                         stud_class = mStudentArray[position].mClass.toString()
-                        stud_img = mStudentArray[position].mPhoto.toString()
-                        section = mStudentArray[position].mSection.toString()
+                        stud_img = mStudentArray[position].photo.toString()
+                        section = mStudentArray[position].section.toString()
                         progressReport = mStudentArray[position].progressreport.toString()
                         alumini = mStudentArray[position].alumi.toString()
                         type = mStudentArray[position].type.toString()
                         textViewYear!!.text = "Class : " + mStudentArray[position].mClass
                         if (stud_img != "") {
-                            Picasso.with(mContext).load(AppUtils().replace(stud_img))
-                                .placeholder(R.drawable.boy).fit().into(studImg)
+                            Glide.with(mContext).load(AppUtils().replace(stud_img))
+                                .placeholder(R.drawable.boy).into(studImg)
                         } else {
                             studImg!!.setImageResource(R.drawable.boy)
                         }
@@ -1285,17 +1299,17 @@ class TimeTableFragment:Fragment() {
         )
         dialog.show()
     }
-    private fun addStudentDetails(dataObject: StudentModel): StudentModel? {
-        val studentModel = StudentModel()
-        studentModel.mId=(dataObject.mId)
-        studentModel.mName=(dataObject.mName)
-        studentModel.mClass=(dataObject.mClass)
-        studentModel.mSection=(dataObject.mSection)
-        studentModel.mHouse=(dataObject.mHouse)
-        studentModel.mPhoto=(dataObject.mPhoto)
-        studentModel.progressreport=(dataObject.progressreport)
-        studentModel.alumi=(dataObject.alumi)
-        studentModel.type=(dataObject.type)
-        return studentModel
-    }
+    /*  private fun addStudentDetails(dataObject: StudentModel): StudentModel? {
+          val studentModel = StudentModel()
+          studentModel.mId=(dataObject.mId)
+          studentModel.mName=(dataObject.mName)
+          studentModel.mClass=(dataObject.mClass)
+          studentModel.mSection=(dataObject.mSection)
+          studentModel.mHouse=(dataObject.mHouse)
+          studentModel.mPhoto=(dataObject.mPhoto)
+          studentModel.progressreport=(dataObject.progressreport)
+          studentModel.alumi=(dataObject.alumi)
+          studentModel.type=(dataObject.type)
+          return studentModel
+      }*/
 }

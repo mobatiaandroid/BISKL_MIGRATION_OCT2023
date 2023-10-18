@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bskl_kotlin.common.PreferenceManager
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 
 class TutorialActivity: AppCompatActivity() {
     lateinit var mContext: Context

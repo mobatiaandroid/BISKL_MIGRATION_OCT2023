@@ -17,7 +17,7 @@ import com.example.bskl_kotlin.activity.notification.adapter.StudentUnReadRecycl
 import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.fragment.messages.model.PushNotificationModel
 import com.example.bskl_kotlin.manager.AppController
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 
 
 

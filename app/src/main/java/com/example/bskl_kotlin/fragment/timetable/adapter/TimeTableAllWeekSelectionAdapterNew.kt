@@ -18,6 +18,10 @@ import com.example.bskl_kotlin.fragment.timetable.model.PeriodModel
 import com.example.bskl_kotlin.manager.AppUtils
 import com.ryanharter.android.tooltips.ToolTip
 import com.ryanharter.android.tooltips.ToolTipLayout
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class TimeTableAllWeekSelectionAdapterNew(
     private val mContext: Context,
@@ -260,15 +264,15 @@ class TimeTableAllWeekSelectionAdapterNew(
                 val fridayTime = itemView.findViewById<TextView>(R.id.fridayTime)
                 val sortName = itemView.findViewById<TextView>(R.id.sortName)
                 mondayTime.text =
-                    "Monday-Thursday |" + AppUtils().timeParsingToAmPm(
+                    "Monday-Thursday |" + timeParsingToAmPm(
                         mFeildList[position].starttime
-                    ).toString() + "-" + AppUtils().timeParsingToAmPm(
+                    ).toString() + "-" + timeParsingToAmPm(
                         mFeildList[position].endtime
                     )
                 fridayTime.text =
-                    "Friday |" + AppUtils().timeParsingToAmPm(
+                    "Friday |" + timeParsingToAmPm(
                         mFeildList[position].fridyaStartTime
-                    ).toString() + "-" + AppUtils().timeParsingToAmPm(
+                    ).toString() + "-" + timeParsingToAmPm(
                         mFeildList[position].fridayEndTime
                     )
                 sortName.setText(mFeildList[position].sortname)
@@ -519,5 +523,18 @@ class TimeTableAllWeekSelectionAdapterNew(
 
     override fun getItemViewType(position: Int): Int {
         return position
+    }
+    fun timeParsingToAmPm(date: String?): String? {
+        var strCurrentDate = ""
+        var format = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+        var newDate: Date? = null
+        try {
+            newDate = format.parse(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        format = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+        strCurrentDate = format.format(newDate)
+        return strCurrentDate
     }
 }

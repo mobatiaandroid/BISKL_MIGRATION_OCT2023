@@ -21,7 +21,7 @@ import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.fragment.messages.model.NotificationFavouriteModel
 import com.example.bskl_kotlin.fragment.messages.model.PushNotificationModel
 import com.example.bskl_kotlin.manager.AppController
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

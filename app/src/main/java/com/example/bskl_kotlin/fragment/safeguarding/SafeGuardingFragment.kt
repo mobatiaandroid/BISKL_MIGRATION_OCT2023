@@ -1,3 +1,4 @@
+/*
 package com.example.bskl_kotlin.fragment.safeguarding
 
 //import com.example.bskl_kotlin.fragment.safeguarding.adapter.SafeGuardingAdapter
@@ -124,13 +125,15 @@ class SafeGuardingFragment:Fragment() {
                  if (response.body()!!.responsecode.equals("200")) {
                      if (response.body()!!.response.statuscode.equals("303")) {
                          typeArrayList = ArrayList<TypeModel>()
-                         /*for (t in 0 until typeData.length()) {
+                         */
+/*for (t in 0 until typeData.length()) {
                              Log.e("TYPE", "WORKS")
                              val tModel = TypeModel()
                              tModel.setStud_id(typeObject.optString("stud_id"))
                              tModel.setType(typeObject.optString("type"))
                              SafeGuardingFragment.typeArrayList.add(tModel)
-                         }*/
+                         }*//*
+
                          mStudentAttendanceList = ArrayList<StudentModel>()
                          mStudentAttendanceListCopy = ArrayList<StudentModel>()
                         for(i in response.body()!!.response.attendance_data.indices)
@@ -164,10 +167,12 @@ class SafeGuardingFragment:Fragment() {
                                         )
                                     ) {
                                         mStudentAttendanceModel.type=(typeArrayList.get(l).type)
-                                        /*Log.e(
+                                        */
+/*Log.e(
                                             "TYPE",
                                             typeArrayList.get(l).type
-                                        )*/
+                                        )*//*
+
                                     }
                                 }
                             }
@@ -533,4 +538,4 @@ class SafeGuardingFragment:Fragment() {
         dialog.show()
     }
 
-}
+}*/

@@ -27,7 +27,7 @@ import com.example.bskl_kotlin.activity.login.model.LoginModel
 import com.example.bskl_kotlin.activity.login.model.LoginResponseModel
 import com.example.bskl_kotlin.common.InternetCheckClass
 import com.example.bskl_kotlin.common.PreferenceManager
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

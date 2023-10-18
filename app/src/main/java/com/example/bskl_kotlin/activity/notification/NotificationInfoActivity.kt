@@ -3,7 +3,7 @@ package com.example.bskl_kotlin.activity.notification
 import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 
 class NotificationInfoActivity: AppCompatActivity() {
     lateinit var mContext: Context

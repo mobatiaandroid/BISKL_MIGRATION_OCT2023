@@ -9,7 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 
 class StudentUnReadRecyclerAdapter  (
     var mContext:Context , var mReadArraylist:ArrayList<String>

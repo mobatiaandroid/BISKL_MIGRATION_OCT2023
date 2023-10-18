@@ -15,7 +15,7 @@ import com.example.bskl_kotlin.activity.login.LoginActivity
 import com.example.bskl_kotlin.activity.tutorial.TutorialActivity
 import com.example.bskl_kotlin.common.PreferenceManager
 import com.google.firebase.messaging.FirebaseMessaging
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback

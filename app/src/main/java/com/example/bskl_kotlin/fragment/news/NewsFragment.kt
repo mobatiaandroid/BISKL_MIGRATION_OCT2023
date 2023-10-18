@@ -19,7 +19,7 @@ import android.widget.TextView
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 
 class NewsFragment(title: String, tabId: String) :Fragment() {
 
@@ -75,6 +75,7 @@ class NewsFragment(title: String, tabId: String) :Fragment() {
 
     }
     private fun getWebViewSettings(){
+        mProgressRelLayout.visibility=View.GONE
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = MyWebViewClient(this)
 

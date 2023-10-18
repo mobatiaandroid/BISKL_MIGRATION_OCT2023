@@ -3,7 +3,7 @@ package com.example.bskl_kotlin.manager
 import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 
 class TextViewFontSansProSemiBoldColorBlack:androidx.appcompat.widget.AppCompatTextView {
 

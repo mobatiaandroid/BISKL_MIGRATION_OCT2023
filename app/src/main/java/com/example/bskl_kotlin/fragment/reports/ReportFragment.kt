@@ -1,23 +1,47 @@
 package com.example.bskl_kotlin.fragment.reports
 
+import ApiClient
+import android.app.Dialog
 import android.content.Context
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.bskl_kotlin.R
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.common.model.StudentListModel
+import com.example.bskl_kotlin.common.model.StudentListResponseModel
+import com.example.bskl_kotlin.constants.OnItemClickListener
+import com.example.bskl_kotlin.constants.addOnItemClickListener
+import com.example.bskl_kotlin.fragment.absence.adapter.StudentSpinnerAdapter
+import com.example.bskl_kotlin.fragment.reports.model.ReportsDataModel
+import com.example.bskl_kotlin.fragment.reports.model.ReportsModel
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ReportFragment(title: String, tabId: String) : Fragment() {
 
     lateinit var mContext: Context
+
     lateinit var mStudentSpinner: LinearLayout
     lateinit var studentName: TextView
     lateinit var studImg: ImageView
@@ -27,8 +51,26 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
     lateinit var noDataRelative: RelativeLayout
     lateinit var relMain: RelativeLayout
     lateinit var alertTxtRelative: RelativeLayout
-    lateinit var textViewYear: TextView
+
+    //lateinit var textViewYear: TextView
     lateinit var noDataTxt: TextView
+
+    lateinit var studentsModelArrayList: ArrayList<StudentListModel>
+    var studentsModelArrayListCopy: ArrayList<StudentListModel>? = null
+
+    // lateinit  var studentDetail: ListView
+    // lateinit var studentName: TextView
+    lateinit var textViewYear: TextView
+    var stud_id = ""
+    var stud_class = ""
+    var stud_name = ""
+    var stud_img = ""
+    var progressReport = ""
+    var section = ""
+    var alumini = ""
+    var type = ""
+
+    lateinit var reportslist:ArrayList<ReportsDataModel>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -37,6 +79,7 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
 
         return inflater.inflate(R.layout.progress_report, container, false)
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mContext = requireContext()
@@ -51,7 +94,7 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
 
     }
 
-    private fun initUi(){
+    private fun initUi() {
 
         alertText = requireView().findViewById<TextView>(R.id.noDataTxt)
         mStudentSpinner = requireView().findViewById<LinearLayout>(R.id.studentSpinner)
@@ -64,5 +107,316 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
         alertTxtRelative = requireView().findViewById<RelativeLayout>(R.id.noDataRelative)
         textViewYear = requireView().findViewById<TextView>(R.id.textViewYear)
         noDataTxt = requireView().findViewById<TextView>(R.id.noDataTxt)
+        reportslist= ArrayList()
+
+        getStudentsListAPI()
+        mStudentSpinner.setOnClickListener {
+            showStudentList(studentsModelArrayList)
+        }
     }
+
+    fun getStudentsListAPI() {
+        studentsModelArrayList = ArrayList()
+        val call: Call<StudentListResponseModel> = ApiClient.getClient.student_list(
+            PreferenceManager().getaccesstoken(mContext).toString(),
+            PreferenceManager().getUserId(mContext).toString()
+        )
+
+        call.enqueue(object : Callback<StudentListResponseModel> {
+            override fun onFailure(call: Call<StudentListResponseModel>, t: Throwable) {
+                Log.e("Failed", t.localizedMessage)
+
+            }
+
+            override fun onResponse(
+                call: Call<StudentListResponseModel>,
+                response: Response<StudentListResponseModel>
+            ) {
+
+                val responsedata = response.body()
+
+                Log.e("Response Signup", responsedata.toString())
+
+                if (response.body()!!.responsecode.equals("200")) {
+                    if (response.body()!!.response.statuscode.equals("303")) {
+
+                        if (response.body()!!.response.data.size > 0) {
+
+                            studentsModelArrayList.addAll(response.body()!!.response.data)
+                            Log.e("listsize",studentsModelArrayList.size.toString())
+                            Log.e("id","empty")
+                            Log.e("name",studentsModelArrayList[0].name.toString())
+                            studentName.setText(studentsModelArrayList[0].name)
+                            stud_id = studentsModelArrayList[0].id.toString()
+                            stud_name = studentsModelArrayList[0].name.toString()
+                            stud_class = studentsModelArrayList[0].mClass.toString()
+                            stud_img = studentsModelArrayList[0].photo.toString()
+                            progressReport = studentsModelArrayList[0].progressreport.toString()
+                            section = studentsModelArrayList[0].section.toString()
+                            alumini = studentsModelArrayList[0].alumi.toString()
+
+                            if (stud_img != "") {
+                                Glide.with(mContext) //1
+                                    .load(stud_img)
+                                    .placeholder(R.drawable.boy)
+                                    .error(R.drawable.boy)
+                                    .skipMemoryCache(true) //2
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                                    .transform(CircleCrop()) //4
+                                    .into(studImg)
+                                /* Picasso.with(mContext).load(AppUtils.replace(stud_img))
+                                    .placeholder(R.drawable.boy).fit().into(studImg)*/
+                            } else {
+                                studImg.setImageResource(R.drawable.boy)
+                            }
+                            textViewYear.text =
+                                "Class : " + studentsModelArrayList[0].mClass
+                            PreferenceManager().setCCAStudentIdPosition(mContext, "0")
+
+                          /*  if (PreferenceManager().getStudIdForCCA(mContext).equals("")) {
+                                Log.e("id","empty")
+                                Log.e("name",studentsModelArrayList[0].mName.toString())
+                                studentName.setText(studentsModelArrayList[0].mName)
+                                stud_id = studentsModelArrayList[0].mId.toString()
+                                stud_name = studentsModelArrayList[0].mName.toString()
+                                stud_class = studentsModelArrayList[0].mClass.toString()
+                                stud_img = studentsModelArrayList[0].mPhoto.toString()
+                                progressReport = studentsModelArrayList[0].progressreport.toString()
+                                section = studentsModelArrayList[0].mSection.toString()
+                                alumini = studentsModelArrayList[0].alumini.toString()
+
+                                if (stud_img != "") {
+                                    Glide.with(mContext) //1
+                                        .load(stud_img)
+                                        .placeholder(R.drawable.boy)
+                                        .error(R.drawable.boy)
+                                        .skipMemoryCache(true) //2
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                                        .transform(CircleCrop()) //4
+                                        .into(studImg)
+                                    *//* Picasso.with(mContext).load(AppUtils.replace(stud_img))
+                                        .placeholder(R.drawable.boy).fit().into(studImg)*//*
+                                } else {
+                                    studImg.setImageResource(R.drawable.boy)
+                                }
+                                textViewYear.text =
+                                    "Class : " + studentsModelArrayList[0].mClass
+                                PreferenceManager().setCCAStudentIdPosition(mContext, "0")
+                            } else {
+                                val studentSelectPosition: Int = Integer.valueOf(
+                                    PreferenceManager().getCCAStudentIdPosition(mContext)
+                                )
+                                studentName.setText(studentsModelArrayList[studentSelectPosition].mName)
+                                stud_id =
+                                    studentsModelArrayList[studentSelectPosition].mId.toString()
+                                stud_name =
+                                    studentsModelArrayList[studentSelectPosition].mName.toString()
+                                stud_class =
+                                    studentsModelArrayList[studentSelectPosition].mClass.toString()
+                                progressReport =
+                                    studentsModelArrayList[studentSelectPosition].progressreport.toString()
+                                stud_img =
+                                    studentsModelArrayList[studentSelectPosition].mPhoto.toString()
+                                alumini =
+                                    studentsModelArrayList[studentSelectPosition].alumini.toString()
+                                System.out.println("selected student image" + studentsModelArrayList[studentSelectPosition].mPhoto)
+                                if (stud_img != "") {
+                                    Glide.with(mContext) //1
+                                        .load(stud_img)
+                                        .placeholder(R.drawable.boy)
+                                        .error(R.drawable.boy)
+                                        .skipMemoryCache(true) //2
+                                        .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                                        .transform(CircleCrop()) //4
+                                        .into(studImg)
+                                } else {
+                                    studImg.setImageResource(R.drawable.boy)
+                                }
+                                textViewYear.text =
+                                    "Class : " + studentsModelArrayList[studentSelectPosition].mClass
+                            }*/
+                            if (progressReport.equals("0")) {
+                                alertTxtRelative.visibility = View.GONE
+                                alertText.visibility = View.GONE
+                                noDataImg.visibility = View.GONE
+                                mRecycleView.visibility = View.VISIBLE
+                                reportlistApi()
+                                /*if (AppUtils.isNetworkConnected(mContext)) {
+
+                                    //getReportListAPI(URL_GET_STUDENT_REPORT)
+                                } else {
+                                    AppUtils.showDialogAlertDismiss(
+                                        mContext as Activity,
+                                        "Network Error",
+                                        getString(R.string.no_internet),
+                                        R.drawable.nonetworkicon,
+                                        R.drawable.roundred
+                                    )
+                                }*/
+                            } else {
+                                alertTxtRelative.visibility = View.VISIBLE
+                                alertText.visibility = View.VISIBLE
+                                noDataImg.visibility = View.VISIBLE
+                                alertText.setText(R.string.not_available_child)
+                                mRecycleView.visibility = View.GONE
+                                println("testing........")
+                            }
+                        } else {
+//                                mRecycleView.setVisibility(View.GONE);
+                            Toast.makeText(mContext, "No data found", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                }
+            }
+        })
+    }
+
+    fun showStudentList(mStudentList: ArrayList<StudentListModel>) {
+        val dialog = Dialog(mContext)
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.dialog_student_list)
+        var iconImageView = dialog.findViewById(R.id.iconImageView) as ImageView
+        var btn_dismiss = dialog.findViewById(R.id.btn_dismiss) as Button
+        var studentListRecycler = dialog.findViewById(R.id.studentListRecycler) as RecyclerView
+        iconImageView.setImageResource(R.drawable.boy)
+        //if(mSocialMediaArray.get())
+        val sdk = Build.VERSION.SDK_INT
+        if (sdk < Build.VERSION_CODES.JELLY_BEAN) {
+            btn_dismiss.setBackgroundDrawable(
+                mContext.resources.getDrawable(R.drawable.button_new)
+            )
+        } else {
+            btn_dismiss.background = mContext.resources.getDrawable(R.drawable.button_new)
+        }
+
+        studentListRecycler.setHasFixedSize(true)
+        val llm = LinearLayoutManager(mContext)
+        llm.orientation = LinearLayoutManager.VERTICAL
+        studentListRecycler.layoutManager = llm
+        if (mStudentList.size > 0) {
+            val studentAdapter = StudentSpinnerAdapter(mContext, mStudentList)
+            studentListRecycler.adapter = studentAdapter
+        }
+
+        btn_dismiss.setOnClickListener()
+        {
+            dialog.dismiss()
+        }
+
+        studentListRecycler.addOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+                // Your logic
+                //progressDialogAdd.visibility = View.VISIBLE
+
+                studentName.setText(mStudentList.get(position).name)
+                stud_img = mStudentList.get(position).photo.toString()
+                stud_id = mStudentList.get(position).id.toString()
+                stud_class = mStudentList.get(position).mClass.toString()
+                stud_name=mStudentList[position].name.toString()
+                section=mStudentList[position].section.toString()
+                progressReport=mStudentList[position].progressreport.toString()
+                alumini=mStudentList[position].alumi.toString()
+                textViewYear.setText("Class : " + mStudentList.get(position).mClass)
+
+               /* PreferenceManager.setStudentID(mContext, studentId)
+                PreferenceManager.setStudentName(mContext, studentName)
+                PreferenceManager.setStudentPhoto(mContext, studentImg)
+                PreferenceManager.setStudentClass(mContext, studentClass)*/
+
+                if (!stud_img.equals("")) {
+                    Glide.with(mContext) //1
+                        .load(stud_img)
+                        .placeholder(R.drawable.student)
+                        .error(R.drawable.student)
+                        .skipMemoryCache(true) //2
+                        .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                        .transform(CircleCrop()) //4
+                        .into(studImg)
+                } else {
+                    studImg.setImageResource(R.drawable.boy)
+                }
+                if (progressReport.equals("0")) {
+                    alertTxtRelative.visibility = View.GONE
+                    alertText.visibility = View.GONE
+                    noDataImg.visibility = View.GONE
+                    mRecycleView.visibility = View.VISIBLE
+                    reportlistApi()
+                  /*  if (AppUtils.isNetworkConnected(mContext)) {
+                        println("test working")
+                        getReportListAPI(URL_GET_STUDENT_REPORT)
+                    } else {
+                        AppUtils.showDialogAlertDismiss(
+                            mContext as Activity,
+                            "Network Error",
+                            getString(R.string.no_internet),
+                            R.drawable.nonetworkicon,
+                            R.drawable.roundred
+                        )
+                    }*/
+                } else {
+                    alertTxtRelative.visibility = View.VISIBLE
+                    alertText.visibility = View.VISIBLE
+                    noDataImg.visibility = View.VISIBLE
+                    alertText.setText(R.string.not_available_child)
+                    mRecycleView.visibility = View.GONE
+
+                }
+               // progressDialogAdd.visibility = View.VISIBLE
+               /* if (select_val == 0) {
+                    callStudentLeaveInfo()
+                } else if (select_val == 1) {
+                    callpickuplist_api()
+                }*/
+                dialog.dismiss()
+            }
+        })
+        dialog.show()
+    }
+    private fun reportlistApi(){
+
+        reportslist=ArrayList()
+        val call: Call<ReportsModel> = ApiClient.getClient.progress_report(
+            PreferenceManager().getaccesstoken(mContext).toString(),stud_id)
+
+        call.enqueue(object : Callback<ReportsModel> {
+            override fun onFailure(call: Call<ReportsModel>, t: Throwable) {
+                Log.e("Failed", t.localizedMessage)
+
+            }
+
+            override fun onResponse(
+                call: Call<ReportsModel>,
+                response: Response<ReportsModel>
+            ) {
+
+                val responsedata = response.body()
+                if (responsedata!!.responsecode.equals("200")){
+                    if (responsedata!!.response.statuscode.equals("303")){
+
+                        reportslist=responsedata!!.response.responseArray
+                        if (reportslist.size>0){
+                            noDataRelative.visibility = View.GONE
+                            mRecycleView.visibility = View.VISIBLE
+                        }else{
+                            mRecycleView.visibility = View.GONE
+                            noDataRelative.visibility = View.VISIBLE
+
+                            alertTxtRelative.visibility = View.VISIBLE
+                            alertText.visibility = View.VISIBLE
+                            noDataImg.visibility = View.VISIBLE
+                            noDataTxt.text = "Currently you have no reports"
+                        }
+
+
+                    }
+                }
+
+                }
+        })
+
+    }
+
 }

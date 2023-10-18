@@ -19,7 +19,17 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import com.mobatia.bskl.R
+import android.widget.Toast
+import com.example.bskl_kotlin.R
+import com.example.bskl_kotlin.activity.datacollection_p2.model.StudentModelNew
+import com.example.bskl_kotlin.activity.home.model.DeviceregisterModel
+import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.common.model.StudentListModel
+import com.example.bskl_kotlin.common.model.StudentListResponseModel
+import com.example.bskl_kotlin.fragment.home.studentsModelArrayList
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -57,6 +67,37 @@ class AppUtils {
             dialog.dismiss()
             activity.finish()
         }
+        val dialogOkButton = dialog
+            .findViewById<Button>(R.id.dialogButtonOK)
+        dialogOkButton.visibility = View.GONE
+        dialogOkButton.text = okBtnTitle
+        if (okBtnVisibility) {
+            dialogOkButton.visibility = View.VISIBLE
+            dialogOkButton.setOnClickListener {
+                dialog.dismiss()
+                activity.finish()
+            }
+        }
+        dialog.show()
+    }
+    fun showAlert(
+        activity: Activity, message: String?,
+        okBtnTitle: String?, cancelBtnTitle: String?, okBtnVisibility: Boolean
+    ) {
+        // custom dialog
+        val dialog = Dialog(activity, R.style.NewDialog)
+        dialog.setContentView(R.layout.custom_alert_dialog)
+        dialog.setCancelable(false)
+
+        // set the custom dialog components - text, image, button
+        val text = dialog.findViewById<TextView>(R.id.text)
+        text.text = message
+        val sdk = Build.VERSION.SDK_INT
+        val dialogCancelButton = dialog
+            .findViewById<Button>(R.id.dialogButtonCancel)
+        dialogCancelButton.text = cancelBtnTitle
+
+        dialogCancelButton.setOnClickListener { dialog.dismiss() }
         val dialogOkButton = dialog
             .findViewById<Button>(R.id.dialogButtonOK)
         dialogOkButton.visibility = View.GONE

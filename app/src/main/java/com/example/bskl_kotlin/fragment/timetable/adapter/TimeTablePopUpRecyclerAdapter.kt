@@ -10,6 +10,10 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.fragment.timetable.model.DayModel
 import com.example.bskl_kotlin.manager.AppUtils
+import java.text.ParseException
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class TimeTablePopUpRecyclerAdapter(
     private val mContext: Context,
@@ -43,9 +47,9 @@ class TimeTablePopUpRecyclerAdapter(
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         holder.dateTimeTextView.setText(
-            timeTableList[position].day + " | " + AppUtils().timeParsingToAmPm(
+            timeTableList[position].day + " | " + timeParsingToAmPm(
                 timeTableList[position].starttime
-            ) + " - " + AppUtils().timeParsingToAmPm(
+            ) + " - " + timeParsingToAmPm(
                 timeTableList[position].endtime
             )
         )
@@ -89,5 +93,18 @@ class TimeTablePopUpRecyclerAdapter(
 
     override fun getItemCount(): Int {
         return timeTableList.size
+    }
+    fun timeParsingToAmPm(date: String?): String? {
+        var strCurrentDate = ""
+        var format = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+        var newDate: Date? = null
+        try {
+            newDate = format.parse(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        format = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+        strCurrentDate = format.format(newDate)
+        return strCurrentDate
     }
 }

@@ -1,3 +1,4 @@
+/*
 
 package com.example.bskl_kotlin.fragment.safeguarding.adapter
 
@@ -589,6 +590,7 @@ class SafeGuardingAdapter(data: ArrayList<StudentModel>, context: Context) :
                     holder!!.textViewStudentSent.gravity =
                         Gravity.CENTER
                     holder!!.textViewReportAbsence.setOnClickListener {
+*/
 /*
 val mIntent = Intent(
                             mContext,
@@ -601,7 +603,8 @@ val mIntent = Intent(
                         mIntent.putExtra("status", "3")
                         mIntent.putExtra("StudentModelArray", dataSet)
                         mContext.startActivity(mIntent)
-*/
+*//*
+
 
                     }
                     holder!!.textViewStudentLate.setOnClickListener {
@@ -624,4 +627,4 @@ val mIntent = Intent(
             }
         }
     }
-}
+}*/

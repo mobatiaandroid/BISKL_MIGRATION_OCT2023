@@ -16,7 +16,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.example.bskl_kotlin.activity.splash.TokenModel
 import com.example.bskl_kotlin.activity.splash.TokenResponseModel
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

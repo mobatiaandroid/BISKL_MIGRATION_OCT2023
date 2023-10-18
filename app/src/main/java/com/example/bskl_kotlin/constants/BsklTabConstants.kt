@@ -1,4 +1,4 @@
-package com.example.bskl_kotlin.common
+package com.example.bskl_kotlin.constants
 
 class BsklTabConstants {
 

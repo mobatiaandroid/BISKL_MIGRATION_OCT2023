@@ -26,7 +26,7 @@ import com.example.bskl_kotlin.activity.notification.adapter.StudentUnReadRecycl
 import com.example.bskl_kotlin.fragment.messages.model.PushNotificationModel
 import com.example.bskl_kotlin.manager.AppController
 import com.example.bskl_kotlin.manager.AppUtils
-import com.mobatia.bskl.R
+import com.example.bskl_kotlin.R
 
 class ImageActivity:AppCompatActivity() {
    lateinit var mContext: Context

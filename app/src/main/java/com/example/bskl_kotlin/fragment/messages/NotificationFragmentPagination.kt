@@ -21,18 +21,18 @@ import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.activity.notification.NotificationInfoActivity
 import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.common.model.NotificationNewResponseModel
 import com.example.bskl_kotlin.fragment.messages.adapter.ReadMessageAdapter
 import com.example.bskl_kotlin.fragment.messages.adapter.UnReadMessageAdapter
 import com.example.bskl_kotlin.fragment.messages.model.NotificationFavouriteModel
 import com.example.bskl_kotlin.fragment.messages.model.NotificationNewDataModel
-import com.example.bskl_kotlin.fragment.messages.model.NotificationNewResponseModel
 import com.example.bskl_kotlin.fragment.messages.model.NotificationStatusModel
 import com.example.bskl_kotlin.fragment.messages.model.PushNotificationModel
 import com.example.bskl_kotlin.manager.AppController
 import com.example.bskl_kotlin.manager.AppUtils
-import com.mobatia.bskl.R
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -79,12 +79,22 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
     var sdfcalender: SimpleDateFormat? = null
     var mProgressRelLayout: RelativeLayout? = null
     var nestedScroll: NestedScrollView? = null
-    var unReadMessageAdapter: UnReadMessageAdapter? = null
+    //var unReadMessageAdapter: UnReadMessageAdapter? = null
     var readMessageAdapter: ReadMessageAdapter? = null
     lateinit var notificationList:ArrayList<NotificationNewDataModel>
+    lateinit var mMessageReadList: ArrayList<PushNotificationModel>
 
     lateinit var readArray:ArrayList<PushNotificationModel>
     lateinit var unreadArray:ArrayList<PushNotificationModel>
+    var isVisibleUnreadBox:Boolean=false
+    var isVisibleReadBox = false
+    var isSelectedUnRead = false
+    var isSelectedRead = false
+    var  callTypeStatus = "1"
+    var click_count_read = 0
+    var click_count = 0
+    var mMessageUnreadListFav = ArrayList<PushNotificationModel>()
+    var mMessageReadListFav = ArrayList<PushNotificationModel>()
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -98,6 +108,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
         mContext=requireContext()
 
         notificationList= ArrayList()
+        mMessageReadList= ArrayList()
         readArray= ArrayList()
         unreadArray= ArrayList()
         val actionBar = (activity as AppCompatActivity?)!!.supportActionBar
@@ -109,19 +120,19 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
 
         readArray.clear()
         unreadArray.clear()
-        /*AppController().mMessageReadList.clear()
-        AppController().mMessageUnreadList.clear()*/
+        mMessageReadList=ArrayList()
+        unreadArray=ArrayList()
+
+       // AppController().mMessageReadList.clear()
+        //AppController().mMessageUnreadList.clear()
         headerTitle.text = "Messages"
         headerTitle.visibility = View.VISIBLE
         logoClickImgView.visibility = View.INVISIBLE
         initUi()
         onClick()
-        AppController().isVisibleUnreadBox = false
-        AppController().isVisibleReadBox = false
         myFormatCalender = "yyyy-MM-dd HH:mm:ss"
         sdfcalender = SimpleDateFormat(myFormatCalender)
-        AppController().isSelectedUnRead = false
-        AppController().isSelectedRead = false
+
         dataLength = 0
         typeValue = "1"
         limitValue = 20
@@ -132,11 +143,15 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
         isFromReadBottom = false
         isFromUnReadBottom = false
         isProgressVisible = false
-        AppController().callTypeStatus = "1"
 
-       // callPushNotification(typeValue, limitValue.toString(), pageUnReadValue.toString())
 
-        if (AppUtils().isNetworkConnected(mContext)) {
+        callPushNotification(
+            typeValue,
+            limitValue.toString(),
+            pageUnReadValue.toString()
+        )
+
+      /*  if (AppUtils().isNetworkConnected(mContext)) {
             callPushNotification(
                 typeValue,
                 limitValue.toString(),
@@ -150,7 +165,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                 R.drawable.nonetworkicon,
                 R.drawable.roundred
             )
-        }
+        }*/
 
         if (PreferenceManager().getIsFirstTimeInNotification(mContext)) {
             PreferenceManager().setIsFirstTimeInNotification(mContext, false)
@@ -214,8 +229,8 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
             msgReadSelect!!.setVisibility(View.GONE)
             messageUnRead!!.setVisibility(View.GONE)
             msgUnread!!.setVisibility(View.GONE)
-            AppController().isVisibleUnreadBox = false
-            AppController().isVisibleReadBox = false
+            isVisibleUnreadBox = false
+            isVisibleReadBox = false
             if (AppUtils().isNetworkConnected(mContext)) {
                 //clearBadge();
                 var readList = ""
@@ -272,13 +287,13 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
             msgReadSelect!!.setVisibility(View.GONE)
             messageUnRead!!.setVisibility(View.GONE)
             msgUnread!!.setVisibility(View.GONE)
-            AppController().isVisibleUnreadBox = false
-            AppController().isVisibleReadBox = false
+            isVisibleUnreadBox = false
+            isVisibleReadBox = false
             if (AppUtils().isNetworkConnected(mContext)) {
                 var readList = ""
                 var k = 0
                 val mTempReadArray = ArrayList<PushNotificationModel>()
-                mTempReadArray.addAll(AppController().mMessageReadList)
+                mTempReadArray.addAll(mMessageReadList)
                 for (i in mTempReadArray.indices) {
                     if (mTempReadArray[i].isMarked) {
                         if (k == 0) {
@@ -286,15 +301,15 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                         } else {
                             readList = readList + "," + mTempReadArray[i].pushid
                         }
-                        for (j in 0 until AppController().mMessageReadList.size) {
+                        for (j in 0 until mMessageReadList.size) {
                             val pushReadId: String =
-                                AppController().mMessageReadList.get(j).pushid
+                                mMessageReadList.get(j).pushid
                             if (pushReadId.equals(
                                     mTempReadArray[i].pushid
                                 )
                             ) {
                                 //  isFoundId=true;
-                                AppController().mMessageReadList.removeAt(j)
+                                mMessageReadList.removeAt(j)
                             }
                         }
                         k = k + 1
@@ -316,18 +331,18 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
             }
         }
         messageRead!!.setOnClickListener {
-            val mCount: Int = AppController().click_count_read
-            if (AppController().click_count_read % 2 === 0) {
-                AppController().isVisibleReadBox = true
+            val mCount: Int = click_count_read
+            if (click_count_read % 2 === 0) {
+                isVisibleReadBox = true
                 markUnRead!!.setVisibility(View.GONE)
                 markRead!!.setVisibility(View.GONE)
-                AppController().isSelectedRead = false
-                for (i in 0 until AppController().mMessageReadList.size) {
-                    AppController().mMessageReadList.get(i).isMarked=true
+                isSelectedRead = false
+                for (i in 0 until mMessageReadList.size) {
+                    mMessageReadList.get(i).isMarked=true
                 }
                 var selected = false
-                for (i in 0 until AppController().mMessageReadList.size) {
-                    if (AppController().mMessageReadList.get(i).isMarked) {
+                for (i in 0 until mMessageReadList.size) {
+                    if (mMessageReadList.get(i).isMarked) {
                         selected = true
                     } else {
                         selected = false
@@ -346,10 +361,10 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                 readMessageAdapter!!.notifyDataSetChanged()
                 //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
             } else {
-                AppController().isVisibleReadBox = false
-                for (i in 0 until AppController().mMessageReadList.size) {
-                    if (AppController().mMessageReadList.get(i).isChecked) {
-                        AppController().mMessageReadList.get(i).isChecked=false
+                isVisibleReadBox = false
+                for (i in 0 until mMessageReadList.size) {
+                    if (mMessageReadList.get(i).isChecked) {
+                        mMessageReadList.get(i).isChecked=false
                     }
                 }
                 markUnRead!!.setVisibility(View.GONE)
@@ -359,11 +374,11 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                 //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
             }
 
-            AppController().click_count_read++
+            click_count_read++
         }
         messageUnRead!!.setOnClickListener {
-            if (AppController().click_count % 2 === 0) {
-                AppController().isVisibleUnreadBox = true
+            if (click_count % 2 === 0) {
+                isVisibleUnreadBox = true
                 for (i in 0 until unreadArray.size) {
                     unreadArray.get(i).isChecked=true
                 }
@@ -396,11 +411,11 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                     markUnRead!!.setVisibility(View.GONE)
                     markRead!!.setVisibility(View.GONE)
                 }
-                unReadMessageAdapter!!.notifyDataSetChanged()
+                //unReadMessageAdapter!!.notifyDataSetChanged()
                 //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
             } else {
-                AppController().isVisibleUnreadBox = false
-                Log.e("test", AppController().isVisibleUnreadBox.toString())
+                isVisibleUnreadBox = false
+                Log.e("test",isVisibleUnreadBox.toString())
                 for (i in 0 until unreadArray.size) {
                     if (unreadArray.get(i).isChecked) {
                         unreadArray.get(i).isChecked=false
@@ -415,13 +430,13 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                 msgUnread!!.setVisibility(View.GONE)
                 markRead!!.setVisibility(View.GONE)
                 messageUnRead!!.setBackgroundResource(R.drawable.check_box_header)
-                unReadMessageAdapter!!.notifyDataSetChanged()
+               // unReadMessageAdapter!!.notifyDataSetChanged()
                 //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
             }
-            AppController().click_count++
+            click_count++
         }
         unreadTxt!!.setOnClickListener {
-            AppController().callTypeStatus = "1"
+            callTypeStatus = "1"
             markRead!!.setVisibility(View.GONE)
             messageUnRead!!.setVisibility(View.GONE)
             msgReadSelect!!.setVisibility(View.GONE)
@@ -430,8 +445,8 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
             markUnRead!!.setVisibility(View.GONE)
             // messageUnRead.setBackgroundResource(R.drawable.check_box_header);
             // messageUnRead.setBackgroundResource(R.drawable.check_box_header);
-            AppController().isVisibleUnreadBox = false
-            AppController().isVisibleReadBox = false
+            isVisibleUnreadBox = false
+            isVisibleReadBox = false
             // System.out.println(" size of array"+AppController.mMessageUnreadList.size());
             // System.out.println(" size of array"+AppController.mMessageUnreadList.size());
             if (isProgressVisible) {
@@ -456,7 +471,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                 Log.e("adaptr","1set")
                 unReadList.visibility=View.VISIBLE
                 unReadList.layoutManager=LinearLayoutManager(mContext)
-                unReadMessageAdapter =
+               var unReadMessageAdapter =
                     UnReadMessageAdapter(
                         mContext,
                         unreadArray,
@@ -625,7 +640,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
             }
         }
         readTxt!!.setOnClickListener {
-            AppController().callTypeStatus = "2"
+            callTypeStatus = "2"
             markRead!!.setVisibility(View.GONE)
             msgReadSelect!!.setVisibility(View.GONE)
             messageUnRead!!.setVisibility(View.GONE)
@@ -639,8 +654,8 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
             }
             // messageUnRead.setBackgroundResource(R.drawable.check_box_header);
             // messageUnRead.setBackgroundResource(R.drawable.check_box_header);
-            AppController().isVisibleUnreadBox = false
-            AppController().isVisibleReadBox = false
+            isVisibleUnreadBox = false
+            isVisibleReadBox = false
             //  System.out.println(" size of array"+AppController.mMessageReadList.size());
 
             //  System.out.println(" size of array"+AppController.mMessageReadList.size());
@@ -648,7 +663,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
             limitValue = 20
             pageReadValue = 0
             isReadAvailable = false
-            if (AppController().mMessageReadList.size > 0) {
+            if (mMessageReadList.size > 0) {
                 readTxt!!.setBackgroundResource(R.drawable.notification_read)
                 unreadTxt!!.setBackgroundResource(R.drawable.notification_unread)
                 readTxt!!.setTextColor(
@@ -661,7 +676,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                 //set adapter
                 readMessageAdapter = ReadMessageAdapter(
                     mContext,
-                    AppController().mMessageReadList,
+                    mMessageReadList,
                     messageRead!!,
                     markUnRead!!,
                     markRead!!,
@@ -843,8 +858,8 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                         msgReadSelect!!.setVisibility(View.GONE)
                         messageUnRead!!.setVisibility(View.GONE)
                         msgUnread!!.setVisibility(View.GONE)
-                        AppController().isVisibleUnreadBox = false
-                        AppController().isVisibleReadBox = false
+                        isVisibleUnreadBox = false
+                        isVisibleReadBox = false
 
                         if (statusread.equals("1")) {
                             typeValue = "1"
@@ -882,11 +897,11 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
            tokenM = token
         }
     }*/
-    AppController().mMessageReadListFav = ArrayList()
-    AppController().mMessageUnreadListFav = ArrayList()
-    AppController().mMessageReadListFav =
-        AppController().mMessageReadList.clone() as ArrayList<PushNotificationModel>
-    AppController().mMessageUnreadListFav =
+    mMessageReadListFav = ArrayList()
+    mMessageUnreadListFav = ArrayList()
+    mMessageReadListFav =
+        mMessageReadList.clone() as ArrayList<PushNotificationModel>
+    mMessageUnreadListFav =
         unreadArray.clone() as ArrayList<PushNotificationModel>
 
 
@@ -970,8 +985,8 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                 notificationList=ArrayList()
                                 val readObject =responsedata.response.data[i]
                                 notificationList.add(readObject)
-                                if (AppController().mMessageReadList.size == 0) {
-                                    AppController().mMessageReadList.add(
+                                if (mMessageReadList.size == 0) {
+                                    mMessageReadList.add(
                                         addReadMessage(
                                             readObject,
                                             i,
@@ -982,15 +997,15 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                 } else {
                                     val pushID = readObject.pushid
                                     var isFoundPush = false
-                                    for (j in 0 until AppController().mMessageReadList.size) {
+                                    for (j in 0 until mMessageReadList.size) {
                                         if (pushID.equals(
-                                                AppController().mMessageReadList.get(j).pushid)
+                                                mMessageReadList.get(j).pushid)
                                         ) {
                                             isFoundPush = true
                                         }
                                     }
                                     if (!isFoundPush) {
-                                        AppController().mMessageReadList.add(
+                                        mMessageReadList.add(
                                             addUnreadMessage(
                                                 readObject,
                                                 i,
@@ -1002,9 +1017,9 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                             }
                             Log.e("unreadlisrtsize1",unreadArray.size.toString())
                         }
-                        Log.e("calltypestatus",AppController().callTypeStatus)
+                        Log.e("calltypestatus",callTypeStatus)
                         Log.e("unreadlisrtsize2",unreadArray.size.toString())
-                        if (AppController().callTypeStatus.equals("1")) {
+                        if (callTypeStatus.equals("1")) {
                             msgUnreadLinear!!.setVisibility(View.VISIBLE)
                             msgReadLinear!!.setVisibility(View.GONE)
                             noMsgAlertRelative!!.setVisibility(View.GONE)
@@ -1090,7 +1105,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                         }*/)
                                 unReadList.adapter=unReadMessageAdaptr
 
-                                unReadMessageAdaptr!!.notifyDataSetChanged()
+                               // unReadMessageAdaptr!!.notifyDataSetChanged()
                                 if (isFromUnReadBottom) {
                                     unReadList!!.scrollToPosition(
                                         pageUnReadValue - 2
@@ -1099,9 +1114,10 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
 
                                 }
                                         // unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
-                                unReadList!!.setAdapter(
+                                unReadList.adapter=unReadMessageAdaptr
+                               /* unReadList!!.setAdapter(
                                     unReadMessageAdapter
-                                )
+                                )*/
 
                                 /*unReadMessageAdapter.setOnBottomReachedListener(
                                     object : OnBottomReachedListener() {
@@ -1168,7 +1184,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                             noMsgAlertRelative!!.setVisibility(View.GONE)
                             noMsgText!!.setVisibility(View.GONE)
                             // System.out.println("working else");
-                            if (AppController().mMessageReadList.size > 0) {
+                            if (mMessageReadList.size > 0) {
                                 readTxt!!.setBackgroundResource(R.drawable.notification_read)
                                 unreadTxt!!.setBackgroundResource(R.drawable.notification_unread)
                                 readTxt!!.setTextColor(
@@ -1180,15 +1196,15 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                         .getColor(R.color.split_bg)
                                 )
                                 //set adapter
-                                Collections.sort(AppController().mMessageReadList,
+                                Collections.sort(mMessageReadList,
                                     Comparator<PushNotificationModel> { o1, o2 ->
                                         o1.dateTime.compareTo(o2.dateTime)
                                     })
-                                Collections.reverse(AppController().mMessageReadList)
+                                Collections.reverse(mMessageReadList)
                                readMessageAdapter =
                                     ReadMessageAdapter(
                                         mContext,
-                                        AppController().mMessageReadList,
+                                        mMessageReadList,
                                         messageRead!!,
                                         markUnRead!!,
                                         markRead!!,
@@ -1369,7 +1385,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                         }
                     }
                     else {
-                        if (AppController().callTypeStatus.equals("1")) {
+                        if (callTypeStatus.equals("1")) {
                             if (unreadArray.size > 0) {
 
                                 //set adapter
@@ -1390,7 +1406,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                 Collections.reverse(unreadArray)
                                 Log.e("adaptr","set4")
                                 unReadList.layoutManager=LinearLayoutManager(mContext)
-                                unReadMessageAdapter =
+                               var unReadMessageAdapter =
                                     UnReadMessageAdapter(
                                         mContext,
                                         unreadArray,
@@ -1488,7 +1504,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                 noMsgText!!.setText("Currently you have no messages")*/
                             }
                         } else {
-                            if (AppController().mMessageReadList.size > 0) {
+                            if (mMessageReadList.size > 0) {
                                 readTxt!!.setBackgroundResource(R.drawable.notification_read)
                                 unreadTxt!!.setBackgroundResource(R.drawable.notification_unread)
                                 readTxt!!.setTextColor(
@@ -1499,16 +1515,16 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                     mContext.getResources()
                                         .getColor(R.color.split_bg)
                                 )
-                                Collections.sort(AppController().mMessageReadList,
+                                Collections.sort(mMessageReadList,
                                     Comparator<PushNotificationModel> { o1, o2 ->
                                         o1.dateTime.compareTo(o2.dateTime)
                                     })
-                                Collections.reverse(AppController().mMessageReadList)
+                                Collections.reverse(mMessageReadList)
                                 //set adapter
                                 readMessageAdapter =
                                     ReadMessageAdapter(
                                         mContext,
-                                        AppController().mMessageReadList,
+                                        mMessageReadList,
                                         messageRead!!,
                                         markUnRead!!,
                                         markRead!!,
@@ -1738,9 +1754,9 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
             val newday = sdfcalender1.format(mEventDate)
             var setday=newday
            var setchecked:Boolean?=null
-            if (AppController().mMessageUnreadListFav.size > 0 && i < length) {
-                if (AppController().mMessageUnreadListFav.get(i).isChecked != null) {
-                    setchecked=AppController().mMessageUnreadListFav.get(i).isChecked
+            if (mMessageUnreadListFav.size > 0 && i < length) {
+                if (mMessageUnreadListFav.get(i).isChecked != null) {
+                    setchecked=mMessageUnreadListFav.get(i).isChecked
 
                 } else {
                     setchecked=false
@@ -1823,9 +1839,9 @@ return ymodel
             val newday = sdfcalender1.format(mEventDate)
             var setday=newday
             var setmarked:Boolean?=null
-            if (AppController().mMessageReadListFav.size > 0 && i < length) {
-                if (AppController().mMessageReadListFav.get(i).isMarked != null) {
-                    setmarked=AppController().mMessageReadListFav.get(i).isMarked
+            if (mMessageReadListFav.size > 0 && i < length) {
+                if (mMessageReadListFav.get(i).isMarked != null) {
+                    setmarked=mMessageReadListFav.get(i).isMarked
 
                 } else {
                     setmarked=false
