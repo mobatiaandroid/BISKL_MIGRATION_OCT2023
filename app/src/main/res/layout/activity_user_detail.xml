@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relativeHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:scrollbars="none"
+        android:visibility="visible">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProSemiBold
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:text="Parent/Guardian Information"
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <LinearLayout
+                android:id="@+id/namelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:weightSum="100">
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    android:id="@+id/stName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:text="Name"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textColor="@color/black" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                    android:id="@+id/stnameValue"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="50"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/relationshipLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:weightSum="100">
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    android:id="@+id/relationTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:text="Relationship"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textColor="@color/black"
+                    />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                    android:id="@+id/relationship"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="50"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/studClassLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:weightSum="100">
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    android:id="@+id/studClassTextView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:text="Email"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textColor="@color/black" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                    android:id="@+id/email"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="50"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/fromlayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:weightSum="100">
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    android:id="@+id/leaveDateFrom"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:text="Mobile Number"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textColor="@color/black" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                    android:id="@+id/mobileno"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="50"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/mobileLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:weightSum="100">
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    android:id="@+id/leaveDateTo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:text="Phone No (2)"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textColor="@color/black" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                    android:id="@+id/telephoneNo"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="50"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/addresslinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="5dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:weightSum="100">
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    android:id="@+id/addressdata"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:text="Address"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textColor="@color/black" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                    android:id="@+id/useraddress"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="50"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/relationShipLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                android:weightSum="100">
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    android:id="@+id/relationShipTxt"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="45"
+                    android:text="RelationShip"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProBold
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=":"
+                    android:textColor="@color/black" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                    android:id="@+id/relationShip"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_weight="50"
+                    android:textColor="@color/black"
+                    android:textSize="14sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/relSub"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/event_user_detail"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <com.example.bskl_kotlin.manager.RoundedImageView
+                    android:id="@+id/studImg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="2dp"
+                    android:background="@drawable/round"
+                    android:padding="5dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/boy" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                    android:id="@+id/studentInfo"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="80"
+                    android:gravity="left|center"
+                    android:paddingLeft="10dp"
+                    android:text="Students"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"></View>
+
+                <ImageView
+                    android:id="@+id/arrowImg"
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right|center"
+                    android:layout_weight="12"
+                    android:src="@drawable/arrow"
+                    android:visibility="visible" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+</LinearLayout>

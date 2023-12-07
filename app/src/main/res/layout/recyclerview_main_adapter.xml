@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white">
+    <LinearLayout
+        android:id="@+id/accYrLinear"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:background="@color/report"
+        android:layout_marginTop="5dp">
+        <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/accYr"
+            android:layout_gravity="center"
+            android:text="Accyear"
+            android:layout_marginLeft="10dp"
+            android:textSize="20sp"/>
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:background="@color/white"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:scrollbars="vertical" />
+
+</LinearLayout>

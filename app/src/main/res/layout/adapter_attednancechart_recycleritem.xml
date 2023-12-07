@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/titleTextView"
+        style="@style/textstyleblacklow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="5dp"
+        android:layout_toLeftOf="@+id/countTextView"
+        android:text="" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/countTextView"
+        style="@style/textstyleWhite"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:background="@color/present"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:gravity="center"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:text="22" />
+
+
+</RelativeLayout>

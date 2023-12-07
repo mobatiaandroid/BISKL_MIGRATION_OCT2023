@@ -25,6 +25,15 @@
         android:requestLegacyExternalStorage="true"
         tools:replace="android:allowBackup,android:icon, android:label, android:theme">
         <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/notify_small" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/split_bg" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="@string/default_notification_channel_id" />
+        <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
             android:value="AIzaSyAixzbHoPqIadZKzIMQuZXU_hBR6LAJths" />
         <meta-data
@@ -72,12 +81,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" />
         <activity
-            android:name="com.example.bskl_kotlin.activity.attendance.AttendanceInfoActivity"
-            android:label="@string/title_activity_home"
-            android:exported="true"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActionBarTheme" />
-        <activity
             android:name="com.example.bskl_kotlin.activity.web_view.LoadWebViewActivity"
             android:label="@string/title_activity_home"
             android:exported="true"
@@ -85,25 +88,114 @@
             android:theme="@style/CustomActionBarTheme" />
         <activity
             android:name="com.example.bskl_kotlin.activity.data_collection.DataCollectionHome"
+            android:isScrollContainer="true"
+            android:exported="true"
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustPan|adjustResize" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.absence.LeaveRequestSubmissionActivity"
             android:label="@string/title_activity_home"
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@style/CustomActionBarTheme" />
-    <service
-        android:name="com.example.bskl_kotlin.fcmservices.MyFirebaseInstanceIDService"
-        android:enabled="true"
-        android:exported="true"
-        tools:ignore="Instantiatable">
-        <intent-filter>
-            <action android:name="com.google.firebase.MESSAGING_EVENT" />
-        </intent-filter>
-    </service>
-    <service android:name="com.example.bskl_kotlin.fcmservices.MyFirebaseMessagingService"
-        android:exported="false">
-        <intent-filter>
-            <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-        </intent-filter>
-    </service>
+        <activity
+            android:name="com.example.bskl_kotlin.activity.login.SignUpActivityy"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.absence.LeavesDetailActivity"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.fragment.attendance.AttendanceInfoActivity"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.settings.UserDetailActivity"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.settings.StudentListActivity"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.settings.StudentDetailActivity"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.notification.ImageActivity"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.notification.VideoWebViewActivity"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.notification.AudioPlayerViewActivity"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.fragment.messages.MessageDetail"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.pdf.PDF_View_New"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.calender.CalendarYearActivity"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.calender.CalendarYearRecyclerActivity"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <activity
+            android:name="com.example.bskl_kotlin.activity.tutorial.TutorialActivity"
+            android:label="@string/title_activity_home"
+            android:exported="true"
+            android:screenOrientation="portrait"
+            android:theme="@style/CustomActionBarTheme" />
+        <service
+            android:name=".fcmservices.MyFirebaseMessagingService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".fcmservices.MyFirebaseInstanceIDService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
 
     </application>
 </manifest>

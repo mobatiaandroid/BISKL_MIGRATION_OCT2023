@@ -156,7 +156,7 @@ class ContactUsFragment(title: String, tabId: String) : Fragment() {
         anim!!.setDuration(1000)
 
         val call: Call<ContactUsModel> = ApiClient.getClient.contact_us(
-            PreferenceManager().getaccesstoken(mContext).toString())
+            "Bearer "+PreferenceManager().getaccesstoken(mContext).toString())
 
         call.enqueue(object : Callback<ContactUsModel> {
             override fun onFailure(call: Call<ContactUsModel>, t: Throwable) {

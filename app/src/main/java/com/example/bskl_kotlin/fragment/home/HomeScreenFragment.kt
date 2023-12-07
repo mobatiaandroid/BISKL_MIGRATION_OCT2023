@@ -32,9 +32,11 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.bskl_kotlin.R
+import com.example.bskl_kotlin.activity.calender.ListViewCalendar
 import com.example.bskl_kotlin.activity.data_collection.DataCollectionHome
 import com.example.bskl_kotlin.activity.datacollection_p2.model.ContactTypeModel
 import com.example.bskl_kotlin.activity.datacollection_p2.model.DataCollectionDetailModel
+import com.example.bskl_kotlin.activity.datacollection_p2.model.DatacollectiondetailsApiModel
 import com.example.bskl_kotlin.activity.datacollection_p2.model.GlobalListDataModel
 import com.example.bskl_kotlin.activity.datacollection_p2.model.GlobalListSirname
 import com.example.bskl_kotlin.activity.datacollection_p2.model.InsuranceDetailModel
@@ -42,27 +44,35 @@ import com.example.bskl_kotlin.activity.datacollection_p2.model.KinModel
 import com.example.bskl_kotlin.activity.datacollection_p2.model.OwnContactModel
 import com.example.bskl_kotlin.activity.datacollection_p2.model.PassportDetailModel
 import com.example.bskl_kotlin.activity.datacollection_p2.model.StudentModelNew
+import com.example.bskl_kotlin.activity.home.CalendarFragment
 import com.example.bskl_kotlin.activity.home.HomeActivity
 import com.example.bskl_kotlin.activity.home.model.AppFeatureModel
 import com.example.bskl_kotlin.activity.home.model.NationalityModel
 import com.example.bskl_kotlin.activity.home.model.StudentDetailSettingModel
 import com.example.bskl_kotlin.activity.home.model.TimeTableStudentModel
+import com.example.bskl_kotlin.activity.home.model.UserDetailsApiModel
 import com.example.bskl_kotlin.activity.home.model.UserDetailsModel
 import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.common.model.StudentListApiModel
 import com.example.bskl_kotlin.common.model.StudentListModel
 import com.example.bskl_kotlin.common.model.StudentListResponseModel
 import com.example.bskl_kotlin.constants.BsklNameConstants
 import com.example.bskl_kotlin.constants.BsklTabConstants
 import com.example.bskl_kotlin.fragment.absence.AbsenceFragment
-import com.example.bskl_kotlin.fragment.calendar.CalendarFragment
+import com.example.bskl_kotlin.fragment.attendance.AttendenceFragment
+
 import com.example.bskl_kotlin.fragment.contactus.ContactUsFragment
+import com.example.bskl_kotlin.fragment.home.model.CountriesApiModel
 import com.example.bskl_kotlin.fragment.home.model.CountriesModel
 import com.example.bskl_kotlin.fragment.messages.NotificationFragmentPagination
 import com.example.bskl_kotlin.fragment.news.NewsFragment
 import com.example.bskl_kotlin.fragment.reports.ReportFragment
+import com.example.bskl_kotlin.fragment.safeguarding.SafeGuardingFragment
 import com.example.bskl_kotlin.fragment.social_media.SocialMediaFragment
 import com.example.bskl_kotlin.manager.AppController
 import com.example.bskl_kotlin.manager.AppUtils
+import com.example.bskl_kotlin.manager.CommonClass
+import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -107,6 +117,7 @@ lateinit var mGlobalListSirnameArrayList: ArrayList<GlobalListSirname>
 lateinit var mOwnContactArrayList: ArrayList<OwnContactModel>
 var mListImgArrays: TypedArray? = null
 var listitemArrays: Array<String>? = null
+var tokenM = " "
 class HomeScreenFragment(title:String,
                          mDrawerLayouts: DrawerLayout, listView: ListView, linearLayout: LinearLayout,
                          mListItemArray:Array<String>, mListImgArray: TypedArray
@@ -169,12 +180,12 @@ class HomeScreenFragment(title:String,
             activity!!.getSharedPreferences("locationPermissionStatus", Context.MODE_PRIVATE)
         initUi()
         mSectionText = arrayOfNulls<String>(4)
-        /*FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+        FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
             if (task.isComplete) {
                 val token = task.result
                 tokenM = token
             }
-        }*/
+        }
         //Log.e("DEVICE ID", tokenM)
         setListeners()
         setDragListenersForButtons()
@@ -248,7 +259,7 @@ class HomeScreenFragment(title:String,
                 )
             }
             var relTwoStr: String? = ""
-            // System.out.println("three text " + PreferenceManager.getButtonThreeGuestTextImage(mContext));
+            // System.out.println("three text " + PreferenceManager().getButtonThreeGuestTextImage(mContext));
             if (listitemArrays!!.get(
                     PreferenceManager().getButtonThreeGuestTextImage(mContext)!!.toInt()
                 ).toString().equals(bsklNameConstants.NEWS) || listitemArrays!!.get(
@@ -556,9 +567,9 @@ class HomeScreenFragment(title:String,
 
 
     fun showSettingUserDetail() {
+        var userdetail= UserDetailsApiModel(PreferenceManager().getUserId(mContext).toString())
         val call: Call<UserDetailsModel> = ApiClient.getClient.user_details(
-            PreferenceManager().getaccesstoken(mContext).toString(),
-            PreferenceManager().getUserId(mContext).toString()
+            userdetail,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString()
         )
 
         call.enqueue(object : Callback<UserDetailsModel> {
@@ -650,8 +661,8 @@ class HomeScreenFragment(title:String,
                             PreferenceManager().setIsAlreadyEnteredInsurance(mContext, false)
                             PreferenceManager().setIsAlreadyEnteredPassport(mContext, false)
                             PreferenceManager().setIsAlreadyEnteredStudentList(mContext, false)
-                            AppController().kinArrayShow.clear()
-                            AppController().kinArrayPass.clear()
+                            AppController.kinArrayShow.clear()
+                            CommonClass.kinArrayPass.clear()
                             var mOwnArrayList: ArrayList<OwnContactModel>? =
                                 PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)
                             mOwnArrayList= ArrayList()
@@ -662,11 +673,11 @@ class HomeScreenFragment(title:String,
                                 mContext
                             )
                             PreferenceManager().saveKinDetailsArrayListShow(
-                                AppController().kinArrayShow,
+                                AppController.kinArrayShow,"kinshow",
                                 mContext
                             )
                             PreferenceManager().saveKinDetailsArrayList(
-                                AppController().kinArrayPass,
+                                CommonClass.kinArrayPass,"kinshow",
                                 mContext
                             )
                             var mInsurance: ArrayList<InsuranceDetailModel> = ArrayList()
@@ -678,7 +689,7 @@ class HomeScreenFragment(title:String,
 //                                PreferenceManager().getPassportDetailArrayList(mContext)
                             mPassport= ArrayList()
                             PreferenceManager().savePassportDetailArrayList(mPassport, mContext)
-                            AppController().mStudentDataArrayList.clear()
+                            CommonClass.mStudentDataArrayList.clear()
                             var mStuudent: ArrayList<StudentModelNew> = ArrayList()
                                // PreferenceManager().getInsuranceStudentList(mContext)
                             mStuudent= ArrayList()
@@ -1273,9 +1284,9 @@ class HomeScreenFragment(title:String,
 
     private fun getCountryList() {
         mNationlityListArrrayList = ArrayList<NationalityModel>()
+        var countrymodel=CountriesApiModel(PreferenceManager().getUserId(mContext).toString())
         val call: Call<CountriesModel> = ApiClient.getClient.countries(
-            PreferenceManager().getaccesstoken(mContext).toString(),
-            PreferenceManager().getUserId(mContext).toString()
+           countrymodel,"Bearer "+ PreferenceManager().getaccesstoken(mContext).toString()
         )
 
         call.enqueue(object : Callback<CountriesModel> {
@@ -1297,7 +1308,7 @@ class HomeScreenFragment(title:String,
                         if (responsedata!!.response.responseArray.size > 0) {
                             mNationlityListArrrayList.addAll(responsedata!!.response.responseArray)
 
-                            AppController().mNationalityArrayList = mNationlityListArrrayList
+                            CommonClass.mNationalityArrayList = mNationlityListArrrayList
                         } else {
 
                         }
@@ -1320,9 +1331,9 @@ class HomeScreenFragment(title:String,
         InsuranceHealthListArray = ArrayList()
         PassportDetailListArray = ArrayList()
         KinArray = ArrayList()
+        var datacolldetails=DatacollectiondetailsApiModel(PreferenceManager().getUserId(mContext).toString())
         val call: Call<DataCollectionDetailModel> = ApiClient.getClient.datacollectiondetails(
-            PreferenceManager().getaccesstoken(mContext).toString(),
-            PreferenceManager().getUserId(mContext).toString()
+            datacolldetails,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString()
         )
 
         call.enqueue(object : Callback<DataCollectionDetailModel> {
@@ -1343,12 +1354,14 @@ class HomeScreenFragment(title:String,
                             mContext,
                             responsedata!!.response.data.display_message
                         )
+                        Log.e("datahomefragsize",responsedata!!.response.data.own_details.size.toString())
                         if (responsedata!!.response.data.own_details.size>0){
                         for (i in responsedata!!.response.data.own_details.indices ){
                              mOwnContactArrayList.add(responsedata!!.response.data.own_details[i])
                             mOwnContactArrayList[i].isConfirmed=false
                              mOwnContactArrayList[i].isUpdated=false
                         }
+                           Log.e("ownarray",mOwnContactArrayList.size.toString())
                             if (PreferenceManager().getOwnDetailArrayList("OwnContact", mContext) == null ||
                                 PreferenceManager().getOwnDetailArrayList(
                                     "OwnContact", mContext)!!.size == 0
@@ -1359,6 +1372,7 @@ class HomeScreenFragment(title:String,
                                     "OwnContact",
                                     mContext
                                 )
+
                             } else if (!PreferenceManager().getIsAlreadyEnteredOwnContact(mContext)) {
                                 println("Works DATA COLLECTIOM else works")
                                 PreferenceManager().setIsAlreadyEnteredOwnContact(mContext, true)
@@ -1370,6 +1384,8 @@ class HomeScreenFragment(title:String,
                             } else {
 
                             }
+                            Log.e("ownarraypref",
+                                PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)!!.size.toString())
                         }
                         if (responsedata!!.response.data.kin_details.size > 0) {
                             for (j in responsedata!!.response.data.kin_details.indices){
@@ -1380,6 +1396,7 @@ class HomeScreenFragment(title:String,
                                 KinArray[j].isNewData=false
 
                             }
+                            Log.e("homekinsize",responsedata!!.response.data.kin_details.size.toString())
                             for (j in KinArray.indices) {
                                 if (KinArray[j].relationship.equals("Next of kin")) {
                                     isKinFound = true
@@ -1411,25 +1428,30 @@ class HomeScreenFragment(title:String,
                                 KinArray.add(model)
                             }
                         }
-                      /*  if (!PreferenceManager().getIsAlreadyEnteredKin(
-                                mContext
-                            ) || PreferenceManager().getKinDetailsArrayList(mContext).size == 0
-                        ) {
-                            PreferenceManager().setIsAlreadyEnteredKin(mContext, true)
-                            PreferenceManager().saveKinDetailsArrayList(KinArray, mContext)
-                            PreferenceManager().saveKinDetailsArrayListShow(KinArray, mContext)
-                        }*/
+                       //Log.e("arrayy",PreferenceManager().getKinDetailsArrayList(mContext).size.toString())
+                        //PreferenceManager().saveKinDetailsArrayList(ArrayList(), mContext)
+                            if (PreferenceManager().getKinDetailsArrayList("kinshow",mContext) == null ||
+                                !PreferenceManager().getIsAlreadyEnteredKin(
+                                    mContext
+                                ) || PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.size == 0
+                            ) {
+                                PreferenceManager().setIsAlreadyEnteredKin(mContext, true)
+                                PreferenceManager().saveKinDetailsArrayList(KinArray,"kinshow", mContext)
+                                PreferenceManager().saveKinDetailsArrayListShow(KinArray, "kinshow",mContext)
+                            }
+
+Log.e("prfkin",PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!.size.toString())
 
                         val globalArray: ArrayList<GlobalListDataModel> = responsedata!!.response.data.GlobalList
                         if (globalArray.size > 0) {
                             for (i in 0 until globalArray.size) {
                                 val globalObject: GlobalListDataModel = globalArray[i]
-                                if (globalObject.type
+                                if (globalObject.Type
                                         .equals("Title")
                                 ) {
                                     val mModel = GlobalListDataModel()
-                                    mModel.type=globalObject.type
-                                    val globalSirArray = globalObject.mGlobalSirnameArray
+                                    mModel.Type=globalObject.Type
+                                    val globalSirArray = globalObject.GlobalList
                                     if (globalSirArray!!.size > 0) {
                                         for (j in 0 until globalSirArray.size) {
                                             val globalTypeObject = globalSirArray[j]
@@ -1438,17 +1460,18 @@ class HomeScreenFragment(title:String,
                                             mGlobalListSirnameArrayList.add(model)
                                         }
                                     }
-                                    mModel.mGlobalSirnameArray=mGlobalListSirnameArrayList
+                                    mModel.GlobalList=mGlobalListSirnameArrayList
                                     mGlobalListDataArrayList.add(mModel)
                                 }
-                                if (globalObject.type
+                                if (globalObject.Type
                                         .equals("ContactType")
                                 ) {
 
                                     val model = ContactTypeModel()
-                                    model.type=globalObject.type
-                                    val ContactArray = globalObject.mGlobalSirnameArray
+                                    model.type=globalObject.Type
+                                    val ContactArray = globalObject.GlobalList
                                     if (ContactArray!!.size > 0) {
+                                        //ContactListArray.addAll(ContactArray)
                                         for (j in 0 until ContactArray.size) {
                                             val job = ContactArray[j]
                                             val Gmodel = GlobalListSirname()
@@ -1458,13 +1481,17 @@ class HomeScreenFragment(title:String,
                                     }
                                     model.mGlobalSirnameArray=ContactListArray
                                     ContactTypeArray.add(model)
+                                    Log.e("contactglobal1",ContactTypeArray.size.toString())
                                 }
+                                Log.e("contactglobal2",ContactTypeArray.size.toString())
                             }
+                            Log.e("contactglobal",ContactTypeArray.size.toString())
                             PreferenceManager().saveGlobalListArrayList(mContext,
                                 mGlobalListDataArrayList
 
                             )
                             PreferenceManager().saveContactTypeArrayList(mContext,ContactTypeArray)
+                            Log.e("contacthome",PreferenceManager().getContactTypeArrayList(mContext).size.toString())
                         }
 
                         if (responsedata!!.response.data.health_and_insurence.size>0){
@@ -1577,9 +1604,10 @@ class HomeScreenFragment(title:String,
     }
 
     private fun getStudentsListAPI() {
-
+        var studlist=StudentListApiModel( PreferenceManager().getUserId(mContext).toString())
+Log.e("log access",PreferenceManager().getaccesstoken(mContext).toString())
         val call: Call<StudentListResponseModel> = ApiClient.getClient.student_list(
-            PreferenceManager().getaccesstoken(mContext).toString(), PreferenceManager().getUserId(mContext).toString()
+            studlist,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString()
         )
 
         call.enqueue(object : Callback<StudentListResponseModel> {
@@ -1613,7 +1641,7 @@ class HomeScreenFragment(title:String,
                                     studentModel.progressReport=dataObject.progressreport
                                     studentModel.alumini=dataObject.alumi
 
-//                                        AppController.mStudentDataArrayList.add(addStudentDetails(dataObject));
+//                                        AppController().mStudentDataArrayList.add(addStudentDetails(dataObject));
                                     studentsModelArrayList.add(studentModel)
                                 }
                             }
@@ -1624,13 +1652,13 @@ class HomeScreenFragment(title:String,
                             ) {
                                 println("student list add works")
                                 PreferenceManager().setIsAlreadyEnteredStudentList(mContext, true)
-                                AppController().mStudentDataArrayList = studentsModelArrayList
+                                CommonClass.mStudentDataArrayList = studentsModelArrayList
                                 PreferenceManager().saveInsuranceStudentList(
                                     studentsModelArrayList,
                                     mContext
                                 )
                             } else {
-                                AppController().mStudentDataArrayList =
+                                CommonClass.mStudentDataArrayList =
                                     PreferenceManager().getInsuranceStudentList(mContext)
                             }
                         } else {
@@ -1657,7 +1685,7 @@ class HomeScreenFragment(title:String,
             /* AppController().getInstance().getGoogleAnalyticsTracker()
                  .set("&uid", PreferenceManager().getUserId(mContext))
              AppController().getInstance().getGoogleAnalyticsTracker()
-                 .set("&cid", PreferenceManager.getUserId(mContext))
+                 .set("&cid", PreferenceManager().getUserId(mContext))
              AppController().getInstance().trackScreenView(
                  "Home Screen Fragment. " + "(" + PreferenceManager().getUserEmail(mContext) + ")" + " " + "(" + Calendar.getInstance().time + ")"
              )*/
@@ -1998,7 +2026,7 @@ class HomeScreenFragment(title:String,
             mFragment = NotificationFragmentPagination(bsklNameConstants.NOTIFICATIONS, bsklTabConstants.TAB_MESSAGES)
             fragmentIntent(mFragment)
         } else if (tabId.equals(bsklTabConstants.TAB_CALENDAR)) {
-            mFragment = CalendarFragment(bsklNameConstants.CALENDAR, bsklTabConstants.TAB_CALENDAR)
+            mFragment = ListViewCalendar(bsklNameConstants.CALENDAR, bsklTabConstants.TAB_CALENDAR)
             fragmentIntent(mFragment)
         } else if (tabId.equals(bsklTabConstants.TAB_SOCIAL_MEDIA)) {
             mFragment = SocialMediaFragment(bsklNameConstants.SOCIAL_MEDIA, bsklTabConstants.TAB_SOCIAL_MEDIA)
@@ -2012,7 +2040,7 @@ class HomeScreenFragment(title:String,
             fragmentIntent(mFragment)
         } else if (tabId.equals(bsklTabConstants.TAB_ABSENCE)) {
             if (PreferenceManager().getAbsence(mContext).equals("1")) {
-                // System.out.println("ddddd" + PreferenceManager.getAbsence(mContext));
+                // System.out.println("ddddd" + PreferenceManager().getAbsence(mContext));
                 mFragment = AbsenceFragment(bsklNameConstants.ABSENCE, bsklTabConstants.TAB_ABSENCE)
                 fragmentIntent(mFragment)
             } else {
@@ -2026,8 +2054,8 @@ class HomeScreenFragment(title:String,
             }
         } else if (tabId.equals(bsklTabConstants.TAB_SAFE_GUARDING)) {
             if (PreferenceManager().getSafeGuarding(mContext).equals("1")) {
-                /*  mFragment = SafeGuardingFragment(SAFE_GUARDING, TAB_SAFE_GUARDING)
-                  fragmentIntent(mFragment)*/
+                  mFragment = SafeGuardingFragment()
+                  fragmentIntent(mFragment!!)
             } else {
                 AppUtils().showDialogAlertDismiss(
                     mContext as Activity,
@@ -2039,8 +2067,8 @@ class HomeScreenFragment(title:String,
             }
         } else if (tabId.equals(bsklTabConstants.TAB_ATTENDANCE)) {
             if (PreferenceManager().getAttendance(mContext).equals("1")) {
-                /* mFragment = AttendenceFragment(ATTENDANCE, TAB_ATTENDANCE)
-                 fragmentIntent(mFragment)*/
+                 mFragment = AttendenceFragment()
+                 fragmentIntent(mFragment!!)
             } else {
                 AppUtils().showDialogAlertDismiss(
                     mContext as Activity,
@@ -2160,11 +2188,11 @@ class HomeScreenFragment(title:String,
         if (mFragment != null) {
 
 
-            // System.out.println("title:" + AppController.mTitles);
+            // System.out.println("title:" + AppController().mTitles);
             val fragmentManager = homeActivity.getSupportFragmentManager()
             fragmentManager.beginTransaction()
-                .add(R.id.frame_container, mFragment, AppController().mTitles)
-                .addToBackStack(AppController().mTitles).commitAllowingStateLoss() //commit
+                .add(R.id.frame_container, mFragment, CommonClass.mTitles)
+                .addToBackStack(CommonClass.mTitles).commitAllowingStateLoss() //commit
 
         }
 

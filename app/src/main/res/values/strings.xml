@@ -679,4 +679,5 @@ Preference Manager setHomeListType = "1"   -->
     <string name="personal_insurance_expiry_date_red">Insurance Expiry Date<font fgcolor="red">*</font></string>
     <string name="personal_insurance_expiry_date">Insurance Expiry Date</string>
     <string name="passport_check">Please provide the new passport details when known</string>
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
 </resources>

@@ -10,7 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 object ApiClient {
   //var BASE_URL = "https://bsklparentapp.com.my/bskl/"
-  var BASE_URL = "http://alpha.mobatia.in:808/bskl/"
+  //var BASE_URL = "http://alpha.mobatia.in:808/bskl/"
+  var BASE_URL = "http://gama.mobatia.in:8080/BISKL2023/public/Api-V1/"
 
 
 

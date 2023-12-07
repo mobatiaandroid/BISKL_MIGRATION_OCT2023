@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/relMain"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relativeHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/topRelative"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativeHeader"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="64"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:id="@+id/studentSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/event_spinnerbg"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="100">
+
+                <com.example.bskl_kotlin.manager.RoundedImageView
+                    android:id="@+id/studImg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="2dp"
+                    android:background="@drawable/round"
+                    android:padding="5dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/boy" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                    android:id="@+id/studentName"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="80"
+                    android:gravity="left|center"
+                    android:paddingLeft="10dp"
+                    android:text="Select a child"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"></View>
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right|center"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="12"
+                    android:src="@drawable/arrowdownnew"
+                    android:visibility="visible" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="36"
+            android:gravity="center"
+            android:orientation="horizontal"
+
+            android:weightSum="100">
+
+            <LinearLayout
+                android:id="@+id/chartViewLinear"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="5dp"
+                android:layout_weight="45"
+                android:background="@drawable/event_spinner_bg"
+
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="2dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/chartbtn"/>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/listViewLinear"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:layout_weight="45"
+                android:background="@drawable/event_spinnerbg"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp">
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:src="@drawable/listbtn"/>
+
+
+                </RelativeLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/chartLinear"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/topRelative"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:orientation="vertical"
+        android:weightSum="100">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <LinearLayout
+                android:id="@+id/linearChartHeight"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="60"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <com.github.mikephil.charting.charts.PieChart
+                    android:id="@+id/piechart"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginLeft="10dp"
+                    android:visibility="visible"
+                    android:background="@color/white" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/listView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="5dp"
+                    android:paddingTop="5dp"
+                    android:paddingBottom="5dp"
+
+                    android:overScrollMode="never"
+                    android:background="@drawable/rounded_rec_bordergrey"
+                    android:visibility="gone" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/linearLegend"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="40"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/legendImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/color_name" />
+                <com.example.bskl_kotlin.manager.TextViewFontSansProBoldColorBlack
+                    android:id="@+id/selectedTextView"
+                    android:layout_marginTop="10dp"
+                    android:gravity="center"
+                    android:textSize="16sp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    android:id="@+id/selectedTextViewDays"
+                    android:layout_marginTop="5dp"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:text="(Days)"
+                    android:visibility="invisible"
+                    android:textColor="@color/grey"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="50"
+            android:orientation="vertical"
+            android:weightSum="100">
+
+            <ImageView
+                android:id="@+id/upArrowImage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:visibility="gone"
+                android:background="@drawable/rectangular_upward"
+                android:layout_marginRight="10dp"
+                android:src="@drawable/up_cl"/>
+            <TextView
+                android:id="@+id/dividerTv"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:visibility="gone"
+                android:layout_alignBottom="@+id/upArrowImage"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/cleargreyColor"/>
+            <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorBlackNoSize
+                android:id="@+id/attendanceTextView"
+                android:gravity="left|center_vertical"
+                android:textColor="@color/black"
+                android:text="Attendance List"
+                android:layout_marginTop="10dp"
+                android:visibility="gone"
+                android:layout_below="@+id/dividerTv"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="10dp"
+                android:textSize="14sp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listViewGraph"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+
+                android:layout_below="@+id/attendanceTextView"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                android:overScrollMode="never"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -4,5 +4,6 @@
         <domain includeSubdomains="true">https://bsklparentapp.com.my/bskl/</domain>
         <domain includeSubdomains="true">mobicare2.mobatia.com</domain>
         <domain includeSubdomains="true">alpha.mobatia.in</domain>
+        <domain includeSubdomains="true">gama.mobatia.in</domain>
     </domain-config>
 </network-security-config>

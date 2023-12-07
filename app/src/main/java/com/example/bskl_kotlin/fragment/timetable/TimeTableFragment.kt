@@ -18,11 +18,13 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.common.model.StudentListApiModel
 import com.example.bskl_kotlin.common.model.StudentListModel
 import com.example.bskl_kotlin.common.model.StudentListResponseModel
 import com.example.bskl_kotlin.fragment.absence.adapter.StudentSpinnerAdapter
@@ -35,9 +37,7 @@ import com.example.bskl_kotlin.manager.AppUtils
 import com.example.bskl_kotlin.recyclerviewmanager.DividerItemDecoration
 import com.example.bskl_kotlin.recyclerviewmanager.RecyclerItemListener
 import com.ryanharter.android.tooltips.ToolTipLayout
-import org.json.JSONArray
 import org.json.JSONException
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -48,6 +48,8 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
 
     var alertTxtRelative: RelativeLayout? = null
     var CCAFRegisterRel: RelativeLayout? = null
+    lateinit var monday:ArrayList<DayModel>
+    lateinit var linearLayoutManagerVertical: LinearLayoutManager
     lateinit var studentsModelArrayList: ArrayList<StudentListModel>
     var studentsModelArrayListCopy: ArrayList<StudentListModel>? = null
     lateinit  var studentDetail: ListView
@@ -128,7 +130,7 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
         val logoClickImgView = actionBar!!.customView.findViewById<ImageView>(R.id.logoClickImgView)
         val imageButton2 = actionBar!!.customView.findViewById<ImageView>(R.id.action_bar_forward)
         imageButton2.setImageResource(R.drawable.settings)
-        headerTitle.setText("Safeguarding")
+        headerTitle.setText("Student Timetable")
         headerTitle.visibility = View.VISIBLE
         logoClickImgView.visibility = View.INVISIBLE
         initialiseUI()
@@ -142,6 +144,9 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
             weekListArray!!.add(mWeekModel)
 
         }
+        val llm = LinearLayoutManager(mContext)
+        llm.orientation = LinearLayoutManager.HORIZONTAL
+        weekRecyclerList.layoutManager = llm
         TimeTableWeekListAdapter = TimeTableWeekListAdapter(mContext!!,
             weekListArray!!, weekPosition)
         weekRecyclerList!!.adapter = TimeTableWeekListAdapter
@@ -158,14 +163,45 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
                 R.drawable.roundred
             )
         }
+        val sdf = SimpleDateFormat("EEEE")
+        val d = Date()
+        dayOfTheWeek = sdf.format(d)
+        println("Current day$dayOfTheWeek")
+        weekPosition = when (dayOfTheWeek) {
+            "Monday" -> 1
+            "Tuesday" -> 2
+            "Wednesday" -> 3
+            "Thursday" -> 4
+            "Friday" -> 5
+            else -> 0
+        }
+        if (weekPosition < 3) {
+            weekRecyclerList.scrollToPosition(0)
+        } else {
+            weekRecyclerList.scrollToPosition(5)
+        }
+        for (i in 0 until weekListArray!!.size) {
+            // Log.e("i", i.toString())
+
+            if (i == weekPosition) {
+
+                weekListArray!!.get(i).positionSelected = i
+
+            } else {
+                weekListArray!!.get(i).positionSelected = -1
+            }
+        }
     }
 
     @SuppressLint("SuspiciousIndentation")
     fun getStudentsListAPI() {
         studentsModelArrayList= ArrayList()
-        val call: Call<StudentListResponseModel> = ApiClient.getClient.student_list( PreferenceManager().getaccesstoken(mContext).toString(),
-            PreferenceManager().getUserId(mContext).toString())
+        var studlist=
+            StudentListApiModel( PreferenceManager().getUserId(com.example.bskl_kotlin.fragment.home.mContext).toString())
 
+        val call: Call<StudentListResponseModel> = ApiClient.getClient.student_list(
+            studlist,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString()
+        )
         call.enqueue(object : Callback<StudentListResponseModel> {
             override fun onFailure(call: Call<StudentListResponseModel>, t: Throwable) {
                 Log.e("Failed", t.localizedMessage)
@@ -205,7 +241,7 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
                                     .equals("")
                             ) {
                                 studentName.setText(studentsModelArrayList!![0].name)
-                                stud_id = studentsModelArrayList!![0].id.toString()
+                                stud_id = studentsModelArrayList!![0].id
                                 stud_name = studentsModelArrayList!![0].name.toString()
                                 stud_class = studentsModelArrayList!![0].mClass.toString()
                                 stud_img = studentsModelArrayList!![0].photo.toString()
@@ -230,7 +266,7 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
                                 )
                                 studentName.setText(studentsModelArrayList!![studentSelectPosition].name)
                                 stud_id =
-                                    studentsModelArrayList!![studentSelectPosition].id.toString()
+                                    studentsModelArrayList!![studentSelectPosition].id
                                 stud_name =
                                     studentsModelArrayList!![studentSelectPosition].name.toString()
                                 stud_class =
@@ -501,8 +537,393 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
         mFridayArrayList= ArrayList()
         mFridayArrayList = ArrayList()
         mFieldModel= ArrayList()
-        val call: Call<TimetableResponseModel> = ApiClient.getClient.timtable_list(PreferenceManager().getaccesstoken(mContext).toString(),
-            "3801")
+        var timetablemodel=TimetableApiModel(stud_id)
+        val call: Call<TimetableResponseModel> = ApiClient.getClient.timtable_list(
+            timetablemodel,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString()
+        )
+
+        call.enqueue(object : Callback<TimetableResponseModel> {
+            override fun onFailure(call: Call<TimetableResponseModel>, t: Throwable) {
+                Log.e("Failed", t.localizedMessage)
+
+            }
+
+            override fun onResponse(
+                call: Call<TimetableResponseModel>,
+                response: Response<TimetableResponseModel>
+            ) {
+
+                val responsedata: String = response.body().toString()
+                try {
+
+                    Log.e("responsedata", responsedata)
+                    //val obj: JSONObject = JSONObject("response")
+                    Log.e("objres", "obj.toString()")
+                    //val response_code = obj.getString("responsecode")
+                    //Log.e("Response Signup", obj.toString())
+                    if (response.body()!!.responsecode.equals("200")) {
+                        //val secobj: JSONObject = JSONObject(response)
+
+                        if (response.body()!!.response.statuscode.equals("303")) {
+                            val feildArray: ArrayList<FieldModel> = response.body()!!.response.field1
+                            println("feild array" + feildArray.size)
+                            mFieldModel = ArrayList()
+                            if (feildArray.size > 0) {
+                                var lun = 0
+                                for (i in 0 until feildArray.size) {
+                                    val listObject = feildArray.get(i)
+                                    val xmodel = FieldModel()
+                                    xmodel.sortname=listObject.sortname
+                                    xmodel.starttime=listObject.starttime
+                                    xmodel.endtime=listObject.endtime
+                                    if (listObject.periodId=="") {
+                                        xmodel.periodId=listObject.periodId
+                                        lun = lun + 1
+                                        println("lun::$lun")
+                                        xmodel.countBreak=lun
+                                    } else {
+                                        xmodel.periodId=""
+                                    }
+                                    mFieldModel.add(xmodel)
+                                }
+                            }
+                            if (response.body()!!.response.range.Monday.isEmpty()&&response.body()!!.response.range.Tuesday.isEmpty()&&
+                                response.body()!!.response.range.Wednesday.isEmpty()&&response.body()!!.response.range.Thursday.isEmpty()&&
+                                response.body()!!.response.range.Friday.isEmpty())
+                            {
+
+                                timeTableSingleRecycler.visibility = View.GONE
+                                timeTableAllRecycler.visibility = View.GONE
+                                card_viewAll.visibility = View.GONE
+                                weekRecyclerList.visibility = View.GONE
+                                Toast.makeText(mContext, "No Data", Toast.LENGTH_SHORT).show()
+                            }
+                            else
+                            {
+
+                                mMondayArrayList.addAll(response.body()!!.response.range.Monday)
+                                Log.e("monday", mMondayArrayList.toString())
+                                for (i in mMondayArrayList.indices){
+                                    if (mMondayArrayList[i].staff==""){
+                                        mMondayArrayList[i].isBreak=1
+                                    }else{
+                                        mMondayArrayList[i].isBreak=0
+                                    }
+                                }
+
+                                mTuesdayArrayList.addAll(response.body()!!.response.range.Tuesday)
+                                Log.e("tuesday", mTuesdayArrayList.toString())
+                                for (i in mTuesdayArrayList.indices){
+                                    if (mTuesdayArrayList[i].staff==""){
+                                        mTuesdayArrayList[i].isBreak=1
+                                    }else{
+                                        mTuesdayArrayList[i].isBreak=0
+                                    }
+                                }
+
+                                mwednesdayArrayList.addAll(response.body()!!.response.range.Wednesday)
+                                Log.e("wednesday", mwednesdayArrayList.toString())
+                                for (i in mwednesdayArrayList.indices){
+                                    if (mwednesdayArrayList[i].staff==""){
+                                        mwednesdayArrayList[i].isBreak=1
+                                    }else{
+                                        mwednesdayArrayList[i].isBreak=0
+                                    }
+                                }
+
+                                mThurdayArrayList.addAll(response.body()!!.response.range.Thursday)
+                                Log.e("thursday", mThurdayArrayList.toString())
+                                for (i in mThurdayArrayList.indices){
+                                    Log.e("staff",mThurdayArrayList[i].staff)
+                                    if (mThurdayArrayList[i].staff==""){
+                                        mThurdayArrayList[i].isBreak=1
+                                    }else{
+                                        mThurdayArrayList[i].isBreak=0
+                                    }
+                                    Log.e("staffisbreak",mThurdayArrayList[i].isBreak.toString())
+                                }
+
+                                mFridayArrayList.addAll(response.body()!!.response.range.Friday)
+                                Log.e("friday", mFridayArrayList.toString())
+                                for (i in mFridayArrayList.indices){
+                                    if (mFridayArrayList[i].staff==""){
+                                        mFridayArrayList[i].isBreak=1
+                                    }else{
+                                        mFridayArrayList[i].isBreak=0
+                                    }
+                                }
+                            }
+//                            for (f in mFieldModel.indices) {
+//                                val sortName: String = mFieldModel[f].sortname.toString()
+//                                for (br in mBreakArrayList!!.indices) {
+//                                    if (sortName.equals(
+//                                            mBreakArrayList!![br].sortname.toString(),
+//                                            ignoreCase = true
+//                                        )
+//                                    ) {
+//                                        mFieldModel[f].fridyaStartTime=mBreakArrayList!![br].starttime
+//                                        mFieldModel[f].fridayEndTime=mBreakArrayList!![br].endtime
+//                                    }
+//                                }
+//                            }
+                            mTimeTableModelArrayList = ArrayList()
+                            val timeTableArray: ArrayList<DayModel> = response.body()!!.response.Timetable
+                            var m = 0
+                            var tu = 0
+                            var w = 0
+                            var th = 0
+                            var fr = 0
+                            if (timeTableArray.size > 0) {
+                                for (t in 0 until timeTableArray.size) {
+                                    val mTimeModel = TimeTableModel()
+                                    val timeObj = timeTableArray.get(t)
+                                    mTimeModel.id=timeObj.id
+                                    mTimeModel.period_id=timeObj.period_id.toString()
+                                    mTimeModel.subject_name=timeObj.subject_name.toString()
+                                    mTimeModel.staff=timeObj.staff.toString()
+                                    mTimeModel.day=timeObj.day.toString()
+                                    mTimeModel.student_id=timeObj.student_id.toString()
+                                    mTimeModel.sortname=timeObj.sortname
+                                    mTimeModel.starttime=timeObj.starttime
+                                    mTimeModel.endtime=timeObj.endtime
+                                    mTimeTableModelArrayList!!.add(mTimeModel)
+                                }
+                            }
+                            mPeriodModel = ArrayList()
+                            var mDataModelArrayList :ArrayList<DayModel?>?=null
+                            mDataModelArrayList= ArrayList()
+                            for (f in mFieldModel.indices)
+                            {
+                            val mPeriod = PeriodModel()
+                            val mDayModel = DayModel()
+                            var timeTableListM :ArrayList<DayModel?>?=null
+                            var timeTableListT : ArrayList<DayModel?>?=null
+                            var timeTableListW : ArrayList<DayModel?>?=null
+                            var timeTableListTh :ArrayList<DayModel?>?=null
+                            var timeTableListF : ArrayList<DayModel?>?=null
+                                timeTableListM= ArrayList()
+                                timeTableListT= ArrayList()
+                                timeTableListW= ArrayList()
+                                timeTableListTh= ArrayList()
+                                timeTableListF= ArrayList()
+
+
+                            for (t in mTimeTableModelArrayList!!.indices) {
+                                if (mFieldModel[f].sortname
+                                        .equals(mTimeTableModelArrayList!![t].sortname.toString())
+                                ) {
+                                    mDayModel.id= mTimeTableModelArrayList!![t].id!!!!
+                                    mDayModel.period_id=mTimeTableModelArrayList!![t].period_id!!.toInt()!!.toInt()
+                                    mDayModel.subject_name=mTimeTableModelArrayList!![t].subject_name
+                                    mDayModel.staff=mTimeTableModelArrayList!![t].staff.toString().toString()
+                                    mDayModel.student_id=mTimeTableModelArrayList!![t].student_id!!.toInt()!!.toInt()
+                                    mDayModel.day=mTimeTableModelArrayList!![t].day.toString()
+                                    mDayModel.sortname=mTimeTableModelArrayList!![t].sortname.toString()
+                                    mDayModel.starttime=mTimeTableModelArrayList!![t].starttime.toString()
+                                    mDayModel.endtime=mTimeTableModelArrayList!![t].endtime
+                                    if (mTimeTableModelArrayList!![t].day.toString()
+                                            .equals("Monday")
+                                    ) {
+                                        m = m + 1
+                                        //                                            ArrayList<DayModel>timeTableMondayList=new ArrayList<>();
+
+                                       Log.e("day",mTimeTableModelArrayList!![t].id!!.toString())
+                                        val dayModel = DayModel()
+                                        dayModel.id= mTimeTableModelArrayList!![t].id!!
+                                        dayModel.period_id=mTimeTableModelArrayList!![t].period_id!!.toInt()!!.toInt()
+                                        dayModel.subject_name=mTimeTableModelArrayList!![t].subject_name
+                                        dayModel.staff=mTimeTableModelArrayList!![t].staff.toString().toString()
+                                        dayModel.student_id=mTimeTableModelArrayList!![t].student_id!!.toInt()!!.toInt()
+                                        dayModel.day=mTimeTableModelArrayList!![t].day.toString()
+                                        dayModel.sortname=mTimeTableModelArrayList!![t].sortname.toString()
+                                        dayModel.starttime=mTimeTableModelArrayList!![t].starttime.toString()
+                                        dayModel.endtime=mTimeTableModelArrayList!![t].endtime
+                                        timeTableListM.add(dayModel)
+                                        mPeriod.monday=mTimeTableModelArrayList!![t].subject_name
+                                        // timeTableListM.add(dayModel);
+                                    } else if (mTimeTableModelArrayList!![t].day.toString()
+                                            .equals("Tuesday")
+                                    ) {
+                                        tu = tu + 1
+                                        //                                            ArrayList<DayModel>timeTableTuesadayList=new ArrayList<>();
+                                        val dayModel = DayModel()
+                                        dayModel.id=mTimeTableModelArrayList!![t].id!!
+                                        dayModel.period_id=mTimeTableModelArrayList!![t].period_id!!.toInt()
+                                        dayModel.subject_name=mTimeTableModelArrayList!![t].subject_name
+                                        dayModel.staff=mTimeTableModelArrayList!![t].staff.toString()
+                                        dayModel.student_id=mTimeTableModelArrayList!![t].student_id!!.toInt()
+                                        dayModel.day=mTimeTableModelArrayList!![t].day.toString()
+                                        dayModel.sortname=mTimeTableModelArrayList!![t].sortname.toString()
+                                        dayModel.starttime=mTimeTableModelArrayList!![t].starttime.toString()
+                                        dayModel.endtime=mTimeTableModelArrayList!![t].endtime
+                                        timeTableListT!!.add(dayModel)
+                                        //  mPeriod.setTimeTableListT(timeTableTuesadayList);
+                                        mPeriod.tuesday=mTimeTableModelArrayList!![t].subject_name
+                                    } else if (mTimeTableModelArrayList!![t].day.toString()
+                                            .equals("wednesday")
+                                    ) {
+                                        w = w + 1
+                                        // ArrayList<DayModel>timeTablewednesdayList=new ArrayList<>();
+                                        val dayModel = DayModel()
+                                        dayModel.id=mTimeTableModelArrayList!![t].id!!
+                                        dayModel.period_id=mTimeTableModelArrayList!![t].period_id!!.toInt()
+                                        dayModel.subject_name=mTimeTableModelArrayList!![t].subject_name
+                                        dayModel.staff=mTimeTableModelArrayList!![t].staff.toString()
+                                        dayModel.student_id=mTimeTableModelArrayList!![t].student_id!!.toInt()
+                                        dayModel.day=mTimeTableModelArrayList!![t].day.toString()
+                                        dayModel.sortname=mTimeTableModelArrayList!![t].sortname.toString()
+                                        dayModel.starttime=mTimeTableModelArrayList!![t].starttime.toString()
+                                        dayModel.endtime=mTimeTableModelArrayList!![t].endtime
+                                        timeTableListW!!.add(dayModel)
+                                        //mPeriod.setTimeTableListW(timeTablewednesdayList);
+                                        mPeriod.wednesday=mTimeTableModelArrayList!![t].subject_name
+                                    } else if (mTimeTableModelArrayList!![t].day.toString()
+                                            .equals("thursday")
+                                    ) {
+                                        th = th + 1
+                                        //    ArrayList<DayModel>timeTablethursdayList=new ArrayList<>();
+                                        val dayModel = DayModel()
+                                        dayModel.id=mTimeTableModelArrayList!![t].id!!
+                                        dayModel.period_id=mTimeTableModelArrayList!![t].period_id!!.toInt()
+                                        dayModel.subject_name=mTimeTableModelArrayList!![t].subject_name
+                                        dayModel.staff=mTimeTableModelArrayList!![t].staff.toString()
+                                        dayModel.student_id=mTimeTableModelArrayList!![t].student_id!!.toInt()
+                                        dayModel.day=mTimeTableModelArrayList!![t].day.toString()
+                                        dayModel.sortname=mTimeTableModelArrayList!![t].sortname.toString()
+                                        dayModel.starttime=mTimeTableModelArrayList!![t].starttime.toString()
+                                        dayModel.endtime=mTimeTableModelArrayList!![t].endtime
+                                        timeTableListTh!!.add(dayModel)
+                                        // mPeriod.setTimeTableListTh(timeTablethursdayList);
+                                        mPeriod.thursday=mTimeTableModelArrayList!![t].subject_name
+                                    } else if (mTimeTableModelArrayList!![t].day.toString()
+                                            .equals("friday")
+                                    ) {
+                                        fr = fr + 1
+                                        //ArrayList<DayModel>timeTablefridayList=new ArrayList<>();
+                                        val dayModel = DayModel()
+                                        dayModel.id=mTimeTableModelArrayList!![t].id!!
+                                        dayModel.period_id=mTimeTableModelArrayList!![t].period_id!!.toInt()
+                                        dayModel.subject_name=mTimeTableModelArrayList!![t].subject_name
+                                        dayModel.staff=mTimeTableModelArrayList!![t].staff.toString()
+                                        dayModel.student_id=mTimeTableModelArrayList!![t].student_id!!.toInt()
+                                        dayModel.day=mTimeTableModelArrayList!![t].day.toString()
+                                        dayModel.sortname=mTimeTableModelArrayList!![t].sortname.toString()
+                                        dayModel.starttime=mTimeTableModelArrayList!![t].starttime.toString()
+                                        dayModel.endtime=mTimeTableModelArrayList!![t].endtime
+                                        timeTableListF!!.add(dayModel)
+                                        //  mPeriod.setTimeTableListF(timeTablefridayList);
+                                        mPeriod.friday=mTimeTableModelArrayList!![t].subject_name
+                                    } else {
+                                        mPeriod.monday=""
+                                        mPeriod.tuesday=""
+                                        mPeriod.wednesday=""
+                                        mPeriod.thursday=""
+                                        mPeriod.friday=""
+                                    }
+                                    mPeriod.countM=m
+                                    mPeriod.countT=t
+                                    mPeriod.countW=w
+                                    mPeriod.countTh=th
+                                    mPeriod.countF=fr
+                                    mPeriod.timeTableListM=timeTableListM
+                                    mPeriod.timeTableListT=timeTableListT
+                                    mPeriod.timeTableListW=timeTableListW
+                                    mPeriod.timeTableListTh=timeTableListTh
+                                    mPeriod.timeTableListF=timeTableListF
+                                }
+                            }
+
+                            mDataModelArrayList!!.add(mDayModel)
+                            mPeriod.timeTableDayModel=mDataModelArrayList
+                            mPeriodModel.add(mPeriod)
+                        }
+                            if (weekPosition != 0) {
+                                timeTableAllRecycler.visibility = View.GONE
+                                card_viewAll.visibility = View.GONE
+                                //  timeTableAllRecycler.visibility=View.GONE
+                                tipContainer.visibility = View.GONE
+                                timeTableSingleRecycler.visibility = View.VISIBLE
+//                    if (mRangeModel.size>0)
+//                    {
+                                //card_viewAll.visibility = View.GONE
+                                // timeTableAllRecycler.visibility = View.GONE
+                                timeTableSingleRecycler.visibility = View.VISIBLE
+                                // timeTableAllRecycler.visibility = View.VISIBLE
+                                Log.e("weekposition", weekPosition.toString())
+                                if (weekPosition == 1) {
+
+                                    var mRecyclerViewMainAdapter =
+                                        TimeTableSingleWeekSelectionAdapter(mContext, mMondayArrayList)
+                                    timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+                                } else if (weekPosition == 2) {
+                                    Log.e("week","Successs")
+                                    var mRecyclerViewMainAdapter =
+                                        TimeTableSingleWeekSelectionAdapter(mContext, mTuesdayArrayList)
+                                    timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+
+                                } else if (weekPosition == 3) {
+                                    Log.e("Success","Successs")
+                                    var mRecyclerViewMainAdapter =
+                                        TimeTableSingleWeekSelectionAdapter(mContext, mwednesdayArrayList)
+                                    timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+                                } else if (weekPosition == 4) {
+                                    Log.e("Failed","Successs")
+                                    var mRecyclerViewMainAdapter =
+                                        TimeTableSingleWeekSelectionAdapter(mContext, mThurdayArrayList)
+                                    timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+                                } else if (weekPosition == 5) {
+
+                                    var mRecyclerViewMainAdapter =
+                                        TimeTableSingleWeekSelectionAdapter(mContext, mFridayArrayList)
+                                    timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+                                }
+                            }
+                            else {
+                                timeTableSingleRecycler.visibility = View.GONE
+                                // timeTableAllRecycler.visibility = View.VISIBLE
+                                tipContainer.visibility = View.VISIBLE
+
+                                card_viewAll.visibility = View.VISIBLE
+
+                                linearLayoutManagerVertical.orientation = LinearLayoutManager.VERTICAL
+                                timeTableAllRecycler.layoutManager = linearLayoutManagerVertical
+                                timeTableAllRecycler.itemAnimator = DefaultItemAnimator()
+                                timeTableAllRecycler.visibility = View.VISIBLE
+                                // timeTableListS.shuffle()
+                                var mRecyclerAllAdapter =
+                                    TimeTableAllWeekSelectionAdapterNew(
+                                        mContext,
+                                        mPeriodModel,
+                                        mFieldModel,
+                                        timeTableAllRecycler,
+                                        tipContainer,
+                                    )
+                                timeTableAllRecycler.adapter = mRecyclerAllAdapter
+
+                            }
+
+                        }
+                    }
+                } catch (e: JSONException) {
+                }
+
+            }
+                    })
+
+
+
+
+     /*   mMondayArrayList= ArrayList()
+        mTuesdayArrayList= ArrayList()
+        mwednesdayArrayList= ArrayList()
+        mThurdayArrayList= ArrayList()
+        mFridayArrayList= ArrayList()
+        mFridayArrayList = ArrayList()
+        mFieldModel= ArrayList()
+        var timetablemodel=TimetableApiModel(stud_id)
+        val call: Call<TimetableResponseModel> = ApiClient.getClient.timtable_list(
+            timetablemodel,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString()
+            )
 
         call.enqueue(object : Callback<TimetableResponseModel> {
             override fun onFailure(call: Call<TimetableResponseModel>, t: Throwable) {
@@ -518,16 +939,17 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
                 val responsedata:String = response.body().toString()
                 try {
 
-
-                    val obj = JSONObject(responsedata)
-                    val response_code = obj.getString("responsecode")
-                    Log.e("Response Signup", obj.toString())
+                    Log.e("responsedata",responsedata)
+                    //val obj: JSONObject = JSONObject("response")
+                    Log.e("objres","obj.toString()")
+                    //val response_code = obj.getString("responsecode")
+                    //Log.e("Response Signup", obj.toString())
                     if (response.body()!!.responsecode.equals("200")) {
-                        val secobj = obj.getJSONObject("response")
+                        //val secobj: JSONObject = JSONObject(response)
 
                         if (response.body()!!.response.statuscode.equals("303")) {
 
-
+Log.e("status","303")
                             weekRecyclerList.visibility=View.VISIBLE
 
                             feildAPIArrayList.addAll(response.body()!!.response.field)
@@ -540,16 +962,16 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
                                 mFieldModel.add(model)
                             }
 
-                            if (response.body()!!.response.range.Monday.isEmpty()&&response.body()!!.response.range.Tuesday.isEmpty()&&
-                                response.body()!!.response.range.Wednesday.isEmpty()&&response.body()!!.response.range.Thursday.isEmpty()&&
-                                response.body()!!.response.range.Friday.isEmpty())
+                            if (response.body()!!.response.range.Monday.size==0&&response.body()!!.response.range.Tuesday.size==0&&
+                                response.body()!!.response.range.Wednesday.size==0&&response.body()!!.response.range.Thursday.size==0&&
+                                response.body()!!.response.range.Friday.size==0)
                             {
 
                                 timeTableSingleRecycler.visibility = View.GONE
                                 timeTableAllRecycler.visibility = View.GONE
                                 card_viewAll.visibility = View.GONE
                                 weekRecyclerList.visibility = View.GONE
-                                // Toast.makeText(ncontext, "No Data", Toast.LENGTH_SHORT).show()
+                                // Toast.makeText(mContext, "No Data", Toast.LENGTH_SHORT).show()
                             }
 
                             else
@@ -818,13 +1240,13 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
 
                             }
 
-                            val feildArray = secobj.getJSONArray("field1")
+                            val feildArray = response.body()!!.response.field1
 
                             mFieldModel = ArrayList()
                             if (response.body()!!.response.field1.size > 0) {
                                 var lun = 0
                                 for (i in response.body()!!.response.field1.indices) {
-                                    val listObject: JSONObject = feildArray.optJSONObject(i)
+                                    val listObject: FieldModel = feildArray.get(i)
                                     val xmodel = FieldModel()
                                     xmodel.sortname=(response.body()!!.response.field1.get(i).sortname)
                                     xmodel.starttime=(response.body()!!.response.field1.get(i).starttime)
@@ -833,7 +1255,7 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
                                         listObject.toString()
                                     )
                                     System.out.print("jsonobjet"+response.body()!!.response.field1.get(i))
-                                    if (listObject.has("period_id")) {
+                                    if (listObject.periodId=="") {
                                         xmodel.periodId=(response.body()!!.response.field1.get(i).periodId)
                                         lun = lun + 1
                                         println("lun::$lun")
@@ -846,15 +1268,28 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
                             }
                         }
 
-                        val rangeObj = secobj.getJSONObject("range")
+                        val rangeObj: RangeModelList = response.body()!!.response.range
                         val days = arrayOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")
                         mRangeModel = ArrayList()
                         mFridayModelArraylist = ArrayList()
                         mBreakArrayList = ArrayList()
-
-                        for (i in 0..4) {
+                        monday=ArrayList()
+                        for (i in 0..4)
+                        {
+                            //val monday: JSONArray = rangeObj.optJSONArray(days[i])
+if (i==0){
+    monday=rangeObj.Monday
+}else if (i==1){
+    monday=rangeObj.Tuesday
+}else if (i==2){
+    monday=rangeObj.Wednesday
+}else if (i==3){
+    monday=rangeObj.Thursday
+}else if (i==4){
+    monday=rangeObj.Friday
+}
                             println("i value$i")
-                            val monday: JSONArray? = rangeObj.optJSONArray(days[i])
+                            //val monday: ArrayList<DayModel> = rangeObj.Monday
                             //  println("size of monday array" + monday.length())
                             //  var monday: ArrayList<DayModel>
                             //  monday= ArrayList()
@@ -866,30 +1301,30 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
                             if (response.body()!!.response.range.equals("")) {
                                 timeTableSingleRecycler.visibility = View.VISIBLE
                                 println("working success")
-                                for (j in 0 until monday!!.length()) {
-                                    val dataObject = monday!!.getJSONObject(j)
+                                for (j in 0 until monday!!.size) {
+                                    val dataObject = monday.get(j);
                                     val model = DayModel()
-                                    model.id=dataObject.optString("id")
-                                    model.period_id=dataObject.optString("period_id")
-                                    model.endtime=dataObject.optString("endtime")
-                                    model.starttime=dataObject.optString("starttime")
+                                    model.id=dataObject.id
+                                    model.period_id=dataObject.period_id
+                                    model.endtime=dataObject.endtime
+                                    model.starttime=dataObject.starttime
 
-                                    if (dataObject.has("staff")) {
+                                    if (dataObject.staff=="") {
                                         model.isBreak=0
 
                                     } else {
                                         model.isBreak=1
                                     }
-                                    model.subject_name=dataObject.optString("subject_name")
-                                    model.staff=dataObject.optString("staff")
-                                    model.sortname=dataObject.optString("sortname")
-                                    model.student_id=dataObject.optString("student_id")
-                                    model.day=dataObject.optString("day")
+                                    model.subject_name=dataObject.subject_name
+                                    model.staff=dataObject.staff
+                                    model.sortname=dataObject.sortname
+                                    model.student_id=dataObject.student_id
+                                    model.day=dataObject.day
 
                                     if (i == 4) {
                                         mFridayModelArraylist!!.add(model)
                                     }
-                                    if (!dataObject.optString("sortname")
+                                    if (!dataObject.sortname
                                             .equals("BUS")
                                     ) mDayModel.add(model)
                                 }
@@ -903,7 +1338,7 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
                 }catch (e: JSONException) {
                 }
             }
-        })
+        })*/
     }
 
     private fun initialiseUI() {
@@ -998,7 +1433,44 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
                         }
                         TimeTableWeekListAdapter!!.notifyDataSetChanged()
                         if (position != 0) {
-                            card_viewAll.setVisibility(View.GONE)
+                            timeTableAllRecycler.visibility = View.GONE
+                            card_viewAll.visibility = View.GONE
+                            //  timeTableAllRecycler.visibility=View.GONE
+                            tipContainer.visibility = View.GONE
+                            timeTableSingleRecycler.visibility = View.VISIBLE
+//                    if (mRangeModel.size>0)
+//                    {
+                            //card_viewAll.visibility = View.GONE
+                            // timeTableAllRecycler.visibility = View.GONE
+                            timeTableSingleRecycler.visibility = View.VISIBLE
+                            if (weekPosition == 1) {
+
+                                var mRecyclerViewMainAdapter =
+                                    TimeTableSingleWeekSelectionAdapter(mContext, mMondayArrayList)
+                                timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+                            } else if (weekPosition == 2) {
+
+                                var mRecyclerViewMainAdapter =
+                                    TimeTableSingleWeekSelectionAdapter(mContext, mTuesdayArrayList)
+                                timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+
+                            } else if (weekPosition == 3) {
+
+                                var mRecyclerViewMainAdapter =
+                                    TimeTableSingleWeekSelectionAdapter(mContext, mwednesdayArrayList)
+                                timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+                            } else if (weekPosition == 4) {
+
+                                var mRecyclerViewMainAdapter =
+                                    TimeTableSingleWeekSelectionAdapter(mContext, mThurdayArrayList)
+                                timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+                            } else if (weekPosition == 5) {
+
+                                var mRecyclerViewMainAdapter =
+                                    TimeTableSingleWeekSelectionAdapter(mContext, mFridayArrayList)
+                                timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
+                            }
+                            /*card_viewAll.setVisibility(View.GONE)
                             timeTableAllRecycler.visibility = View.GONE
                             tipContainer!!.visibility = View.GONE
                             timeTableSingleRecycler.visibility = View.VISIBLE
@@ -1008,15 +1480,20 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
                                     mRangeModel!![position - 1].timeTableDayModel!!
                                 )
                                 timeTableSingleRecycler.adapter = mRecyclerViewMainAdapter
-                            }
+                            }*/
                         } else {
                             timeTableSingleRecycler.visibility = View.GONE
                             timeTableAllRecycler.visibility = View.VISIBLE
                             tipContainer!!.visibility = View.VISIBLE
                             card_viewAll.setVisibility(View.VISIBLE)
                             if (mPeriodModel!!.size > 0) {
-                                val mRecyclerAllAdapter = TimeTableAllWeekSelectionAdapterNew(
-                                    mContext, mPeriodModel, feildAPIArrayList,tipContainer
+
+                                val mRecyclerAllAdapter =  TimeTableAllWeekSelectionAdapterNew(
+                                    mContext,
+                                    mPeriodModel,
+                                    mFieldModel,
+                                    timeTableAllRecycler,
+                                    tipContainer,
                                 )
                                 timeTableAllRecycler.adapter = mRecyclerAllAdapter
                             }
@@ -1059,7 +1536,7 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
                     override fun onClickItem(v: View?, position: Int) {
                         dialog.dismiss()
                         studentName.setText(mStudentArray[position].name)
-                        stud_id = mStudentArray[position].id.toString()
+                        stud_id = mStudentArray[position].id
                         stud_name = mStudentArray[position].name.toString()
                         stud_class = mStudentArray[position].mClass.toString()
                         stud_img = mStudentArray[position].photo.toString()

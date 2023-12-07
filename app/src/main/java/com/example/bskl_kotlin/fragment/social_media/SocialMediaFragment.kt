@@ -309,7 +309,7 @@ class SocialMediaFragment     (title: String, tabId: String) : Fragment() {
        /* getFBList(
             URL_GET_FB_LIST.replace(
                 FB_TOKEN,
-                PreferenceManager.getFbKey(SocialMediaFragment.mContext)
+                PreferenceManager().getFbKey(SocialMediaFragment.mContext)
             )
         )*/
 

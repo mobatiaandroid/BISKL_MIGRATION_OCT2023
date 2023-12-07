@@ -5,7 +5,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.messaging.FirebaseMessaging
 
-class MyFirebaseInstanceIDService  {
+public class MyFirebaseInstanceIDService  {
     //var mContext: Context
     private val REG_TOKEN: String? = "MyFirebaseIIDService"
 
@@ -27,8 +27,8 @@ class MyFirebaseInstanceIDService  {
              }
          })
          val refreshedToken = tokenM
-//        AppController.DEVICE_ID = refreshedToken;
-         //        AppController.DEVICE_ID = refreshedToken;
+//        AppController().DEVICE_ID = refreshedToken;
+         //        AppController().DEVICE_ID = refreshedToken;
          Log.d(REG_TOKEN, "Refreshed token: $refreshedToken")
          // System.out.println("refreshedToken:" + refreshedToken);
          // If you want to send messages to this application instance or

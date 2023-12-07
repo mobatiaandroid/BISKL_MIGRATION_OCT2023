@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scrollbars="none"
+        android:overScrollMode="never">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/studentSpinner"
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/event_spinnerbg"
+                android:weightSum="100"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp">
+                <com.example.bskl_kotlin.manager.RoundedImageView
+                    android:id="@+id/studImg"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:scaleType="centerCrop"
+                    android:layout_marginLeft="2dp"
+                    android:padding="5dp"
+                    android:background="@drawable/round" />
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                    android:id="@+id/studentName"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="80"
+                    android:gravity="left|center"
+                    android:paddingLeft="10dp"
+                    android:text="Select a child"
+                    android:textSize="16sp"
+                    />
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="8"
+                    android:layout_height="match_parent"
+                    ></View>
+                <!--<ImageView
+                    android:layout_width="0dp"
+                    android:layout_weight="12"
+                    android:layout_height="30dp"
+                    android:layout_gravity="right|center"
+                    android:src="@drawable/arrowdownnew"
+                    android:visibility="visible"/>
+-->
+            </LinearLayout>
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProBoldColorBlack
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:textSize="15sp"
+                android:paddingLeft="20dp"
+                android:textColorHint="@color/dark_grey1"
+                android:textColor="@color/black"
+                android:id="@+id/enterStratDate"
+                android:layout_below="@+id/studentSpinner"
+
+                android:singleLine="true"
+                android:gravity="left|center"
+                android:imeOptions="actionNext"
+                android:background="@drawable/edittext_greybg"
+                />
+            <!--  <com.mobatia.bskl.manager.TextViewFontSansProRegularColorBlack
+                  android:layout_width="match_parent"
+                  android:layout_height="45dp"
+                  android:layout_marginLeft="10dp"
+                  android:layout_marginRight="10dp"
+                  android:layout_marginTop="10dp"
+                  android:hint="Return to school"
+                  android:gravity="left|center"
+                  android:textSize="15sp"
+                  android:paddingLeft="20dp"
+                  android:textColorHint="@color/dark_grey1"
+                  android:textColor="@color/black"
+                  android:id="@+id/enterEndDate"
+                  android:layout_below="@+id/studentSpinner"
+                  android:singleLine="true"
+                  android:imeOptions="actionNext"
+                  android:background="@drawable/edittext_greybg"
+                  />-->
+            <com.example.bskl_kotlin.manager.EditTextFontSansProRegular
+
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:gravity="top"
+                android:paddingLeft="20dp"
+                android:paddingTop="20dp"
+                android:hint="Reason for absence"
+                android:textSize="15sp"
+                android:focusableInTouchMode="true"
+                android:layout_below="@+id/enterStratDate"
+                android:textColorHint="@color/dark_grey1"
+                android:textColor="@color/black"
+                android:id="@+id/enterMessage"
+                android:lines="5"
+                android:singleLine="true"
+                android:imeOptions="actionDone"
+                android:inputType="textMultiLine"
+                android:background="@drawable/edittext_greybg"
+                />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_margin="10dp"
+                android:layout_below="@+id/enterMessage"
+                android:id="@+id/submitLayout"
+                >
+                <com.example.bskl_kotlin.manager.ButtonFontSansProRegular
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/submitBtn"
+                    android:text="@string/submit"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:gravity="center"
+                    android:visibility="visible"
+                    android:background="@drawable/button_new"
+                    />
+
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+</RelativeLayout>

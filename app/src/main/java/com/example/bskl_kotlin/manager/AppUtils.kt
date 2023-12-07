@@ -6,6 +6,8 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.StateListDrawable
 import android.net.ConnectivityManager
 import android.os.Build
 import android.text.Editable
@@ -19,21 +21,10 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import com.example.bskl_kotlin.R
-import com.example.bskl_kotlin.activity.datacollection_p2.model.StudentModelNew
-import com.example.bskl_kotlin.activity.home.model.DeviceregisterModel
-import com.example.bskl_kotlin.common.PreferenceManager
-import com.example.bskl_kotlin.common.model.StudentListModel
-import com.example.bskl_kotlin.common.model.StudentListResponseModel
-import com.example.bskl_kotlin.fragment.home.studentsModelArrayList
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.DateFormat
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
@@ -46,6 +37,47 @@ class AppUtils {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         val ni = cm.activeNetworkInfo
         return ni != null
+    }
+    fun isValidEmail(target: CharSequence?): Boolean {
+        return if (target == null) {
+            false
+        } else {
+            Patterns.EMAIL_ADDRESS.matcher(target).matches()
+        }
+    }
+   /* fun getCurrentDateToday(): String? {
+        val dateFormat: DateFormat =
+            SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
+        val calendar = Calendar.getInstance()
+        return dateFormat.format(calendar.time)
+    }*/
+    fun hideKeyBoard(context: Context) {
+        val imm = context
+            .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        if (imm.isAcceptingText) {
+            imm.hideSoftInputFromWindow(
+                (context as Activity).currentFocus!!.getWindowToken(), 0
+            )
+        }
+    }
+    fun getButtonDrawableByScreenCathegory(
+        con: Context,
+        normalStateResID: Int, pressedStateResID: Int
+    ): Drawable? {
+        val state_normal = con.resources
+            .getDrawable(normalStateResID).mutate()
+        val state_pressed = con.resources
+            .getDrawable(pressedStateResID).mutate()
+        val drawable = StateListDrawable()
+        drawable.addState(
+            intArrayOf(android.R.attr.state_pressed),
+            state_pressed
+        )
+        drawable.addState(
+            intArrayOf(android.R.attr.state_enabled),
+            state_normal
+        )
+        return drawable
     }
     fun showAlertFinish(
         activity: Activity, message: String?,
@@ -79,6 +111,13 @@ class AppUtils {
             }
         }
         dialog.show()
+    }
+    fun hideKeyboard(context: Context, edtText: EditText?) {
+        if (edtText != null) {
+            val imm = context
+                .getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(edtText.windowToken, 0)
+        }
     }
     fun showAlert(
         activity: Activity, message: String?,
@@ -238,13 +277,13 @@ class AppUtils {
         return mDate
     }
 
-    val currentDateToday: String
-        get() {
+    //val currentDateToday: String
+        /*get() {
             val dateFormat: DateFormat =
                 SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH)
             val calendar = Calendar.getInstance()
             return dateFormat.format(calendar.time)
-        }
+        }*/
 
     fun isEditTextFocused(context: Activity): Boolean {
         val inputManager = context.getSystemService(

@@ -1,9 +1,27 @@
 package com.example.bskl_kotlin.activity.datacollection_p2.model
 
-import com.google.gson.annotations.SerializedName
-
 class InsuranceDetailModel  (
-    @SerializedName("id")var id:String,
+    var id: String? = null,
+    var student_id: String? = null,
+    var student_name: String? = null,
+    var health_detail: String? = null,
+    var no_personal_accident_insurance: String? = null,
+    var medical_insurence_policy_no: String? = null,
+    var medical_insurence_member_number: String? = null,
+    var medical_insurence_provider: String? = null,
+    var medical_insurence_expiry_date: String? = null,
+    var personal_accident_insurence_policy_no: String? = null,
+    var personal_accident_insurence_provider: String? = null,
+    var personal_acident_insurence_expiry_date: String? = null,
+    var preferred_hospital: String? = null,
+    var status: String? = null,
+    var request: String? = null,
+    var created_at: String? = null,
+    var updated_at: String? = null,
+    var HaveMedInsurance: String? = null,
+    var HavePersonalInsurance: String? = null,
+    var declaration: String? = null
+   /* @SerializedName("id")var id:String,
     @SerializedName("student_id")var student_id:String,
     @SerializedName("student_name")var student_name:String,
     @SerializedName("health_detail")var health_detail:String,
@@ -20,6 +38,6 @@ class InsuranceDetailModel  (
     @SerializedName("request")var request:String,
     @SerializedName("created_at")var created_at:String,
     @SerializedName("updated_at")var updated_at:String,
-    @SerializedName("declaration")var declaration:String
+    @SerializedName("declaration")var declaration:String*/
 
     )

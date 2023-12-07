@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <TextView
+        android:id="@+id/topDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/transparent"/>
+
+    <ImageView
+        android:id="@+id/listIcon"
+        android:layout_width="35dp"
+        android:layout_marginTop="5dp"
+        android:layout_height="35dp"
+        android:layout_below="@+id/topDivider"
+        android:layout_centerVertical="true"
+        android:src="@drawable/calendar_list_icon" />
+    <LinearLayout
+        android:id="@+id/namelayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_below="@+id/topDivider"
+        android:layout_alignBottom="@+id/listIcon"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/listIcon"
+        android:orientation="horizontal"
+        android:weightSum="100">
+
+        <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+            android:id="@+id/dateTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:layout_weight="40"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+
+        <com.example.bskl_kotlin.manager.TextViewFontSansProBold
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text=":"
+            android:layout_weight="5"
+            android:textSize="14sp"
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black"
+            />
+
+        <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+            android:id="@+id/typeTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="55"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/black"
+            android:textSize="14sp" />
+    </LinearLayout>
+    <TextView
+        android:id="@+id/bottomDivider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_below="@+id/namelayout"
+        android:background="@color/transparent"/>
+
+
+</RelativeLayout>

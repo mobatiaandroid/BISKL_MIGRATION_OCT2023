@@ -1,4 +1,3 @@
-/*
 
 package com.example.bskl_kotlin.fragment.safeguarding.adapter
 
@@ -15,12 +14,19 @@ import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.bskl_kotlin.R
+import com.example.bskl_kotlin.activity.safeguarding.LeaveRequestSubmissionSafeguardActivity
 import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.fragment.absence.model.StudentModel
 import com.example.bskl_kotlin.fragment.safeguarding.SafeGuardingFragment
+
 import com.example.bskl_kotlin.manager.AppUtils
-import com.squareup.picasso.Picasso
+import java.text.ParseException
+import java.text.SimpleDateFormat
+
 import java.util.*
 
 class SafeGuardingAdapter(data: ArrayList<StudentModel>, context: Context) :
@@ -183,7 +189,7 @@ class SafeGuardingAdapter(data: ArrayList<StudentModel>, context: Context) :
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        Log.v("viewType:", "" + viewType)
+        Log.e("viewType:", "" + viewType)
         when (viewType) {
             StudentModel().VIEW_TYPE1 -> {
                 val view1: View = LayoutInflater.from(parent.context)
@@ -253,13 +259,13 @@ class SafeGuardingAdapter(data: ArrayList<StudentModel>, context: Context) :
                 mHour = c[Calendar.HOUR_OF_DAY]
                 mMinute = c[Calendar.MINUTE]
             } else {
-                mHour = AppUtils().timeParsingToHours(textViewTime.text.toString())!!.toInt()
-                mMinute = AppUtils().timeParsingToMinutes(textViewTime.text.toString())!!.toInt()
+                mHour = timeParsingToHours(textViewTime.text.toString())!!.toInt()
+                mMinute = timeParsingToMinutes(textViewTime.text.toString())!!.toInt()
             }
             // Launch Time Picker Dialog
             val timePickerDialog = TimePickerDialog(
                 context,
-                { view, hourOfDay, minute -> textViewTime.setText(AppUtils().timeParsingTo12Hour("$hourOfDay:$minute")) },
+                { view, hourOfDay, minute -> textViewTime.setText(timeParsingTo12Hour("$hourOfDay:$minute")) },
                 mHour,
                 mMinute,
                 false
@@ -274,7 +280,7 @@ class SafeGuardingAdapter(data: ArrayList<StudentModel>, context: Context) :
                 ) {
                     details =
                         "Expected arrival time - " + textViewTime.text.toString() + " " + "<br>" + textViewComments.text.toString()
-                   SafeGuardingFragment(). submitAbsence(
+                   SafeGuardingFragment().submitAbsence(
                        attendance_id!!,
                        student_id!!,
                        status!!,
@@ -429,10 +435,15 @@ class SafeGuardingAdapter(data: ArrayList<StudentModel>, context: Context) :
                         )
                     )
                     if (!model.mPhoto.equals("")) {
-                        Picasso.with(mContext).load(AppUtils().replace(model.mPhoto!!))
-                            .placeholder(R.drawable.boy).fit().into(
-                                holder!!.imgStudentImage
-                            )
+                        Glide.with(mContext) //1
+                            .load(AppUtils().replace(model.mPhoto!!))
+                            .placeholder(R.drawable.boy)
+                            .error(R.drawable.boy)
+                            .skipMemoryCache(true) //2
+                            .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                            .transform(CircleCrop()) //4
+                            .into(holder!!.imgStudentImage)
+
                     } else {
                         holder!!.imgStudentImage.setImageResource(R.drawable.boy)
                     }
@@ -515,10 +526,18 @@ class SafeGuardingAdapter(data: ArrayList<StudentModel>, context: Context) :
                         }
                     }
                     if (!model.mPhoto.equals("")) {
-                        Picasso.with(mContext).load(AppUtils().replace(model.mPhoto!!))
+                        Glide.with(mContext) //1
+                            .load(AppUtils().replace(model.mPhoto!!))
+                            .placeholder(R.drawable.boy)
+                            .error(R.drawable.boy)
+                            .skipMemoryCache(true) //2
+                            .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                            .transform(CircleCrop()) //4
+                            .into(holder!!.imgStudentImage)
+                       /* Picasso.with(mContext).load(AppUtils().replace(model.mPhoto!!))
                             .placeholder(R.drawable.boy).fit().into(
                                 holder!!.imgStudentImage
-                            )
+                            )*/
                     } else {
                         holder!!.imgStudentImage.setImageResource(R.drawable.boy)
                     }
@@ -555,10 +574,18 @@ class SafeGuardingAdapter(data: ArrayList<StudentModel>, context: Context) :
                         )
                     )
                     if (!model.mPhoto.equals("")) {
-                        Picasso.with(mContext).load(AppUtils().replace(model.mPhoto!!))
+                        Glide.with(mContext) //1
+                            .load(AppUtils().replace(model.mPhoto!!))
+                            .placeholder(R.drawable.boy)
+                            .error(R.drawable.boy)
+                            .skipMemoryCache(true) //2
+                            .diskCacheStrategy(DiskCacheStrategy.NONE) //3
+                            .transform(CircleCrop()) //4
+                            .into(holder!!.imgStudentImage)
+                        /*Picasso.with(mContext).load(AppUtils().replace(model.mPhoto!!))
                             .placeholder(R.drawable.boy).fit().into(
                                 holder!!.imgStudentImage
-                            )
+                            )*/
                     } else {
                         holder!!.imgStudentImage.setImageResource(R.drawable.boy)
                     }
@@ -590,8 +617,6 @@ class SafeGuardingAdapter(data: ArrayList<StudentModel>, context: Context) :
                     holder!!.textViewStudentSent.gravity =
                         Gravity.CENTER
                     holder!!.textViewReportAbsence.setOnClickListener {
-*/
-/*
 val mIntent = Intent(
                             mContext,
                             LeaveRequestSubmissionSafeguardActivity::class.java
@@ -603,7 +628,7 @@ val mIntent = Intent(
                         mIntent.putExtra("status", "3")
                         mIntent.putExtra("StudentModelArray", dataSet)
                         mContext.startActivity(mIntent)
-*//*
+
 
 
                     }
@@ -627,4 +652,43 @@ val mIntent = Intent(
             }
         }
     }
-}*/
+    fun timeParsingToHours(date: String?): String? {
+        var strCurrentDate = ""
+        var format = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+        var newDate: Date? = null
+        try {
+            newDate = format.parse(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        format = SimpleDateFormat("HH", Locale.ENGLISH)
+        strCurrentDate = format.format(newDate)
+        return strCurrentDate
+    }
+    fun timeParsingToMinutes(date: String?): String? {
+        var strCurrentDate = ""
+        var format = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+        var newDate: Date? = null
+        try {
+            newDate = format.parse(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        format = SimpleDateFormat("mm", Locale.ENGLISH)
+        strCurrentDate = format.format(newDate)
+        return strCurrentDate
+    }
+    fun timeParsingTo12Hour(date: String?): String? {
+        var strCurrentDate = ""
+        var format = SimpleDateFormat("HH:mm", Locale.ENGLISH)
+        var newDate: Date? = null
+        try {
+            newDate = format.parse(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        format = SimpleDateFormat("hh:mm a", Locale.ENGLISH)
+        strCurrentDate = format.format(newDate)
+        return strCurrentDate
+    }
+}

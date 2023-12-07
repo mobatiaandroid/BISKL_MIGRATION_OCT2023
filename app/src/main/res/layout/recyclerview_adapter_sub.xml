@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:id="@+id/clickLinear"
+        android:weightSum="20">
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="15">
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/termname"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Eve"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="10dp"
+                android:textSize="16sp" />
+
+        </RelativeLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="5"
+            android:gravity="right|center">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/nextArrow"
+                android:src="@drawable/arrow"
+                android:gravity="right|center"
+                android:layout_marginRight="10dp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+    <View
+        android:id="@+id/separator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/list_divider"
+        android:layout_marginTop="5dp"
+
+        ></View>
+
+
+</LinearLayout>

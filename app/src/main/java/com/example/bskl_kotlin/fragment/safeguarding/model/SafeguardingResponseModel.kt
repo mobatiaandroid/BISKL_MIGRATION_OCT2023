@@ -1,6 +1,7 @@
 
 package com.example.bskl_kotlin.fragment.safeguarding.model
 
+import TypeModel
 import com.google.gson.annotations.SerializedName
 
 class SafeguardingResponseModel (

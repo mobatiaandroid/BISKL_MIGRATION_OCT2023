@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:tag="weekRow3"
+    android:layout_marginTop="5dp"
+
+    android:weightSum="7"
+    tools:ignore="MissingDefaultResource">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:tag="dayOfMonthContainer15">
+
+        <com.example.bskl_kotlin.activity.calender.utils.DayViewLibrary
+            style="@style/CalendarView.DayOfTheMonth"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:drawableBottom="@drawable/shape_circle"
+            android:textSize="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:tag="dayOfMonthText15"
+            android:text="15" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:tag="dayOfMonthContainer16">
+
+        <com.example.bskl_kotlin.activity.calender.utils.DayViewLibrary
+            style="@style/CalendarView.DayOfTheMonth"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:drawableBottom="@drawable/shape_circle"
+            android:tag="dayOfMonthText16"
+            android:text="16" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:tag="dayOfMonthContainer17">
+
+        <com.example.bskl_kotlin.activity.calender.utils.DayViewLibrary
+            style="@style/CalendarView.DayOfTheMonth"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:drawableBottom="@drawable/shape_circle"
+            android:tag="dayOfMonthText17"
+            android:textSize="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:text="17" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:tag="dayOfMonthContainer18">
+
+        <com.example.bskl_kotlin.activity.calender.utils.DayViewLibrary
+            style="@style/CalendarView.DayOfTheMonth"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:textSize="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:drawableBottom="@drawable/shape_circle"
+
+            android:tag="dayOfMonthText18"
+            android:text="18" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:tag="dayOfMonthContainer19">
+
+        <com.example.bskl_kotlin.activity.calender.utils.DayViewLibrary
+            style="@style/CalendarView.DayOfTheMonth"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:drawableBottom="@drawable/shape_circle"
+            android:textSize="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:tag="dayOfMonthText19"
+            android:text="19" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:tag="dayOfMonthContainer20">
+
+        <com.example.bskl_kotlin.activity.calender.utils.DayViewLibrary
+            style="@style/CalendarView.DayOfTheMonth"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:drawableBottom="@drawable/shape_circle"
+            android:textSize="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:tag="dayOfMonthText20"
+            android:text="20" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:tag="dayOfMonthContainer21">
+
+        <com.example.bskl_kotlin.activity.calender.utils.DayViewLibrary
+            style="@style/CalendarView.DayOfTheMonth"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:drawableBottom="@drawable/shape_circle"
+            android:textSize="6dp"
+            android:layout_marginLeft="2dp"
+            android:layout_marginRight="2dp"
+            android:tag="dayOfMonthText21"
+            android:text="21" />
+    </RelativeLayout>
+
+</LinearLayout>

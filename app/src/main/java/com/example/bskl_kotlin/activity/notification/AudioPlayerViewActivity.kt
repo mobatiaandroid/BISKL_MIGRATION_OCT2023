@@ -42,17 +42,22 @@ class AudioPlayerViewActivity:AppCompatActivity() {
         setContentView(R.layout.audio_player_push_activity)
         mContext = this
         activity = this
-        AppController().isfromUnread = false
+        PreferenceManager().setIsfromUnread(mContext,false)
+       // AppController().isfromUnread = false
         extras = intent.extras!!
         if (extras != null) {
             position = extras.getInt("position")
-            AppController().isfromUnread = extras.getBoolean("isfromUnread")
+            PreferenceManager().setIsfromUnread(mContext,extras.getBoolean("isfromUnread"))
+            //AppController().isfromUnread = extras.getBoolean("isfromUnread")
             title = extras.getString("title")!!
-            AppController().isfromRead = extras.getBoolean("isfromRead")
-            alertlist = extras
+            PreferenceManager().setisfromRead(mContext,extras.getBoolean("isfromRead"))
+           // AppController().isfromRead = extras.getBoolean("isfromRead")
+           /* alertlist = extras
                 .getSerializable("PASSING_ARRAY") as ArrayList<PushNotificationModel>
-            url = alertlist[position].url
+            url = alertlist[position].url*/
         }
+        alertlist=PreferenceManager().getUnreadList(mContext)
+        url=alertlist[position].url
         supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
         supportActionBar!!.setDisplayShowCustomEnabled(true)
         supportActionBar!!.setCustomView(R.layout.custom_action_view_home)
@@ -152,7 +157,8 @@ class AudioPlayerViewActivity:AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        AppController().pushId = alertlist[position].pushid
+        PreferenceManager().setpushId(mContext,alertlist[position].pushid)
+        //AppController().pushId = alertlist[position].pushid
         finish()
     }
 }

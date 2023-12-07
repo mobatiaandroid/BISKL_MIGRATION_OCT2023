@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainConstraint"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View
+        android:id="@+id/viewTop"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="8dp"
+        android:background="@color/event_list_bg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.github.siyamed.shapeimageview.CircularImageView
+        android:id="@+id/iconImg"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/boy"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/viewTop"
+        app:siBorderColor="#A0DAE5"
+        app:siBorderWidth="1dp" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProSemiBoldColorBlack
+        android:id="@+id/textViewStudentName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:text="Name"
+        app:layout_constraintBottom_toBottomOf="@+id/iconImg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/iconImg"
+        app:layout_constraintTop_toTopOf="@+id/iconImg"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.0"
+        />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/textViewStudentYear"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:maxLines="1"
+        android:text="Year"
+        android:textColor="@color/cleargreyColor"
+        app:layout_constraintEnd_toEndOf="@+id/textViewStudentName"
+        app:layout_constraintStart_toStartOf="@+id/textViewStudentName"
+        app:layout_constraintTop_toBottomOf="@+id/textViewStudentName"
+        />
+
+
+    <RelativeLayout
+        android:id="@+id/relativeBg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/timetableblue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintHorizontal_bias="0.0"
+        android:layout_marginTop="24dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewStudentYear">
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp">
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/textViewAMRegister"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="AM Register"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.30" />
+
+            <TextView
+                android:id="@+id/textViewAMDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewAMRegister"
+                app:layout_constraintStart_toEndOf="@+id/textViewAMRegister"
+                app:layout_constraintTop_toTopOf="@+id/textViewAMRegister" />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/textViewAMRegisterValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="AM Register"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/textViewAMDot"
+                app:layout_constraintTop_toTopOf="@+id/textViewAMRegister" />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/comment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="10dp"
+                android:text="Notes"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewAMRegisterValue" />
+            <TextView
+                android:id="@+id/commentdot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                app:layout_constraintBottom_toBottomOf="@+id/comment"
+                app:layout_constraintStart_toEndOf="@+id/comment"
+                app:layout_constraintTop_toTopOf="@+id/comment" />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/commentvaluesec"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="8dp"
+                android:text="sample"
+                android:lineSpacingExtra="-3dp"
+                app:layout_constraintBottom_toTopOf="@+id/textViewLastUpdated"
+                app:layout_constraintEnd_toEndOf="@+id/textViewAMRegisterValue"
+                app:layout_constraintStart_toStartOf="@+id/guideline3"
+                app:layout_constraintTop_toTopOf="@+id/comment" />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/textViewLastUpdated"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginStart="8dp"
+                android:text="Last Updated"
+                app:layout_constraintEnd_toStartOf="@+id/guideline2"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/comment" />
+
+
+            <TextView
+                android:id="@+id/textViewLastUpdatedDot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=":"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewLastUpdated"
+                app:layout_constraintStart_toEndOf="@+id/textViewLastUpdated"
+                app:layout_constraintTop_toTopOf="@+id/textViewLastUpdated" />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/textViewLastUpdatedValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="LastUpdated"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/textViewLastUpdated"
+                app:layout_constraintTop_toTopOf="@+id/textViewLastUpdated" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.33" />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorWhite
+                android:id="@+id/textViewReportAbsence"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/rounded_rec_blue"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="REPORT ABSENCE "
+                android:singleLine="false"
+                android:textSize="10sp"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewStudentLate"
+                app:layout_constraintTop_toTopOf="@+id/textViewStudentLate"
+                app:layout_constraintEnd_toStartOf="@+id/guideline3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintHorizontal_bias="0.0"
+
+                />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.66" />
+
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorWhite
+                android:id="@+id/textViewStudentLate"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:background="@drawable/rounded_rec_fill_red"
+                android:gravity="center"
+                android:textSize="10sp"
+                android:padding="5dp"
+                android:text="STUDENT \nRUNNING LATE"
+                app:layout_constraintBottom_toBottomOf="@+id/textViewStudentSent"
+                app:layout_constraintEnd_toStartOf="@+id/guideline4"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/guideline3"
+                app:layout_constraintTop_toTopOf="@+id/textViewStudentSent"
+                app:layout_constraintVertical_bias="0.0" />
+
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorWhite
+                android:id="@+id/textViewStudentSent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginTop="8dp"
+                android:minLines="3"
+                android:background="@drawable/rounded_rec_violet"
+                android:gravity="center"
+                android:padding="5dp"
+                android:textSize="10sp"
+                android:text="STUDENT HAS \nBEEN SENT TO SCHOOL"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@+id/guideline4"
+                app:layout_constraintTop_toBottomOf="@+id/textViewLastUpdatedValue"
+                app:layout_constraintVertical_bias="0.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

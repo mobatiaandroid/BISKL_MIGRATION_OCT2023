@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 class GlobalListDataModel (
 
-    var type:String?=null,
-    var mGlobalSirnameArray:ArrayList<GlobalListSirname>?=null
+    var Type:String?=null,
+    var GlobalList:ArrayList<GlobalListSirname>?=null
 )

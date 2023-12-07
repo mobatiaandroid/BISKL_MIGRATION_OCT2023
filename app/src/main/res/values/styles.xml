@@ -298,4 +298,8 @@
         <item name="android:fadeScrollbars">false</item>
         <item name="android:scrollbarThumbVertical">@drawable/scroll_color</item>
     </style>
+    <style name="DialogAnimations.SmileWindow">
+        <item name="android:windowEnterAnimation">@anim/slide_in_bottom</item>
+        <item name="android:windowExitAnimation">@anim/slide_out_top</item>
+    </style>
 </resources>

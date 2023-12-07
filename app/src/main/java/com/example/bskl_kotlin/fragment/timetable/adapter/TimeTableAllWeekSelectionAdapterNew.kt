@@ -27,6 +27,7 @@ class TimeTableAllWeekSelectionAdapterNew(
     private val mContext: Context,
    private var mPeriodList: ArrayList<PeriodModel>,
   private var mFeildList: ArrayList<FieldModel>,
+    var timeTableAllRecycler:RecyclerView,
    private var tipContainer: ToolTipLayout,
 
 

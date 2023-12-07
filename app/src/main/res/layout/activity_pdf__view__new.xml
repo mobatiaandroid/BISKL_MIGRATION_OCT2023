@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relativeHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+        <ImageView
+            android:id="@+id/PDF_GoBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/backbuttonprev"/>
+    </RelativeLayout>
+
+    <com.github.barteksc.pdfviewer.PDFView
+        android:id="@+id/Csutom_pdfView"
+        android:layout_width="match_parent"
+        android:layout_below="@id/relativeHeader"
+        android:layout_height="match_parent" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorAccent">
+        <ImageView
+            android:id="@+id/PDFdownload"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/downlaod_icon"/>
+        <ImageView
+            android:id="@+id/PDFshared"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_margin="5dp"
+            android:src="@drawable/share"/>
+    </LinearLayout>
+
+
+</RelativeLayout>

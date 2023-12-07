@@ -21,6 +21,7 @@ import com.example.bskl_kotlin.activity.notification.adapter.StudentUnReadRecycl
 import com.example.bskl_kotlin.fragment.messages.model.PushNotificationModel
 import com.example.bskl_kotlin.manager.AppController
 import com.example.bskl_kotlin.R
+import com.example.bskl_kotlin.common.PreferenceManager
 
 class VideoWebViewActivity:AppCompatActivity() {
     lateinit var videolist: ArrayList<PushNotificationModel>
@@ -43,18 +44,21 @@ class VideoWebViewActivity:AppCompatActivity() {
         setContentView(R.layout.videopush_web_view)
         mContext = this
         mActivity = this
-
-        AppController().isfromUnread = false
+PreferenceManager().setIsfromUnread(mContext,false)
+        //AppController().isfromUnread = false
 
         val extra = intent.extras
         if (extra != null) {
             position = extra.getInt("position")
             title = extra.getString("title")!!
-            AppController().isfromUnread = extra.getBoolean("isfromUnread")
-            AppController().isfromRead = extra.getBoolean("isfromRead")
-            videolist = extra
-                .getSerializable("PASSING_ARRAY") as ArrayList<PushNotificationModel>
+            PreferenceManager().setIsfromUnread(mContext,extra.getBoolean("isfromUnread"))
+            PreferenceManager().setisfromRead(mContext,extra.getBoolean("isfromRead"))
+           /* AppController().isfromUnread = extra.getBoolean("isfromUnread")
+            AppController().isfromRead = extra.getBoolean("isfromRead")*/
+           /* videolist = extra
+                .getSerializable("PASSING_ARRAY") as ArrayList<PushNotificationModel>*/
         }
+        videolist=PreferenceManager().getUnreadList(mContext)
         webView = findViewById(R.id.webView)
 
         proWebView = findViewById(R.id.proWebView)
@@ -129,7 +133,8 @@ class VideoWebViewActivity:AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        AppController().pushId = videolist[position].pushid
+        PreferenceManager().setpushId(mContext,videolist[position].pushid)
+        //AppController().pushId = videolist[position].pushid
         finish()
     }
 }

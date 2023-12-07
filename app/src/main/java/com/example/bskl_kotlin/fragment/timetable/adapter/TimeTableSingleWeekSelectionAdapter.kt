@@ -1,6 +1,7 @@
 package com.example.bskl_kotlin.fragment.timetable.adapter
 
 import android.content.Context
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,7 +22,7 @@ class TimeTableSingleWeekSelectionAdapter (
     private var mRangeModel: ArrayList<DayModel>
 ) :
     RecyclerView.Adapter<TimeTableSingleWeekSelectionAdapter.MyViewHolder>() {
-    lateinit var timeTableList: ArrayList<DayModel>
+    //lateinit var timeTableList: ArrayList<DayModel>
     var breakPos = 0
 
     inner class MyViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -65,11 +66,14 @@ class TimeTableSingleWeekSelectionAdapter (
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
 
+Log.e("singleweekis break",mRangeModel[0].isBreak.toString())
         /* DateFormat dateFormat = new SimpleDateFormat("hh.mm aa");
         String dateString = dateFormat.format(mRangeModel.get(position).getStarttime());*/
         /*    String pattern = " hh.mm aa";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-        String date = simpleDateFormat.format(mRangeModel.get(position).getStarttime());*/if (mRangeModel[position].isBreak === 1) {
+        String date = simpleDateFormat.format(mRangeModel.get(position).getStarttime());*/
+        breakPos=0
+        if (mRangeModel[position].isBreak == 1) {
             holder.llread.visibility = View.GONE
             holder.llreadbreak.visibility = View.VISIBLE
             holder.starLinear.visibility = View.INVISIBLE
@@ -77,7 +81,9 @@ class TimeTableSingleWeekSelectionAdapter (
             holder.timeTxt.setTextColor(mContext.resources.getColor(R.color.white))
             holder.timeTxt.setText(timeParsingToAmPm(mRangeModel[position].starttime))
             breakPos = breakPos + 1
+            Log.e("breakpos",breakPos.toString())
             if (breakPos == 1) {
+                Log.e("break1",mRangeModel[position].sortname.toString())
                 if (mRangeModel[position].sortname.equals("Break")) {
                     holder.relSub.setBackgroundColor(mContext.resources.getColor(R.color.timetableblue))
                 } else if (mRangeModel[position].sortname.equals("Lunch")) {
@@ -86,6 +92,7 @@ class TimeTableSingleWeekSelectionAdapter (
                     holder.relSub.setBackgroundColor(mContext.resources.getColor(R.color.authorisedabsence))
                 }
             } else if (breakPos == 2) {
+                Log.e("break2",mRangeModel[position].sortname.toString())
                 if (mRangeModel[position].sortname.equals("Break")) {
                     holder.relSub.setBackgroundColor(mContext.resources.getColor(R.color.timetableblue))
                 } else if (mRangeModel[position].sortname.equals("Lunch")) {
@@ -94,6 +101,7 @@ class TimeTableSingleWeekSelectionAdapter (
                     holder.relSub.setBackgroundColor(mContext.resources.getColor(R.color.authorisedabsence))
                 }
             } else if (breakPos == 3) {
+                Log.e("break3",mRangeModel[position].sortname.toString())
                 if (mRangeModel[position].sortname.equals("Break")) {
                     holder.relSub.setBackgroundColor(mContext.resources.getColor(R.color.timetableblue))
                 } else if (mRangeModel[position].sortname.equals("Lunch")) {
@@ -102,6 +110,7 @@ class TimeTableSingleWeekSelectionAdapter (
                     holder.relSub.setBackgroundColor(mContext.resources.getColor(R.color.authorisedabsence))
                 }
             } else {
+                Log.e("break4",mRangeModel[position].sortname.toString())
                 if (mRangeModel[position].sortname.equals("Break")) {
                     holder.relSub.setBackgroundColor(mContext.resources.getColor(R.color.timetableblue))
                 } else if (mRangeModel[position].sortname.equals("Lunch")) {
@@ -124,7 +133,7 @@ class TimeTableSingleWeekSelectionAdapter (
     }
 
     override fun getItemCount(): Int {
-        return timeTableList.size
+        return mRangeModel.size
     }
     fun timeParsingToAmPm(date: String?): String? {
         var strCurrentDate = ""

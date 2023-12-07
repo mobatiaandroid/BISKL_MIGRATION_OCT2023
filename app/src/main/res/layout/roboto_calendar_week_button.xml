@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:baselineAligned="false"
+    android:orientation="horizontal"
+    android:tag="weekRow7"
+    android:weightSum="3">
+
+    <TextView
+        android:id="@+id/btnYearView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:stateListAnimator="@null"
+        android:layout_margin="5dp"
+        android:layout_centerVertical="true"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:overScrollMode="never"
+        android:visibility="gone"
+        android:textAllCaps="false"
+        android:background="@drawable/rounded_rec_calendar"
+        android:text="Year View" />
+
+    <TextView
+        android:id="@+id/btnMonthView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="5dp"
+        android:background="@drawable/rounded_rec_calendar"
+        android:stateListAnimator="@null"
+        android:overScrollMode="never"
+        android:textAllCaps="false"
+        android:layout_centerVertical="true"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:visibility="gone"
+
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:text="Month View" />
+
+    <TextView
+        android:id="@+id/btnWeekView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/rounded_rec_calendar"
+        android:stateListAnimator="@null"
+        android:overScrollMode="never"
+        android:layout_centerVertical="true"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_margin="5dp"
+        android:textAllCaps="false"
+        android:visibility="gone"
+
+        android:text="Week View" />
+</RelativeLayout>

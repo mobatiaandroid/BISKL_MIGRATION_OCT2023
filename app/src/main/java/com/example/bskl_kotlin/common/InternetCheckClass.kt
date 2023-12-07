@@ -17,6 +17,7 @@ import android.widget.TextView
 import com.example.bskl_kotlin.activity.splash.TokenModel
 import com.example.bskl_kotlin.activity.splash.TokenResponseModel
 import com.example.bskl_kotlin.R
+import com.example.bskl_kotlin.fragment.attendance.PreferenceManagerr
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -59,6 +60,49 @@ class InternetCheckClass {
             }
             return result
         }
+        fun showSuccessAlert(context: Context,message : String,msgHead : String)
+        {
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setCancelable(false)
+            dialog.setContentView(R.layout.alert_dialogue_ok_layout)
+            var iconImageView = dialog.findViewById(R.id.iconImageView) as ImageView
+            var alertHead = dialog.findViewById(R.id.alertHead) as TextView
+            var text_dialog = dialog.findViewById(R.id.text_dialog) as TextView
+            var btn_Ok = dialog.findViewById(R.id.btn_Ok) as Button
+            text_dialog.text = message
+            alertHead.text = msgHead
+            iconImageView.setImageResource(R.drawable.exclamationicon)
+            btn_Ok.setOnClickListener()
+            {
+                dialog.dismiss()
+
+            }
+            dialog.show()
+        }
+        fun showSuccessInternetAlert(context: Context)
+        {
+            val dialog = Dialog(context)
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+            dialog.setCancelable(false)
+            dialog.setContentView(R.layout.alert_dialogue_ok_layout)
+            var iconImageView = dialog.findViewById(R.id.iconImageView) as ImageView
+            var alertHead = dialog.findViewById(R.id.alertHead) as TextView
+            var text_dialog = dialog.findViewById(R.id.text_dialog) as TextView
+            var btn_Ok = dialog.findViewById(R.id.btn_Ok) as Button
+            text_dialog.text = "Network error occurred. Please check your internet connection and try again later"
+            alertHead.text = "Alert"
+            iconImageView.setBackgroundResource(R.drawable.roundred)
+            iconImageView.setImageResource(R.drawable.nonetworkicon)
+            btn_Ok.setOnClickListener()
+            {
+                dialog.dismiss()
+
+            }
+            dialog.show()
+        }
 
         //Email Pattern Check
         fun isEmailValid(email: String): Boolean {
@@ -90,50 +134,9 @@ class InternetCheckClass {
           dialog.show()
         }
 
-        fun showSuccessInternetAlert(context: Context)
-        {
-            val dialog = Dialog(context)
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.setCancelable(false)
-            dialog.setContentView(R.layout.alert_dialogue_ok_layout)
-            var iconImageView = dialog.findViewById(R.id.iconImageView) as ImageView
-            var alertHead = dialog.findViewById(R.id.alertHead) as TextView
-            var text_dialog = dialog.findViewById(R.id.text_dialog) as TextView
-            var btn_Ok = dialog.findViewById(R.id.btn_Ok) as Button
-            text_dialog.text = "Network error occurred. Please check your internet connection and try again later"
-            alertHead.text = "Alert"
-            iconImageView.setBackgroundResource(R.drawable.roundred)
-            iconImageView.setImageResource(R.drawable.nonetworkicon)
-            btn_Ok.setOnClickListener()
-            {
-                dialog.dismiss()
 
-            }
-            dialog.show()
-        }
 
-        fun showSuccessAlert(context: Context,message : String,msgHead : String)
-        {
-            val dialog = Dialog(context)
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
-            dialog.setCancelable(false)
-            dialog.setContentView(R.layout.alert_dialogue_ok_layout)
-            var iconImageView = dialog.findViewById(R.id.iconImageView) as ImageView
-            var alertHead = dialog.findViewById(R.id.alertHead) as TextView
-            var text_dialog = dialog.findViewById(R.id.text_dialog) as TextView
-            var btn_Ok = dialog.findViewById(R.id.btn_Ok) as Button
-            text_dialog.text = message
-            alertHead.text = msgHead
-            iconImageView.setImageResource(R.drawable.exclamationicon)
-            btn_Ok.setOnClickListener()
-            {
-                dialog.dismiss()
 
-            }
-            dialog.show()
-        }
 
         fun dateParsingToddMMMyyyy(date: String?): String? {
             var strCurrentDate = ""
@@ -183,6 +186,7 @@ class InternetCheckClass {
                    val responsedata = response.body()
                    Log.e("tooken", responsedata!!.access_token)
                    PreferenceManager().setaccesstoken(context,responsedata!!.access_token)
+                   PreferenceManagerr.setAccessToken(context,responsedata!!.access_token)
 
 
                }

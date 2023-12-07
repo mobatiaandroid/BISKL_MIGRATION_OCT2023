@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.RotateAnimation
+import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.RelativeLayout
@@ -25,14 +26,19 @@ import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.activity.notification.NotificationInfoActivity
 import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.common.model.NotificationNewResponseModel
+import com.example.bskl_kotlin.constants.ClickListener
 import com.example.bskl_kotlin.fragment.messages.adapter.ReadMessageAdapter
 import com.example.bskl_kotlin.fragment.messages.adapter.UnReadMessageAdapter
+import com.example.bskl_kotlin.fragment.messages.model.NotificationFavApiModel
 import com.example.bskl_kotlin.fragment.messages.model.NotificationFavouriteModel
 import com.example.bskl_kotlin.fragment.messages.model.NotificationNewDataModel
+import com.example.bskl_kotlin.fragment.messages.model.NotificationStatusApiModel
 import com.example.bskl_kotlin.fragment.messages.model.NotificationStatusModel
+import com.example.bskl_kotlin.fragment.messages.model.NotificationsNewApiModel
 import com.example.bskl_kotlin.fragment.messages.model.PushNotificationModel
-import com.example.bskl_kotlin.manager.AppController
 import com.example.bskl_kotlin.manager.AppUtils
+import com.example.bskl_kotlin.recyclerviewmanager.OnBottomReachedListener
+import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -42,7 +48,8 @@ import java.util.Collections
 import java.util.Date
 import java.util.Locale
 
-class NotificationFragmentPagination(title: String, tabId: String) : Fragment() {
+class NotificationFragmentPagination(title: String, tabId: String) : Fragment(),
+    View.OnClickListener, AdapterView.OnItemClickListener{
     lateinit var mContext: Context
     var myFormatCalender = "yyyy-MM-dd"
    var  dataLength=0
@@ -81,18 +88,21 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
     var nestedScroll: NestedScrollView? = null
     //var unReadMessageAdapter: UnReadMessageAdapter? = null
     var readMessageAdapter: ReadMessageAdapter? = null
+    var unReadMessageAdapter: UnReadMessageAdapter?=null
     lateinit var notificationList:ArrayList<NotificationNewDataModel>
     lateinit var mMessageReadList: ArrayList<PushNotificationModel>
+    lateinit var mMessageUnreadList: ArrayList<PushNotificationModel>
 
     lateinit var readArray:ArrayList<PushNotificationModel>
     lateinit var unreadArray:ArrayList<PushNotificationModel>
-    var isVisibleUnreadBox:Boolean=false
-    var isVisibleReadBox = false
-    var isSelectedUnRead = false
-    var isSelectedRead = false
+   // var isVisibleUnreadBox:Boolean=false
+    
+    //var PreferenceManager().setisVisibleReadBox(mContext,false)
+    //var isSelectedUnRead = false
+    //var PreferenceManager().setisSelectedRead(mContext,false)
     var  callTypeStatus = "1"
-    var click_count_read = 0
-    var click_count = 0
+    //var PreferenceManager().setclick_count_read(mContext,0)
+    //var PreferenceManager().setclick_count(mContext,0)
     var mMessageUnreadListFav = ArrayList<PushNotificationModel>()
     var mMessageReadListFav = ArrayList<PushNotificationModel>()
     override fun onCreateView(
@@ -122,6 +132,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
         unreadArray.clear()
         mMessageReadList=ArrayList()
         unreadArray=ArrayList()
+        mMessageUnreadList= ArrayList()
 
        // AppController().mMessageReadList.clear()
         //AppController().mMessageUnreadList.clear()
@@ -129,7 +140,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
         headerTitle.visibility = View.VISIBLE
         logoClickImgView.visibility = View.INVISIBLE
         initUi()
-        onClick()
+        //onClick()
         myFormatCalender = "yyyy-MM-dd HH:mm:ss"
         sdfcalender = SimpleDateFormat(myFormatCalender)
 
@@ -143,7 +154,8 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
         isFromReadBottom = false
         isFromUnReadBottom = false
         isProgressVisible = false
-
+      /*  readList.onItemClickListener= this
+        readList.onItemLongClickListener=this*/
 
         callPushNotification(
             typeValue,
@@ -198,6 +210,17 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
         maniRelative = requireView().findViewById<LinearLayout>(R.id.maniRelative)
         noMsgText = requireView().findViewById<TextView>(R.id.noMsgAlertTxt)
 
+        readList.setHasFixedSize(true)
+        val mRead = LinearLayoutManager(mContext)
+        mRead.orientation = LinearLayoutManager.VERTICAL
+        readList.setLayoutManager(mRead)
+        unReadList =
+            requireView().findViewById<RecyclerView>(R.id.mMessageUnReadList)
+        unReadList.setHasFixedSize(true)
+
+        val mUnRead = LinearLayoutManager(mContext)
+        mUnRead.orientation = LinearLayoutManager.VERTICAL
+        unReadList.setLayoutManager(mUnRead)
         /*readList.setHasFixedSize(true)
         val mRead = LinearLayoutManager(mContext)
         mRead.orientation = LinearLayoutManager.VERTICAL
@@ -217,126 +240,47 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
         msgUnreadLinear =
             requireView().findViewById<LinearLayout>(R.id.msgUnreadLinear)
         //callPushNotification("1","20","1")
+        // mMessageUnreadList=new ArrayList<PushNotificationModel>();
+        // mMessageReadList = new ArrayList<PushNotificationModel>();
+        msgReadLinear =
+            requireView().findViewById<LinearLayout>(R.id.msgReadLinear)
+        msgUnreadLinear =
+            requireView().findViewById<LinearLayout>(R.id.msgUnreadLinear)
+        /*unReadList.addOnItemClickListener(object : OnItemClickListener {
+            override fun onItemClicked(position: Int, view: View) {
+
+                Log.e("click adpter",position.toString())
+            }
+
+
+
+            })*/
+
+
+        markRead.setOnClickListener(this)
+        markUnRead!!.setOnClickListener(this)
+        messageRead!!.setOnClickListener(this)
+        messageUnRead!!.setOnClickListener(this)
+        noMsgAlertRelative!!.setOnClickListener(this)
+        maniRelative!!.setOnClickListener(this)
+        unreadTxt!!.setOnClickListener(this)
+        readTxt!!.setOnClickListener(this)
 
 
     }
 
-    private fun onClick(){
-        markRead!!.setOnClickListener {
-            markRead!!.setVisibility(View.GONE)
-            markUnRead!!.setVisibility(View.GONE)
-            messageRead!!.setVisibility(View.GONE)
-            msgReadSelect!!.setVisibility(View.GONE)
-            messageUnRead!!.setVisibility(View.GONE)
-            msgUnread!!.setVisibility(View.GONE)
-            isVisibleUnreadBox = false
-            isVisibleReadBox = false
-            if (AppUtils().isNetworkConnected(mContext)) {
-                //clearBadge();
-                var readList = ""
-                var k = 0
-                val mTempArray = ArrayList<PushNotificationModel>()
-                //mTempArray.addAll(AppController().mMessageUnreadList)
-                mTempArray.addAll(unreadArray)
-                for (i in mTempArray.indices) {
-                    val isFoundId = false
-                    if (mTempArray[i].isChecked) {
-                        if (k == 0) {
-                            readList = mTempArray[i].pushid
-                        } else {
-                            readList = readList + "," + mTempArray[i].pushid
-                        }
-                        for (j in 0 until unreadArray.size) {
-                            val pushReadId: String =
-                                unreadArray.get(j).pushid
-                            if (pushReadId.equals(mTempArray[i].pushid)) {
-                                //  isFoundId=true;
-                               unreadArray.removeAt(j)
-                            }
-                        }
-                       /* for (j in 0 until AppController().mMessageUnreadList.size) {
-                            val pushReadId: String =
-                                AppController().mMessageUnreadList.get(j).pushid
-                            if (pushReadId.equals(mTempArray[i].pushid)) {
-                                //  isFoundId=true;
-                                AppController().mMessageUnreadList.removeAt(j)
-                            }
-                        }*/
-                        k = k + 1
-                        // AppController.mMessageUnreadList.remove(i);
-                    }
-                }
+   /* private fun onClick(){
 
-                //  System.out.println("Read List" + readList);
-                callstatusapi("1", readList)
-            } else {
-                AppUtils().showDialogAlertDismiss(
-                    mContext as Activity?,
-                    "Network Error",
-                    getString(R.string.no_internet),
-                    R.drawable.nonetworkicon,
-                    R.drawable.roundred
-                )
-            }
-
-        }
         markUnRead!!.setOnClickListener {
-            markRead!!.setVisibility(View.GONE)
-            markUnRead!!.setVisibility(View.GONE)
-            messageRead!!.setVisibility(View.GONE)
-            msgReadSelect!!.setVisibility(View.GONE)
-            messageUnRead!!.setVisibility(View.GONE)
-            msgUnread!!.setVisibility(View.GONE)
-            isVisibleUnreadBox = false
-            isVisibleReadBox = false
-            if (AppUtils().isNetworkConnected(mContext)) {
-                var readList = ""
-                var k = 0
-                val mTempReadArray = ArrayList<PushNotificationModel>()
-                mTempReadArray.addAll(mMessageReadList)
-                for (i in mTempReadArray.indices) {
-                    if (mTempReadArray[i].isMarked) {
-                        if (k == 0) {
-                            readList = mTempReadArray[i].pushid
-                        } else {
-                            readList = readList + "," + mTempReadArray[i].pushid
-                        }
-                        for (j in 0 until mMessageReadList.size) {
-                            val pushReadId: String =
-                                mMessageReadList.get(j).pushid
-                            if (pushReadId.equals(
-                                    mTempReadArray[i].pushid
-                                )
-                            ) {
-                                //  isFoundId=true;
-                                mMessageReadList.removeAt(j)
-                            }
-                        }
-                        k = k + 1
-                    }
-                    // AppController.mMessageReadList.remove(i);
-                }
-                //      System.out.println("Unread List" + readList);
-                callstatusapi("0", readList)
 
-                // System.out.println("click next");
-            }  else {
-                AppUtils().showDialogAlertDismiss(
-                    mContext as Activity?,
-                    "Network Error",
-                    getString(R.string.no_internet),
-                    R.drawable.nonetworkicon,
-                    R.drawable.roundred
-                )
-            }
         }
         messageRead!!.setOnClickListener {
             val mCount: Int = click_count_read
             if (click_count_read % 2 === 0) {
-                isVisibleReadBox = true
+                PreferenceManager().setisVisibleReadBox(mContext,true)
                 markUnRead!!.setVisibility(View.GONE)
                 markRead!!.setVisibility(View.GONE)
-                isSelectedRead = false
+                PreferenceManager().setisSelectedRead(mContext,false)
                 for (i in 0 until mMessageReadList.size) {
                     mMessageReadList.get(i).isMarked=true
                 }
@@ -361,7 +305,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                 readMessageAdapter!!.notifyDataSetChanged()
                 //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
             } else {
-                isVisibleReadBox = false
+                PreferenceManager().setisVisibleReadBox(mContext,false)
                 for (i in 0 until mMessageReadList.size) {
                     if (mMessageReadList.get(i).isChecked) {
                         mMessageReadList.get(i).isChecked=false
@@ -378,13 +322,14 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
         }
         messageUnRead!!.setOnClickListener {
             if (click_count % 2 === 0) {
-                isVisibleUnreadBox = true
+                PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                //isVisibleUnreadBox = true
                 for (i in 0 until unreadArray.size) {
                     unreadArray.get(i).isChecked=true
                 }
-                /*for (i in 0 until AppController().mMessageUnreadList.size) {
+                *//*for (i in 0 until AppController().mMessageUnreadList.size) {
                     AppController().mMessageUnreadList.get(i).isChecked=true
-                }*/
+                }*//*
                 var selected = false
                 for (i in 0 until unreadArray.size) {
                     if (unreadArray.get(i).isChecked) {
@@ -394,14 +339,14 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                         break
                     }
                 }
-                /*for (i in 0 until AppController().mMessageUnreadList.size) {
+                *//*for (i in 0 until AppController().mMessageUnreadList.size) {
                     if (AppController().mMessageUnreadList.get(i).isChecked) {
                         selected = true
                     } else {
                         selected = false
                         break
                     }
-                }*/
+                }*//*
                 if (selected) {
                     messageUnRead!!.setBackgroundResource(R.drawable.check_box_header_tick)
                     markUnRead!!.setVisibility(View.GONE)
@@ -414,18 +359,19 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                 //unReadMessageAdapter!!.notifyDataSetChanged()
                 //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
             } else {
-                isVisibleUnreadBox = false
-                Log.e("test",isVisibleUnreadBox.toString())
+                PreferenceManager().setisVisibleUnreadBox(mContext,false)
+               //PreferenceManager().setisVisibleUnreadBox(mContext,false)
+               // Log.e("test",isVisibleUnreadBox.toString())
                 for (i in 0 until unreadArray.size) {
                     if (unreadArray.get(i).isChecked) {
                         unreadArray.get(i).isChecked=false
                     }
                 }
-               /* for (i in 0 until AppController().mMessageUnreadList.size) {
+               *//* for (i in 0 until AppController().mMessageUnreadList.size) {
                     if (AppController().mMessageUnreadList.get(i).isChecked) {
                         AppController().mMessageUnreadList.get(i).isChecked=false
                     }
-                }*/
+                }*//*
                 messageUnRead!!.setVisibility(View.GONE)
                 msgUnread!!.setVisibility(View.GONE)
                 markRead!!.setVisibility(View.GONE)
@@ -443,12 +389,13 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
             msgUnread!!.setVisibility(View.GONE)
             messageRead!!.setVisibility(View.GONE)
             markUnRead!!.setVisibility(View.GONE)
-            // messageUnRead.setBackgroundResource(R.drawable.check_box_header);
-            // messageUnRead.setBackgroundResource(R.drawable.check_box_header);
-            isVisibleUnreadBox = false
-            isVisibleReadBox = false
-            // System.out.println(" size of array"+AppController.mMessageUnreadList.size());
-            // System.out.println(" size of array"+AppController.mMessageUnreadList.size());
+            // messageUnRead!!.setBackgroundResource(R.drawable.check_box_header);
+            // messageUnRead!!.setBackgroundResource(R.drawable.check_box_header);
+            PreferenceManager().setisVisibleUnreadBox(mContext,false)
+            //isVisibleUnreadBox = false
+            PreferenceManager().setisVisibleReadBox(mContext,false)
+            // System.out.println(" size of array"+AppController().mMessageUnreadList.size);
+            // System.out.println(" size of array"+AppController().mMessageUnreadList.size);
             if (isProgressVisible) {
                 mProgressRelLayout!!.clearAnimation()
                 mProgressRelLayout!!.setVisibility(View.GONE)
@@ -471,58 +418,129 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                 Log.e("adaptr","1set")
                 unReadList.visibility=View.VISIBLE
                 unReadList.layoutManager=LinearLayoutManager(mContext)
-               var unReadMessageAdapter =
+                unReadMessageAdapter =
                     UnReadMessageAdapter(
                         mContext,
                         unreadArray,
                         messageUnRead!!,
                         markRead!!,
                         markUnRead!!,
-                        msgUnread!!/*,
-                                        object : ClickListener() {
-                                            fun onPositionClicked(position: Int) {}
-                                            fun onLongClicked(position: Int) {
-                                                NotificationFragmentPagination.markRead.setVisibility(
+                        msgUnread!!*//*,object :OnItemLongClickListener{
+                            override fun onItemLongClick(
+                                p0: AdapterView<*>?,
+                                p1: View?,
+                                p2: Int,
+                                p3: Long
+                            ): Boolean {
+                                Log.e("longclickadapter","longclick")
+                                markRead.setVisibility(
+                                    View.GONE
+                                )
+                                markUnRead!!.setVisibility(
+                                    View.GONE
+                                )
+                                messageUnRead!!.setBackgroundResource(
+                                    R.drawable.check_box_header
+                                )
+                               PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                PreferenceManager().setisVisibleReadBox(mContext,false)
+                                PreferenceManager().setclick_count(mContext,0)
+                                for (i in 0 until mMessageReadList.size) {
+                                    mMessageReadList.get(i).isMarked=false
+
+                                }
+                                for (i in 0 until mMessageUnreadList.size) {
+                                    mMessageUnreadList.get(i).isChecked=false
+
+                                }
+                                if (mMessageReadList.size > 0) {
+                                    readMessageAdapter!!.notifyDataSetChanged()
+                                    // readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+                                }
+                                unReadList.adapter=unReadMessageAdapter
+                                unReadMessageAdapter!!.notifyDataSetChanged()
+                                //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+                                messageUnRead!!.setVisibility(
+                                    View.VISIBLE
+                                )
+                                msgUnread!!.setVisibility(
+                                    View.VISIBLE
+                                )
+                                messageRead!!.setVisibility(
+                                    View.GONE
+                                )
+                                msgReadSelect!!.setVisibility(
+                                    View.GONE
+                                )
+                                return false
+                            }
+                        },object :
+                            OnItemClickListener {
+
+                            override fun onItemClick(
+                                p0: AdapterView<*>?,
+                                p1: View?,
+                                p2: Int,
+                                p3: Long
+                            ) {
+                                TODO("Not yet implemented")
+                            }
+
+
+                        }*//*
+                                        ,object : ClickListener {
+                                            override fun onPositionClicked(position: Int) {
+                                                Log.e("c1","true")
+                                            }
+                                            override fun onLongClicked(position: Int) {
+                                                Log.e("lc1","true")
+
+                                                markRead.setVisibility(
                                                     View.GONE
                                                 )
-                                                NotificationFragmentPagination.markUnRead.setVisibility(
+                                                markUnRead!!.setVisibility(
                                                     View.GONE
                                                 )
-                                                NotificationFragmentPagination.messageUnRead.setBackgroundResource(
+                                                messageUnRead!!.setBackgroundResource(
                                                     R.drawable.check_box_header
                                                 )
-                                                AppController.isVisibleUnreadBox = true
-                                                AppController.isVisibleReadBox = false
-                                                AppController.click_count = 0
-                                                for (i in 0 until AppController.mMessageReadList.size()) {
-                                                    AppController.mMessageReadList.get(i)
-                                                        .setMarked(false)
+                                                PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                                //isVisibleUnreadBox = true
+                                                PreferenceManager().setisVisibleReadBox(mContext,false)
+                                                PreferenceManager().setclick_count(mContext,0)
+                                                for (i in 0 until mMessageReadList.size) {
+                                                    mMessageReadList.get(i).isMarked=false
+
                                                 }
-                                                for (i in 0 until AppController.mMessageUnreadList.size()) {
-                                                    AppController.mMessageUnreadList.get(i)
-                                                        .setChecked(false)
+                                                for (i in 0 until mMessageUnreadList.size) {
+                                                    mMessageUnreadList.get(i).isChecked=false
+
                                                 }
-                                                if (AppController.mMessageReadList.size() > 0) {
-                                                    NotificationFragmentPagination.readMessageAdapter.notifyDataSetChanged()
+                                                if (mMessageReadList.size > 0) {
+                                                    readMessageAdapter!!.notifyDataSetChanged()
                                                     // readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
                                                 }
-                                                NotificationFragmentPagination.unReadMessageAdapter.notifyDataSetChanged()
+                                                unReadList.adapter=unReadMessageAdapter
+                                                unReadMessageAdapter!!.notifyDataSetChanged()
                                                 //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
-                                                NotificationFragmentPagination.messageUnRead.setVisibility(
+                                                messageUnRead!!.setVisibility(
                                                     View.VISIBLE
                                                 )
-                                                NotificationFragmentPagination.msgUnread.setVisibility(
+                                                msgUnread!!.setVisibility(
                                                     View.VISIBLE
                                                 )
-                                                NotificationFragmentPagination.messageRead.setVisibility(
+                                                messageRead!!.setVisibility(
                                                     View.GONE
                                                 )
-                                                NotificationFragmentPagination.msgReadSelect.setVisibility(
+                                                msgReadSelect!!.setVisibility(
                                                     View.GONE
                                                 )
                                             }
-                                        }*/)
+                                        }
+                    )
+
                 unReadList.adapter=unReadMessageAdapter
+                //unReadList.onItemLongClickListener
                 msgUnreadLinear!!.setVisibility(View.VISIBLE)
                 msgReadLinear!!.setVisibility(View.GONE)
                 unReadMessageAdapter!!.notifyDataSetChanged()
@@ -541,72 +559,142 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                         messageUnRead!!,
                         markRead!!,
                         markUnRead!!,
-                        msgUnread!!/*,
-                                        object : ClickListener() {
-                                            fun onPositionClicked(position: Int) {}
-                                            fun onLongClicked(position: Int) {
-                                                NotificationFragmentPagination.markRead.setVisibility(
+                        msgUnread!!,*//*object :OnItemLongClickListener{
+                            override fun onItemLongClick(
+                                p0: AdapterView<*>?,
+                                p1: View?,
+                                p2: Int,
+                                p3: Long
+                            ): Boolean {
+                                Log.e("longclickadapter","longclick")
+                                markRead.setVisibility(
+                                    View.GONE
+                                )
+                                markUnRead!!.setVisibility(
+                                    View.GONE
+                                )
+                                messageUnRead!!.setBackgroundResource(
+                                    R.drawable.check_box_header
+                                )
+                               PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                PreferenceManager().setisVisibleReadBox(mContext,false)
+                                PreferenceManager().setclick_count(mContext,0)
+                                for (i in 0 until mMessageReadList.size) {
+                                    mMessageReadList.get(i).isMarked=false
+
+                                }
+                                for (i in 0 until mMessageUnreadList.size) {
+                                    mMessageUnreadList.get(i).isChecked=false
+
+                                }
+                                if (mMessageReadList.size > 0) {
+                                    readMessageAdapter!!.notifyDataSetChanged()
+                                    // readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+                                }
+                                unReadList.adapter=unReadMessageAdapter
+                                unReadMessageAdapter!!.notifyDataSetChanged()
+                                //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+                                messageUnRead!!.setVisibility(
+                                    View.VISIBLE
+                                )
+                                msgUnread!!.setVisibility(
+                                    View.VISIBLE
+                                )
+                                messageRead!!.setVisibility(
+                                    View.GONE
+                                )
+                                msgReadSelect!!.setVisibility(
+                                    View.GONE
+                                )
+                                return false
+                            }
+                        },object :
+                            OnItemClickListener {
+
+                            override fun onItemClick(
+                                p0: AdapterView<*>?,
+                                p1: View?,
+                                p2: Int,
+                                p3: Long
+                            ) {
+                                TODO("Not yet implemented")
+                            }
+
+
+                        }*//*
+                                        object : ClickListener {
+                                            override fun onPositionClicked(position: Int) {
+                                                Log.e("click","true")
+                                            }
+                                            override fun onLongClicked(position: Int) {
+                                                Log.e("longclick","true")
+                                                markRead.setVisibility(
                                                     View.GONE
                                                 )
-                                                NotificationFragmentPagination.markUnRead.setVisibility(
+                                                markUnRead!!.setVisibility(
                                                     View.GONE
                                                 )
-                                                NotificationFragmentPagination.messageUnRead.setBackgroundResource(
+                                                messageUnRead!!.setBackgroundResource(
                                                     R.drawable.check_box_header
                                                 )
-                                                AppController.isVisibleUnreadBox = true
-                                                AppController.isVisibleReadBox = false
-                                                AppController.click_count = 0
-                                                for (i in 0 until AppController.mMessageReadList.size()) {
-                                                    AppController.mMessageReadList.get(i)
-                                                        .setMarked(false)
+                                                PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                               //PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                                PreferenceManager().setisVisibleReadBox(mContext,false)
+                                                PreferenceManager().setclick_count(mContext,0)
+                                                for (i in 0 until mMessageReadList.size) {
+                                                    mMessageReadList.get(i).isMarked=false
+
                                                 }
-                                                for (i in 0 until AppController.mMessageUnreadList.size()) {
-                                                    AppController.mMessageUnreadList.get(i)
-                                                        .setChecked(false)
+                                                for (i in 0 until mMessageUnreadList.size) {
+                                                    mMessageUnreadList.get(i)
+
                                                 }
-                                                if (AppController.mMessageReadList.size() > 0) {
-                                                    NotificationFragmentPagination.readMessageAdapter.notifyDataSetChanged()
+                                                if (mMessageReadList.size > 0) {
+                                                    readMessageAdapter!!.notifyDataSetChanged()
                                                     // readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
                                                 }
-                                                NotificationFragmentPagination.unReadMessageAdapter.notifyDataSetChanged()
+                                                unReadList.adapter=unReadMessageAdapter
+                                                unReadMessageAdapter!!.notifyDataSetChanged()
                                                 //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
-                                                NotificationFragmentPagination.messageUnRead.setVisibility(
+                                                messageUnRead!!.setVisibility(
                                                     View.VISIBLE
                                                 )
-                                                NotificationFragmentPagination.msgUnread.setVisibility(
+                                                msgUnread!!.setVisibility(
                                                     View.VISIBLE
                                                 )
-                                                NotificationFragmentPagination.messageRead.setVisibility(
+                                                messageRead!!.setVisibility(
                                                     View.GONE
                                                 )
-                                                NotificationFragmentPagination.msgReadSelect.setVisibility(
+                                                msgReadSelect!!.setVisibility(
                                                     View.GONE
                                                 )
                                             }
-                                        }*/)
+                                        }
+                    )
                 unReadList.adapter=unReadMessageAdapter
-               // unReadList!!.setAdapter(unReadMessageAdapter)
-               /* unReadMessageAdapter.setOnBottomReachedListener(
-                    object : OnBottomReachedListener() {
-                        fun onBottomReached(position: Int) {
-                            if (position == AppController().mMessageUnreadList.size - 1) {
+                unReadList!!.setAdapter(unReadMessageAdapter)
+                unReadMessageAdapter!!.setOnBottomReachedListener(
+                    object : OnBottomReachedListener {
+                        override fun onBottomReached(position: Int) {
+                            if (position == mMessageUnreadList.size - 1) {
                                 if (!isAvailable) {
                                     isFromUnReadBottom = true
-                                    if (AppController().isVisibleUnreadBox) {
+                                   
+                                    //if (isVisibleUnreadBox) {
+                                    if (PreferenceManager().getisVisibleUnreadBox(mContext)==true){
                                         markRead!!.setVisibility(View.GONE)
                                         markUnRead!!.setVisibility(View.GONE)
                                         messageUnRead!!.setBackgroundResource(
                                             R.drawable.check_box_header
                                         )
-                                        AppController().isVisibleUnreadBox = true
-                                        AppController().isVisibleReadBox = false
-                                        AppController().click_count = 0
-                                        for (i in 0 until AppController().mMessageReadList.size) {
-                                            AppController().mMessageReadList.get(i).isMarked=false
+                                       PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                        PreferenceManager().setisVisibleReadBox(mContext,false)
+                                        PreferenceManager().setclick_count(mContext,0)
+                                        for (i in 0 until mMessageReadList.size) {
+                                            mMessageReadList.get(i).isMarked=false
                                         }
-                                        for (i in 0 until AppController().mMessageUnreadList.size) {
-                                            AppController().mMessageUnreadList.get(i)
+                                        for (i in 0 until mMessageUnreadList.size) {
+                                            mMessageUnreadList.get(i)
                                                 .isChecked=false
                                         }
                                     }
@@ -625,7 +713,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
 
                             //   System.out.println("position bottom"+position);
                         }
-                    })*/
+                    })
                 callPushNotification(
                     typeValue,
                     limitValue.toString(),
@@ -652,13 +740,14 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                 mProgressRelLayout!!.setVisibility(View.GONE)
                 isProgressVisible = false
             }
-            // messageUnRead.setBackgroundResource(R.drawable.check_box_header);
-            // messageUnRead.setBackgroundResource(R.drawable.check_box_header);
-            isVisibleUnreadBox = false
-            isVisibleReadBox = false
-            //  System.out.println(" size of array"+AppController.mMessageReadList.size());
+            // messageUnRead!!.setBackgroundResource(R.drawable.check_box_header);
+            // messageUnRead!!.setBackgroundResource(R.drawable.check_box_header);
+            PreferenceManager().setisVisibleUnreadBox(mContext,false)
+            //isVisibleUnreadBox = false
+            PreferenceManager().setisVisibleReadBox(mContext,false)
+            //  System.out.println(" size of array"+AppController().mMessageReadList.size);
 
-            //  System.out.println(" size of array"+AppController.mMessageReadList.size());
+            //  System.out.println(" size of array"+AppController().mMessageReadList.size);
             typeValue = "2"
             limitValue = 20
             pageReadValue = 0
@@ -673,6 +762,8 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                     mContext.getResources()
                         .getColor(R.color.split_bg)
                 )
+                readList.visibility=View.VISIBLE
+                readList.layoutManager=LinearLayoutManager(mContext)
                 //set adapter
                 readMessageAdapter = ReadMessageAdapter(
                     mContext,
@@ -680,66 +771,70 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                     messageRead!!,
                     markUnRead!!,
                     markRead!!,
-                    msgReadSelect!!/*,
-                    object : ClickListener() {
-                        fun onPositionClicked(position: Int) {
-                            NotificationFragmentPagination.markRead.setVisibility(View.GONE)
-                            NotificationFragmentPagination.markUnRead.setVisibility(View.GONE)
-                            NotificationFragmentPagination.messageRead.setVisibility(View.GONE)
-                            NotificationFragmentPagination.msgReadSelect.setVisibility(View.GONE)
-                            NotificationFragmentPagination.messageUnRead.setVisibility(View.GONE)
-                            NotificationFragmentPagination.msgUnread.setVisibility(View.GONE)
-                            AppController.isVisibleUnreadBox = false
-                            AppController.isVisibleReadBox = false
+                    msgReadSelect!!,
+                    object : ClickListener {
+                        override fun onPositionClicked(position: Int) {
+                            markRead.setVisibility(View.GONE)
+                            markUnRead!!.setVisibility(View.GONE)
+                            messageRead!!.setVisibility(View.GONE)
+                            msgReadSelect!!.setVisibility(View.GONE)
+                            messageUnRead!!.setVisibility(View.GONE)
+                            msgUnread!!.setVisibility(View.GONE)
+                            PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                           //PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                            PreferenceManager().setisVisibleReadBox(mContext,false)
                             val intent: Intent = Intent(
-                                NotificationFragmentPagination.mContext,
+                                mContext,
                                 MessageDetail::class.java
                             )
                             intent.putExtra(
                                 "title",
-                                AppController.mMessageReadList.get(position).getTitle()
+                                mMessageReadList.get(position).title
                             )
                             intent.putExtra(
                                 "message",
-                                AppController.mMessageReadList.get(position).getMessage()
+                                mMessageReadList.get(position).message
                             )
                             intent.putExtra(
                                 "date",
-                                AppController.mMessageReadList.get(position).getDay()
+                                mMessageReadList.get(position).day
                             )
                             ///intent.putExtra("position",position);
-                            NotificationFragmentPagination.mContext.startActivity(intent)
+                            mContext.startActivity(intent)
                         }
 
-                        fun onLongClicked(position: Int) {
-                            NotificationFragmentPagination.markRead.setVisibility(View.GONE)
-                            NotificationFragmentPagination.markUnRead.setVisibility(View.GONE)
-                            AppController.click_count_read = 0
+                        override fun onLongClicked(position: Int) {
+                            markRead.setVisibility(View.GONE)
+                            markUnRead!!.setVisibility(View.GONE)
+                            PreferenceManager().setclick_count_read(mContext,0)
                             // System.out.println("checkbox read visible:::::");
-                            NotificationFragmentPagination.messageRead.setBackgroundResource(R.drawable.check_box_header)
-                            AppController.isVisibleReadBox = true
-                            AppController.isVisibleUnreadBox = false
-                            for (i in 0 until AppController.mMessageReadList.size()) {
-                                AppController.mMessageReadList.get(i).setMarked(false)
+                            messageRead!!.setBackgroundResource(R.drawable.check_box_header)
+                            PreferenceManager().setisVisibleReadBox(mContext,true)
+                            PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                           //PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                            for (i in 0 until mMessageReadList.size) {
+                                mMessageReadList.get(i).isMarked=false
                             }
-                            for (i in 0 until AppController.mMessageUnreadList.size()) {
-                                AppController.mMessageUnreadList.get(i).setChecked(false)
+                            for (i in 0 until mMessageUnreadList.size) {
+                                mMessageUnreadList.get(i).isChecked=false
                             }
-                            if (AppController.mMessageUnreadList.size() > 0) {
-                                NotificationFragmentPagination.unReadMessageAdapter.notifyDataSetChanged()
+                            if (mMessageUnreadList.size > 0) {
+                                unReadList.adapter=unReadMessageAdapter
+                                unReadMessageAdapter!!.notifyDataSetChanged()
                                 // unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
                             }
-                            NotificationFragmentPagination.readMessageAdapter.notifyDataSetChanged()
+                            readMessageAdapter!!.notifyDataSetChanged()
                             //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
-                            NotificationFragmentPagination.messageRead.setVisibility(View.VISIBLE)
-                            NotificationFragmentPagination.msgReadSelect.setVisibility(View.VISIBLE)
-                            NotificationFragmentPagination.messageUnRead.setVisibility(View.GONE)
-                            NotificationFragmentPagination.msgUnread.setVisibility(View.GONE)
-                            NotificationFragmentPagination.noMsgAlertRelative.setVisibility(View.GONE)
-                            NotificationFragmentPagination.noMsgText.setVisibility(View.GONE)
+                            messageRead!!.setVisibility(View.VISIBLE)
+                            msgReadSelect!!.setVisibility(View.VISIBLE)
+                            messageUnRead!!.setVisibility(View.GONE)
+                            msgUnread!!.setVisibility(View.GONE)
+                            noMsgAlertRelative!!.setVisibility(View.GONE)
+                            noMsgText!!.setVisibility(View.GONE)
                         }
-                    }*/
+                    }
                 )
+                readList.adapter=readMessageAdapter
                 msgUnreadLinear!!.setVisibility(View.GONE)
                 msgReadLinear!!.setVisibility(View.VISIBLE)
                 if (isFromReadBottom) {
@@ -749,28 +844,30 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                 }
                readMessageAdapter!!.notifyDataSetChanged()
                 //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
-                readList!!.setAdapter(readMessageAdapter)
-                /*readMessageAdapter.setOnBottomReachedListener(object :
-                    OnBottomReachedListener() {
-                    fun onBottomReached(position: Int) {
-                        if (position == AppController().mMessageReadList.size - 2) {
+                readList.adapter=readMessageAdapter
+               // readList!!.setAdapter(readMessageAdapter)
+                readMessageAdapter!!.setOnBottomReachedListener(object :
+                    OnBottomReachedListener {
+                    override fun onBottomReached(position: Int) {
+                        if (position == mMessageReadList.size - 2) {
                             if (!isReadAvailable) {
                                 isFromReadBottom = true
-                                if (AppController().isVisibleReadBox) {
+                                if (isVisibleReadBox) {
                                     markRead!!.setVisibility(View.GONE)
                                     markUnRead!!.setVisibility(View.GONE)
-                                    AppController().click_count_read = 0
+                                    PreferenceManager().setclick_count_read(mContext,0)
                                     // System.out.println("checkbox read visible:::::");
                                     messageRead!!.setBackgroundResource(
                                         R.drawable.check_box_header
                                     )
-                                    AppController().isVisibleReadBox = true
-                                    AppController().isVisibleUnreadBox = false
-                                    for (i in 0 until AppController().mMessageReadList.size) {
-                                        AppController().mMessageReadList.get(i).isMarked=false
+                                    PreferenceManager().setisVisibleReadBox(mContext,true)
+                                    PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                                    //isVisibleUnreadBox = false
+                                    for (i in 0 until mMessageReadList.size) {
+                                        mMessageReadList.get(i).isMarked=false
                                     }
-                                    for (i in 0 until AppController().mMessageUnreadList.size) {
-                                        AppController().mMessageUnreadList.get(i).isChecked=false
+                                    for (i in 0 until mMessageUnreadList.size) {
+                                        mMessageUnreadList.get(i).isChecked=false
                                     }
                                 }
                                 typeValue = "2"
@@ -789,7 +886,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
 
                         //    System.out.println("position bottom"+position);
                     }
-                })*/
+                })
                 callPushNotification(
                     typeValue,
                     limitValue.toString(),
@@ -804,12 +901,13 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
             }
         }
 
-    }
+    }*/
 
     private fun callfavouriteStatusApi(favourite:String, pushId:String){
-        val call: Call<NotificationFavouriteModel> = ApiClient.getClient.notification_favourite(
-            PreferenceManager().getaccesstoken(mContext).toString(),PreferenceManager().getUserId(mContext).toString(),
+        var notfav=NotificationFavApiModel(PreferenceManager().getUserId(mContext).toString(),
             favourite,pushId)
+        val call: Call<NotificationFavouriteModel> = ApiClient.getClient.notification_favourite(
+            notfav,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString())
 
         call.enqueue(object : Callback<NotificationFavouriteModel> {
             override fun onFailure(call: Call<NotificationFavouriteModel>, t: Throwable) {
@@ -834,10 +932,11 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
         })
     }
     private fun callstatusapi(statusread:String, pushId:String){
+        var notstatus=NotificationStatusApiModel(PreferenceManager().getUserId(mContext).toString()
+            ,statusread,pushId)
 
         val call: Call<NotificationStatusModel> = ApiClient.getClient.notification_status(
-            PreferenceManager().getaccesstoken(mContext).toString(),PreferenceManager().getUserId(mContext).toString(),statusread,pushId)
-
+            notstatus,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString())
         call.enqueue(object : Callback<NotificationStatusModel> {
             override fun onFailure(call: Call<NotificationStatusModel>, t: Throwable) {
                 Log.e("Failed", t.localizedMessage)
@@ -858,8 +957,9 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                         msgReadSelect!!.setVisibility(View.GONE)
                         messageUnRead!!.setVisibility(View.GONE)
                         msgUnread!!.setVisibility(View.GONE)
-                        isVisibleUnreadBox = false
-                        isVisibleReadBox = false
+                        PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                        //isVisibleUnreadBox = false
+                        PreferenceManager().setisVisibleReadBox(mContext,false)
 
                         if (statusread.equals("1")) {
                             typeValue = "1"
@@ -891,12 +991,12 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
         Log.e("call","true")
 
 
-    /*FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+    FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
         if (task.isComplete) {
             val token = task.result
            tokenM = token
         }
-    }*/
+    }
     mMessageReadListFav = ArrayList()
     mMessageUnreadListFav = ArrayList()
     mMessageReadListFav =
@@ -904,10 +1004,10 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
     mMessageUnreadListFav =
         unreadArray.clone() as ArrayList<PushNotificationModel>
 
-
+var notmodel=NotificationsNewApiModel( tokenM,"2",PreferenceManager().getUserId(mContext).toString(),type,limit,page)
     val call: Call<NotificationNewResponseModel> = ApiClient.getClient.notifications_new(
-        PreferenceManager().getaccesstoken(mContext).toString(),
-        tokenM,"2",PreferenceManager().getUserId(mContext).toString(),type,limit,page)
+        notmodel,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString()
+       )
 
     call.enqueue(object : Callback<NotificationNewResponseModel> {
         override fun onFailure(call: Call<NotificationNewResponseModel>, t: Throwable) {
@@ -960,6 +1060,8 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                     unreadArray.add(
                                        nmodel
                                     )
+                                    PreferenceManager().setUnreadList(mContext,null)
+                                    PreferenceManager().setUnreadList(mContext,unreadArray)
                                     Log.e("unreadlisrtsize",unreadArray.size.toString())
                                 } else {
                                     val pushId = unreadObject.pushid
@@ -974,6 +1076,8 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                     if (!isFound) {
                                         unreadArray.add(
                                             addUnreadMessage(unreadObject, i, responsedata.response.data.size)!!)
+                                        PreferenceManager().setUnreadList(mContext,null)
+                                        PreferenceManager().setUnreadList(mContext,unreadArray)
                                         Collections.sort(unreadArray,
                                             Comparator<PushNotificationModel> { o1, o2 ->
                                                 o1.dateTime.compareTo(o2.dateTime)
@@ -993,7 +1097,10 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                             responsedata.response.data.size
                                         )!!
                                     )
-                                    // Collections.sort(AppController.mMessageReadList);
+                                    PreferenceManager().setMessageReadList(mContext,null)
+                                    PreferenceManager().setMessageReadList(mContext,mMessageReadList)
+
+                                    // Collections.sort(AppController().mMessageReadList);
                                 } else {
                                     val pushID = readObject.pushid
                                     var isFoundPush = false
@@ -1009,9 +1116,11 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                             addUnreadMessage(
                                                 readObject,
                                                 i,
-                                                responsedata.response.data.size-1
+                                                responsedata.response.data.size
                                             )!!
                                         )
+                                        PreferenceManager().setMessageReadList(mContext,null)
+                                        PreferenceManager().setMessageReadList(mContext,mMessageReadList)
                                     }
                                 }
                             }
@@ -1049,63 +1158,131 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                 msgReadLinear!!.visibility=View.GONE
                                 isProgressVisible=false
 
-                                Log.e("adaptr","set")
+                                Log.e("adaptrunread","set")
                                 unReadList.visibility=View.VISIBLE
                                 unReadList.layoutManager=LinearLayoutManager(mContext)
-                               var  unReadMessageAdaptr =
+                                unReadMessageAdapter =
                                     UnReadMessageAdapter(
                                         mContext,
                                         unreadArray,
                                         messageUnRead!!,
                                         markRead!!,
                                         markUnRead!!,
-                                        msgUnread!!/*,
-                                        object : ClickListener() {
-                                            fun onPositionClicked(position: Int) {}
-                                            fun onLongClicked(position: Int) {
-                                                NotificationFragmentPagination.markRead.setVisibility(
+                                        msgUnread!!,/*object :OnItemLongClickListener{
+                                            override fun onItemLongClick(
+                                                p0: AdapterView<*>?,
+                                                p1: View?,
+                                                p2: Int,
+                                                p3: Long
+                                            ): Boolean {
+                                                Log.e("longclickadapter","longclick")
+                                                markRead.setVisibility(
                                                     View.GONE
                                                 )
-                                                NotificationFragmentPagination.markUnRead.setVisibility(
+                                                markUnRead!!.setVisibility(
                                                     View.GONE
                                                 )
-                                                NotificationFragmentPagination.messageUnRead.setBackgroundResource(
+                                                messageUnRead!!.setBackgroundResource(
                                                     R.drawable.check_box_header
                                                 )
-                                                AppController.isVisibleUnreadBox = true
-                                                AppController.isVisibleReadBox = false
-                                                AppController.click_count = 0
-                                                for (i in 0 until AppController.mMessageReadList.size()) {
-                                                    AppController.mMessageReadList.get(i)
-                                                        .setMarked(false)
+                                               PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                                PreferenceManager().setisVisibleReadBox(mContext,false)
+                                                PreferenceManager().setclick_count(mContext,0)
+                                                for (i in 0 until mMessageReadList.size) {
+                                                    mMessageReadList.get(i).isMarked=false
+
                                                 }
-                                                for (i in 0 until AppController.mMessageUnreadList.size()) {
-                                                    AppController.mMessageUnreadList.get(i)
-                                                        .setChecked(false)
+                                                for (i in 0 until mMessageUnreadList.size) {
+                                                    mMessageUnreadList.get(i).isChecked=false
+
                                                 }
-                                                if (AppController.mMessageReadList.size() > 0) {
-                                                    NotificationFragmentPagination.readMessageAdapter.notifyDataSetChanged()
+                                                if (mMessageReadList.size > 0) {
+                                                    readMessageAdapter!!.notifyDataSetChanged()
                                                     // readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
                                                 }
-                                                NotificationFragmentPagination.unReadMessageAdapter.notifyDataSetChanged()
+                                                unReadList.adapter=unReadMessageAdapter
+                                                unReadMessageAdapter!!.notifyDataSetChanged()
                                                 //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
-                                                NotificationFragmentPagination.messageUnRead.setVisibility(
+                                                messageUnRead!!.setVisibility(
                                                     View.VISIBLE
                                                 )
-                                                NotificationFragmentPagination.msgUnread.setVisibility(
+                                                msgUnread!!.setVisibility(
                                                     View.VISIBLE
                                                 )
-                                                NotificationFragmentPagination.messageRead.setVisibility(
+                                                messageRead!!.setVisibility(
                                                     View.GONE
                                                 )
-                                                NotificationFragmentPagination.msgReadSelect.setVisibility(
+                                                msgReadSelect!!.setVisibility(
+                                                    View.GONE
+                                                )
+                                                return false
+                                            }
+                                        },object :
+                                            OnItemClickListener {
+
+                                            override fun onItemClick(
+                                                p0: AdapterView<*>?,
+                                                p1: View?,
+                                                p2: Int,
+                                                p3: Long
+                                            ) {
+                                                TODO("Not yet implemented")
+                                            }
+
+
+                                        }*/
+                                        object : ClickListener {
+                                            override fun onPositionClicked(position: Int) {
+                                                Log.e("c3","true")
+                                            }
+                                            override fun onLongClicked(position: Int) {
+                                                Log.e("lc3","true")
+                                                markRead.setVisibility(
+                                                    View.GONE
+                                                )
+                                                markUnRead!!.setVisibility(
+                                                    View.GONE
+                                                )
+                                                messageUnRead!!.setBackgroundResource(
+                                                    R.drawable.check_box_header
+                                                )
+                                                PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                                //isVisibleUnreadBox = true
+                                                PreferenceManager().setisVisibleReadBox(mContext,false)
+                                                PreferenceManager().setclick_count(mContext,0)
+                                                for (i in 0 until mMessageReadList.size) {
+                                                    mMessageReadList.get(i).isMarked=false
+
+                                                }
+                                                for (i in 0 until mMessageUnreadList.size) {
+                                                    mMessageUnreadList.get(i).isChecked=false
+                                                }
+                                                if (mMessageReadList.size > 0) {
+                                                    readMessageAdapter!!.notifyDataSetChanged()
+                                                    readMessageAdapter!!.notifyItemRangeChanged(0,
+                                                        readMessageAdapter!!.getItemCount());
+                                                }
+                                                unReadList.adapter=unReadMessageAdapter
+                                                unReadMessageAdapter!!.notifyDataSetChanged()
+                                                unReadMessageAdapter!!.notifyItemRangeChanged(0,
+                                                    unReadMessageAdapter!!.getItemCount());
+                                                messageUnRead!!.setVisibility(
+                                                    View.VISIBLE
+                                                )
+                                                msgUnread!!.setVisibility(
+                                                    View.VISIBLE
+                                                )
+                                                messageRead!!.setVisibility(
+                                                    View.GONE
+                                                )
+                                                msgReadSelect!!.setVisibility(
                                                     View.GONE
                                                 )
                                             }
-                                        }*/)
-                                unReadList.adapter=unReadMessageAdaptr
+                                        })
+                                unReadList.adapter=unReadMessageAdapter
 
-                               // unReadMessageAdaptr!!.notifyDataSetChanged()
+                                unReadMessageAdapter!!.notifyDataSetChanged()
                                 if (isFromUnReadBottom) {
                                     unReadList!!.scrollToPosition(
                                         pageUnReadValue - 2
@@ -1113,20 +1290,24 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                 } else {
 
                                 }
-                                        // unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
-                                unReadList.adapter=unReadMessageAdaptr
-                               /* unReadList!!.setAdapter(
+                                unReadList.adapter=unReadMessageAdapter
+                                         /*unReadMessageAdapter!!.notifyItemRangeChanged(0,
+                                             unReadMessageAdapter!!.getItemCount());*/
+                                unReadList.adapter=unReadMessageAdapter
+                                unReadList!!.setAdapter(
                                     unReadMessageAdapter
-                                )*/
+                                )
 
-                                /*unReadMessageAdapter.setOnBottomReachedListener(
-                                    object : OnBottomReachedListener() {
-                                        fun onBottomReached(position: Int) {
-                                            if (position == AppController().mMessageUnreadList.size - 1) {
+                                unReadMessageAdapter!!.setOnBottomReachedListener(
+                                    object : OnBottomReachedListener {
+                                        override fun onBottomReached(position: Int) {
+                                            if (position == mMessageUnreadList.size - 1) {
                                                 if (!isAvailable) {
                                                     isFromUnReadBottom =
                                                         true
-                                                    if (AppController().isVisibleUnreadBox) {
+                                                   
+                                                   // if (isVisibleUnreadBox) {
+                                                    if (PreferenceManager().getisVisibleUnreadBox(mContext)==true){
                                                         markRead!!.setVisibility(
                                                             View.GONE
                                                         )
@@ -1136,15 +1317,16 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                                         messageUnRead!!.setBackgroundResource(
                                                             R.drawable.check_box_header
                                                         )
-                                                        AppController().isVisibleUnreadBox = true
-                                                        AppController().isVisibleReadBox = false
-                                                        AppController().click_count = 0
-                                                        for (i in 0 until AppController().mMessageReadList.size) {
-                                                            AppController().mMessageReadList.get(i).isMarked=false
+                                                        PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                                       //PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                                        PreferenceManager().setisVisibleReadBox(mContext,false)
+                                                        PreferenceManager().setclick_count(mContext,0)
+                                                        for (i in 0 until mMessageReadList.size) {
+                                                           mMessageReadList.get(i).isMarked=false
 
                                                         }
-                                                        for (i in 0 until AppController().mMessageUnreadList.size) {
-                                                            AppController().mMessageUnreadList.get(i).isChecked=false
+                                                        for (i in 0 until mMessageUnreadList.size) {
+                                                            mMessageUnreadList.get(i).isChecked=false
 
                                                         }
                                                     }
@@ -1163,7 +1345,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
 
                                             //   System.out.println("position bottom"+position);
                                         }
-                                    })*/
+                                    })
                             } else {
                                 //    System.out.println("case worked if");
                                 unreadTxt!!.setBackgroundResource(R.drawable.notification_read)
@@ -1201,6 +1383,8 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                         o1.dateTime.compareTo(o2.dateTime)
                                     })
                                 Collections.reverse(mMessageReadList)
+                                readList.visibility=View.VISIBLE
+                                readList.layoutManager=LinearLayoutManager(mContext)
                                readMessageAdapter =
                                     ReadMessageAdapter(
                                         mContext,
@@ -1208,9 +1392,10 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                         messageRead!!,
                                         markUnRead!!,
                                         markRead!!,
-                                        msgReadSelect!!/*,
-                                        object : ClickListener() {
-                                            fun onPositionClicked(position: Int) {
+                                        msgReadSelect!!,
+                                        object : ClickListener {
+                                            override fun onPositionClicked(position: Int) {
+                                                Log.e("read","position clicked")
                                                 markRead!!.setVisibility(
                                                     View.GONE
                                                 )
@@ -1229,25 +1414,26 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                                 msgUnread!!.setVisibility(
                                                     View.GONE
                                                 )
-                                                AppController().isVisibleUnreadBox = false
-                                                AppController().isVisibleReadBox = false
+                                                PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                                               //PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                                                PreferenceManager().setisVisibleReadBox(mContext,false)
                                                 val intent = Intent(
                                                     mContext,
                                                     MessageDetail::class.java
                                                 )
                                                 intent.putExtra(
                                                     "title",
-                                                    AppController().mMessageReadList.get(position)
+                                                    mMessageReadList.get(position)
                                                         .title
                                                 )
                                                 intent.putExtra(
                                                     "message",
-                                                    AppController().mMessageReadList.get(position)
+                                                    mMessageReadList.get(position)
                                                         .message
                                                 )
                                                 intent.putExtra(
                                                     "date",
-                                                    AppController().mMessageReadList.get(position)
+                                                   mMessageReadList.get(position)
                                                         .day
                                                 )
                                                 ///intent.putExtra("position",position);
@@ -1256,34 +1442,37 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                                 )
                                             }
 
-                                            fun onLongClicked(position: Int) {
+                                            override fun onLongClicked(position: Int) {
                                                 markRead!!.setVisibility(
                                                     View.GONE
                                                 )
                                                 markUnRead!!.setVisibility(
                                                     View.GONE
                                                 )
-                                                AppController().click_count_read = 0
+                                                PreferenceManager().setclick_count_read(mContext,0)
                                                 // System.out.println("checkbox read visible:::::");
                                                 messageRead!!.setBackgroundResource(
                                                     R.drawable.check_box_header
                                                 )
-                                                AppController().isVisibleReadBox = true
-                                                AppController().isVisibleUnreadBox = false
-                                                for (i in 0 until AppController().mMessageReadList.size) {
-                                                    AppController().mMessageReadList.get(i)
+                                                PreferenceManager().setisVisibleReadBox(mContext,true)
+                                               PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                                                for (i in 0 until mMessageReadList.size) {
+                                                    mMessageReadList.get(i)
                                                         .isMarked=false
                                                 }
-                                                for (i in 0 until AppController().mMessageUnreadList.size) {
-                                                    AppController().mMessageUnreadList.get(i)
+                                                for (i in 0 until mMessageUnreadList.size) {
+                                                    mMessageUnreadList.get(i)
                                                         .isChecked=false
                                                 }
-                                                if (AppController().mMessageUnreadList.size > 0) {
-                                                    unReadMessageAdapter.notifyDataSetChanged()
-                                                    // unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+                                                if (mMessageUnreadList.size > 0) {
+                                                    unReadList.adapter=unReadMessageAdapter
+                                                    unReadMessageAdapter!!.notifyDataSetChanged()
+                                                     unReadMessageAdapter!!.notifyItemRangeChanged(0,
+                                                         unReadMessageAdapter!!.getItemCount());
                                                 }
-                                                readMessageAdapter.notifyDataSetChanged()
-                                                //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+                                                readMessageAdapter!!.notifyDataSetChanged()
+                                                readMessageAdapter!!.notifyItemRangeChanged(0,
+                                                    readMessageAdapter!!.getItemCount());
                                                 messageRead!!.setVisibility(
                                                     View.VISIBLE
                                                 )
@@ -1303,8 +1492,9 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                                     View.GONE
                                                 )
                                             }
-                                        }*/
+                                        }
                                     )
+                                readList.adapter=readMessageAdapter
                                 msgUnreadLinear!!.setVisibility(View.GONE)
                                 msgReadLinear!!.setVisibility(View.VISIBLE)
                                 if (isFromReadBottom) {
@@ -1313,37 +1503,38 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                     )
                                 }
                                 readMessageAdapter!!.notifyDataSetChanged()
-                                //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+                                readMessageAdapter!!.notifyItemRangeChanged(0, readMessageAdapter!!.getItemCount());
                                 readList!!.setAdapter(
                                     readMessageAdapter
                                 )
-                                /*readMessageAdapter.setOnBottomReachedListener(
-                                    object : OnBottomReachedListener() {
-                                        fun onBottomReached(position: Int) {
-                                            if (position == AppController().mMessageReadList.size - 2) {
+                                readMessageAdapter!!.setOnBottomReachedListener(
+                                    object : OnBottomReachedListener {
+                                        override fun onBottomReached(position: Int) {
+                                            if (position == mMessageReadList.size - 2) {
                                                 if (!isReadAvailable) {
                                                     isFromReadBottom =
                                                         true
-                                                    if (AppController().isVisibleReadBox) {
+                                                    if (PreferenceManager().getisVisibleReadBox(mContext)==true){
+                                                    //if (isVisibleReadBox) {
                                                         markRead!!.setVisibility(
                                                             View.GONE
                                                         )
                                                         markUnRead!!.setVisibility(
                                                             View.GONE
                                                         )
-                                                        AppController().click_count_read = 0
+                                                        PreferenceManager().setclick_count_read(mContext,0)
                                                         // System.out.println("checkbox read visible:::::");
                                                         messageRead!!.setBackgroundResource(
                                                             R.drawable.check_box_header
                                                         )
-                                                        AppController().isVisibleReadBox = true
-                                                        AppController().isVisibleUnreadBox = false
-                                                        for (i in 0 until AppController().mMessageReadList.size) {
-                                                            AppController().mMessageReadList.get(i)
+                                                        PreferenceManager().setisVisibleReadBox(mContext,true)
+                                                       PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                                                        for (i in 0 until mMessageReadList.size) {
+                                                            mMessageReadList.get(i)
                                                                 .isMarked=false
                                                         }
-                                                        for (i in 0 until AppController().mMessageUnreadList.size) {
-                                                            AppController().mMessageUnreadList.get(i)
+                                                        for (i in 0 until mMessageUnreadList.size) {
+                                                            mMessageUnreadList.get(i)
                                                                 .isChecked=false
                                                         }
                                                     }
@@ -1363,7 +1554,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
 
                                             //    System.out.println("position bottom"+position);
                                         }
-                                    })*/
+                                    })
                             } else {
                                 readTxt!!.setBackgroundResource(R.drawable.notification_read)
                                 unreadTxt!!.setBackgroundResource(R.drawable.notification_unread)
@@ -1378,9 +1569,9 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                 // System.out.println("working else");
                                 msgUnreadLinear!!.setVisibility(View.GONE)
                                 msgReadLinear!!.setVisibility(View.GONE)
-                               /* noMsgAlertRelative!!.setVisibility(View.VISIBLE)
+                                noMsgAlertRelative!!.setVisibility(View.VISIBLE)
                                 noMsgText!!.setVisibility(View.VISIBLE)
-                                noMsgText!!.setText("Currently you have no messages")*/
+                                noMsgText!!.setText("Currently you have no messages")
                             }
                         }
                     }
@@ -1406,69 +1597,137 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                 Collections.reverse(unreadArray)
                                 Log.e("adaptr","set4")
                                 unReadList.layoutManager=LinearLayoutManager(mContext)
-                               var unReadMessageAdapter =
+                                unReadMessageAdapter =
                                     UnReadMessageAdapter(
                                         mContext,
                                         unreadArray,
                                         messageUnRead!!,
                                         markRead!!,
                                         markUnRead!!,
-                                        msgUnread!!/*,
-                                        object : ClickListener() {
-                                            fun onPositionClicked(position: Int) {}
-                                            fun onLongClicked(position: Int) {
-                                                NotificationFragmentPagination.markRead.setVisibility(
+                                        msgUnread!!,/*object :OnItemLongClickListener{
+                                            override fun onItemLongClick(
+                                                p0: AdapterView<*>?,
+                                                p1: View?,
+                                                p2: Int,
+                                                p3: Long
+                                            ): Boolean {
+                                                Log.e("longclickadapter","longclick")
+                                                markRead.setVisibility(
                                                     View.GONE
                                                 )
-                                                NotificationFragmentPagination.markUnRead.setVisibility(
+                                                markUnRead!!.setVisibility(
                                                     View.GONE
                                                 )
-                                                NotificationFragmentPagination.messageUnRead.setBackgroundResource(
+                                                messageUnRead!!.setBackgroundResource(
                                                     R.drawable.check_box_header
                                                 )
-                                                AppController.isVisibleUnreadBox = true
-                                                AppController.isVisibleReadBox = false
-                                                AppController.click_count = 0
-                                                for (i in 0 until AppController.mMessageReadList.size()) {
-                                                    AppController.mMessageReadList.get(i)
-                                                        .setMarked(false)
+                                               PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                                PreferenceManager().setisVisibleReadBox(mContext,false)
+                                                PreferenceManager().setclick_count(mContext,0)
+                                                for (i in 0 until mMessageReadList.size) {
+                                                    mMessageReadList.get(i).isMarked=false
+
                                                 }
-                                                for (i in 0 until AppController.mMessageUnreadList.size()) {
-                                                    AppController.mMessageUnreadList.get(i)
-                                                        .setChecked(false)
+                                                for (i in 0 until mMessageUnreadList.size) {
+                                                    mMessageUnreadList.get(i).isChecked=false
+
                                                 }
-                                                if (AppController.mMessageReadList.size() > 0) {
-                                                    NotificationFragmentPagination.readMessageAdapter.notifyDataSetChanged()
+                                                if (mMessageReadList.size > 0) {
+                                                    readMessageAdapter!!.notifyDataSetChanged()
                                                     // readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
                                                 }
-                                                NotificationFragmentPagination.unReadMessageAdapter.notifyDataSetChanged()
+                                                unReadList.adapter=unReadMessageAdapter
+                                                unReadMessageAdapter!!.notifyDataSetChanged()
                                                 //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
-                                                NotificationFragmentPagination.messageUnRead.setVisibility(
+                                                messageUnRead!!.setVisibility(
                                                     View.VISIBLE
                                                 )
-                                                NotificationFragmentPagination.msgUnread.setVisibility(
+                                                msgUnread!!.setVisibility(
                                                     View.VISIBLE
                                                 )
-                                                NotificationFragmentPagination.messageRead.setVisibility(
+                                                messageRead!!.setVisibility(
                                                     View.GONE
                                                 )
-                                                NotificationFragmentPagination.msgReadSelect.setVisibility(
+                                                msgReadSelect!!.setVisibility(
+                                                    View.GONE
+                                                )
+                                                return false
+                                            }
+                                        },object :
+                                            OnItemClickListener {
+
+                                            override fun onItemClick(
+                                                p0: AdapterView<*>?,
+                                                p1: View?,
+                                                p2: Int,
+                                                p3: Long
+                                            ) {
+                                                TODO("Not yet implemented")
+                                            }
+
+
+                                        }*/
+                                        object : ClickListener {
+                                            override fun onPositionClicked(position: Int) {
+                                                Log.e("c4","true")
+                                            }
+                                            override fun onLongClicked(position: Int) {
+                                                Log.e("lc4","true")
+                                                markRead.setVisibility(
+                                                    View.GONE
+                                                )
+                                                markUnRead!!.setVisibility(
+                                                    View.GONE
+                                                )
+                                                messageUnRead!!.setBackgroundResource(
+                                                    R.drawable.check_box_header
+                                                )
+                                              PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                                PreferenceManager().setisVisibleReadBox(mContext,false)
+                                                PreferenceManager().setclick_count(mContext,0)
+                                                for (i in 0 until mMessageReadList.size) {
+                                                    mMessageReadList.get(i).isMarked=false
+
+                                                }
+                                                for (i in 0 until mMessageUnreadList.size) {
+                                                    mMessageUnreadList.get(i).isChecked=false
+
+                                                }
+                                                if (mMessageReadList.size > 0) {
+                                                    readMessageAdapter!!.notifyDataSetChanged()
+                                                    readMessageAdapter!!.notifyItemRangeChanged(0,
+                                                        readMessageAdapter!!.getItemCount());
+                                                }
+                                                unReadList.adapter=unReadMessageAdapter
+                                                unReadMessageAdapter!!.notifyDataSetChanged()
+                                                unReadMessageAdapter!!.notifyItemRangeChanged(0,
+                                                    unReadMessageAdapter!!.getItemCount());
+                                                messageUnRead!!.setVisibility(
+                                                    View.VISIBLE
+                                                )
+                                                msgUnread!!.setVisibility(
+                                                    View.VISIBLE
+                                                )
+                                                messageRead!!.setVisibility(
+                                                    View.GONE
+                                                )
+                                                msgReadSelect!!.setVisibility(
                                                     View.GONE
                                                 )
                                             }
-                                        }*/)
+                                        })
                                 unReadList.adapter=unReadMessageAdapter
                                 msgUnreadLinear!!.setVisibility(View.VISIBLE)
                                 msgReadLinear!!.setVisibility(View.GONE)
                                 unReadMessageAdapter!!.notifyDataSetChanged()
-                                // unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+                                 unReadMessageAdapter!!.notifyItemRangeChanged(0, unReadMessageAdapter!!.getItemCount());
                                 unReadList!!.setAdapter(
                                     unReadMessageAdapter
                                 )
-                               /* unReadMessageAdapter.setOnBottomReachedListener(
-                                    object : OnBottomReachedListener() {
-                                        fun onBottomReached(position: Int) {
-                                            if (position == AppController().mMessageUnreadList.size - 2) {
+                                unReadMessageAdapter!!.setOnBottomReachedListener(
+                                    object : OnBottomReachedListener{
+                                        override fun onBottomReached(position: Int) {
+                                            if (position == mMessageUnreadList.size - 2) {
 //                                                            if (dataLength<20)
 //                                                            {
 //                                                                if (!isAvailable)
@@ -1484,7 +1743,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
 
                                             //   System.out.println("position bottom"+position);
                                         }
-                                    })*/
+                                    })
                             } else {
                                 unreadTxt!!.setBackgroundResource(R.drawable.notification_read)
                                 readTxt!!.setBackgroundResource(R.drawable.notification_unread)
@@ -1499,9 +1758,9 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                 //   System.out.println("working else");
                                 msgUnreadLinear!!.setVisibility(View.GONE)
                                 msgReadLinear!!.setVisibility(View.GONE)
-                               /* noMsgAlertRelative!!.setVisibility(View.VISIBLE)
+                                noMsgAlertRelative!!.setVisibility(View.VISIBLE)
                                 noMsgText!!.setVisibility(View.VISIBLE)
-                                noMsgText!!.setText("Currently you have no messages")*/
+                                noMsgText!!.setText("Currently you have no messages")
                             }
                         } else {
                             if (mMessageReadList.size > 0) {
@@ -1521,6 +1780,8 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                     })
                                 Collections.reverse(mMessageReadList)
                                 //set adapter
+                                readList.visibility=View.VISIBLE
+                                readList.layoutManager=LinearLayoutManager(mContext)
                                 readMessageAdapter =
                                     ReadMessageAdapter(
                                         mContext,
@@ -1528,9 +1789,10 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                         messageRead!!,
                                         markUnRead!!,
                                         markRead!!,
-                                        msgReadSelect!!/*,
-                                        object : ClickListener() {
-                                            fun onPositionClicked(position: Int) {
+                                        msgReadSelect!!,
+                                        object : ClickListener {
+                                            override fun onPositionClicked(position: Int) {
+                                                Log.e("read1","position clicked")
                                                 markRead!!.setVisibility(
                                                     View.GONE
                                                 )
@@ -1549,25 +1811,25 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                                 msgUnread!!.setVisibility(
                                                     View.GONE
                                                 )
-                                                AppController().isVisibleUnreadBox = false
-                                                AppController().isVisibleReadBox = false
+                                               PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                                                PreferenceManager().setisVisibleReadBox(mContext,false)
                                                 val intent = Intent(
                                                     mContext,
                                                     MessageDetail::class.java
                                                 )
                                                 intent.putExtra(
                                                     "title",
-                                                    AppController().mMessageReadList.get(position)
+                                                    mMessageReadList.get(position)
                                                         .title
                                                 )
                                                 intent.putExtra(
                                                     "message",
-                                                    AppController().mMessageReadList.get(position)
+                                                    mMessageReadList.get(position)
                                                         .message
                                                 )
                                                 intent.putExtra(
                                                     "date",
-                                                    AppController().mMessageReadList.get(position).day
+                                                    mMessageReadList.get(position).day
                                                 )
                                                 ///intent.putExtra("position",position);
                                                 mContext.startActivity(
@@ -1575,34 +1837,35 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                                 )
                                             }
 
-                                            fun onLongClicked(position: Int) {
+                                            override fun onLongClicked(position: Int) {
                                                 markRead!!.setVisibility(
                                                     View.GONE
                                                 )
                                                 markUnRead!!.setVisibility(
                                                     View.GONE
                                                 )
-                                                AppController().click_count_read = 0
+                                                PreferenceManager().setclick_count_read(mContext,0)
                                                 // System.out.println("checkbox read visible:::::");
                                                 messageRead!!.setBackgroundResource(
                                                     R.drawable.check_box_header
                                                 )
-                                                AppController().isVisibleReadBox = true
-                                                AppController().isVisibleUnreadBox = false
-                                                for (i in 0 until AppController().mMessageReadList.size) {
-                                                    AppController().mMessageReadList.get(i)
+                                                PreferenceManager().setisVisibleReadBox(mContext,true)
+                                               PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                                                for (i in 0 until mMessageReadList.size) {
+                                                   mMessageReadList.get(i)
                                                         .isMarked=false
                                                 }
-                                                for (i in 0 until AppController().mMessageUnreadList.size) {
-                                                    AppController().mMessageUnreadList.get(i)
+                                                for (i in 0 until mMessageUnreadList.size) {
+                                                   mMessageUnreadList.get(i)
                                                         .isChecked=false
                                                 }
-                                                if (AppController().mMessageUnreadList.size > 0) {
-                                                    unReadMessageAdapter.notifyDataSetChanged()
-                                                    // unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+                                                if (mMessageUnreadList.size > 0) {
+                                                    unReadList.adapter=unReadMessageAdapter
+                                                    unReadMessageAdapter!!.notifyDataSetChanged()
                                                 }
-                                                readMessageAdapter.notifyDataSetChanged()
-                                                //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+                                                readMessageAdapter!!.notifyDataSetChanged()
+                                                readMessageAdapter!!.notifyItemRangeChanged(0,
+                                                    readMessageAdapter!!.getItemCount());
                                                 messageRead!!.setVisibility(
                                                     View.VISIBLE
                                                 )
@@ -1622,19 +1885,21 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                                     View.GONE
                                                 )
                                             }
-                                        }*/
+                                        }
                                     )
+                                readList.adapter=readMessageAdapter
                                 msgUnreadLinear!!.setVisibility(View.GONE)
                                 msgReadLinear!!.setVisibility(View.VISIBLE)
                                 readMessageAdapter!!.notifyDataSetChanged()
-                                //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
-                                readList!!.setAdapter(
+                                readMessageAdapter!!.notifyItemRangeChanged(0, readMessageAdapter!!.getItemCount());
+                                readList.adapter=readMessageAdapter
+                                /*readList!!.setAdapter(
                                     readMessageAdapter
-                                )
-                               /* readMessageAdapter.setOnBottomReachedListener(
-                                    object : OnBottomReachedListener() {
-                                        fun onBottomReached(position: Int) {
-                                            if (position == AppController().mMessageReadList.size - 2) {
+                                )*/
+                                readMessageAdapter!!.setOnBottomReachedListener(
+                                    object : OnBottomReachedListener {
+                                        override fun onBottomReached(position: Int) {
+                                            if (position == mMessageReadList.size - 2) {
 //                                                            if (dataLength>=19)
 //                                                            {
 //                                                                typeValue="2";
@@ -1647,7 +1912,7 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
 
                                             //  System.out.println("position bottom"+position);
                                         }
-                                    })*/
+                                    })
                                 //                                                System.out.println("working else");
 //                                                msgUnreadLinear.setVisibility(View.GONE);
 //                                                msgReadLinear.setVisibility(View.GONE);
@@ -1667,9 +1932,9 @@ class NotificationFragmentPagination(title: String, tabId: String) : Fragment() 
                                 )
                                 msgUnreadLinear!!.setVisibility(View.GONE)
                                 msgReadLinear!!.setVisibility(View.GONE)
-                               /* noMsgAlertRelative!!.setVisibility(View.VISIBLE)
+                                noMsgAlertRelative!!.setVisibility(View.VISIBLE)
                                 noMsgText!!.setVisibility(View.VISIBLE)
-                                noMsgText!!.setText("Currently you have no messages")*/
+                                noMsgText!!.setText("Currently you have no messages")
                             }
                         }
                     }
@@ -1857,4 +2122,814 @@ return ymodel
         }
        return xmodel
     }
-}
+
+    override fun onItemClick(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+
+    }
+
+    override fun onClick(v: View?) {
+        if (v == markRead) {
+            markRead!!.setVisibility(View.GONE)
+            markUnRead!!.setVisibility(View.GONE)
+            messageRead!!.setVisibility(View.GONE)
+            msgReadSelect!!.setVisibility(View.GONE)
+            messageUnRead!!.setVisibility(View.GONE)
+            msgUnread!!.setVisibility(View.GONE)
+           PreferenceManager().setisVisibleUnreadBox(mContext,false)
+            PreferenceManager().setisVisibleReadBox(mContext,false)
+            if (AppUtils().isNetworkConnected(mContext)) {
+                //clearBadge();
+                var readList = ""
+                var k = 0
+                val mTempArray = ArrayList<PushNotificationModel>()
+                val mTempArrayremoved = ArrayList<PushNotificationModel>()
+                //mTempArray.addAll(AppController().mMessageUnreadList)
+                mTempArray.addAll(unreadArray)
+                mTempArrayremoved.addAll(unreadArray)
+
+                for (i in mTempArray.indices) {
+                    Log.e("mesgereadtemp",mTempArray.size.toString())
+                    val isFoundId = false
+                    if (mTempArray[i].isChecked) {
+                        if (k == 0) {
+                            readList = mTempArray[i].pushid
+                        } else {
+                            readList = readList + "," + mTempArray[i].pushid
+                        }
+                        for (j in unreadArray.indices) {
+                            Log.e("mesgeread",unreadArray.size.toString())
+                            var pushReadId: String =""
+                            pushReadId =   unreadArray.get(j).pushid
+                            if (pushReadId.equals(mTempArray[i].pushid)) {
+                                Log.e("equal",unreadArray[j].title)
+                                //  isFoundId=true;
+                                //unreadArray.removeAt(j)
+                                if (i==mTempArrayremoved.size){
+                                    mTempArrayremoved.removeAt(j-1)
+                                }else{
+                                    mTempArrayremoved.removeAt(j)
+                                }
+
+                               // mTempArrayremoved.removeAt(j)
+                            }
+                        }
+                        /* for (j in 0 until AppController().mMessageUnreadList.size) {
+                             val pushReadId: String =
+                                 AppController().mMessageUnreadList.get(j).pushid
+                             if (pushReadId.equals(mTempArray[i].pushid)) {
+                                 //  isFoundId=true;
+                                 AppController().mMessageUnreadList.removeAt(j)
+                             }
+                         }*/
+                        k = k + 1
+                        // AppController().mMessageUnreadList.remove(i);
+                    }
+                }
+unreadArray=ArrayList()
+                unreadArray.addAll(mTempArrayremoved)
+                //  System.out.println("Read List" + readList);
+                callstatusapi("1", readList)
+            } else {
+                AppUtils().showDialogAlertDismiss(
+                    mContext as Activity?,
+                    "Network Error",
+                    getString(R.string.no_internet),
+                    R.drawable.nonetworkicon,
+                    R.drawable.roundred
+                )
+            }
+        } else if (v ==markUnRead) {
+            markRead!!.setVisibility(View.GONE)
+            markUnRead!!.setVisibility(View.GONE)
+            messageRead!!.setVisibility(View.GONE)
+            msgReadSelect!!.setVisibility(View.GONE)
+            messageUnRead!!.setVisibility(View.GONE)
+            msgUnread!!.setVisibility(View.GONE)
+           PreferenceManager().setisVisibleUnreadBox(mContext,false)
+            PreferenceManager().setisVisibleReadBox(mContext,false)
+            if (AppUtils().isNetworkConnected(mContext)) {
+                var readList = ""
+                var k = 0
+                val mTempReadArray = ArrayList<PushNotificationModel>()
+                val mTempReadArrayremoved = ArrayList<PushNotificationModel>()
+                mTempReadArray.addAll(mMessageReadList)
+                mTempReadArrayremoved.addAll(mMessageReadList)
+
+                for (i in mTempReadArray.indices) {
+                    if (mTempReadArray[i].isMarked) {
+                        if (k == 0) {
+                            readList = mTempReadArray[i].pushid
+                        } else {
+                            readList = readList + "," + mTempReadArray[i].pushid
+                        }
+                        for (j in 0 until mMessageReadList.size) {
+                            val pushReadId: String =
+                                mMessageReadList.get(j).pushid
+                            if (pushReadId.equals(
+                                    mTempReadArray[i].pushid
+                                )
+                            ) {
+                                //  isFoundId=true;
+                                //mMessageReadList.removeAt(j)
+                                if (i==mTempReadArrayremoved.size){
+                                    mTempReadArrayremoved.removeAt(j-1)
+                                }else{
+                                    mTempReadArrayremoved.removeAt(j)
+                                }
+                            }
+                        }
+                        k = k + 1
+                    }
+                    // AppController().mMessageReadList.remove(i);
+                }
+                //      System.out.println("Unread List" + readList);
+                mMessageReadList=ArrayList()
+                mMessageReadList.addAll(mTempReadArrayremoved)
+                callstatusapi("0", readList)
+
+                // System.out.println("click next");
+            }  else {
+                AppUtils().showDialogAlertDismiss(
+                    mContext as Activity?,
+                    "Network Error",
+                    getString(R.string.no_internet),
+                    R.drawable.nonetworkicon,
+                    R.drawable.roundred
+                )
+            }
+        } else if (v === messageRead) {
+            val mCount: Int = PreferenceManager().getclick_count_read(mContext)
+            if (PreferenceManager().getclick_count_read(mContext) % 2 === 0) {
+                PreferenceManager().setisVisibleReadBox(mContext,true)
+                markUnRead!!.setVisibility(View.GONE)
+                markRead!!.setVisibility(View.GONE)
+                PreferenceManager().setisSelectedRead(mContext,false)
+                for (i in 0 until mMessageReadList.size) {
+                    mMessageReadList.get(i).isMarked=true
+                }
+                var selected = false
+                for (i in 0 until mMessageReadList.size) {
+                    if (mMessageReadList.get(i).isMarked) {
+                        selected = true
+                    } else {
+                        selected = false
+                        break
+                    }
+                }
+                if (selected) {
+                    messageRead!!.setBackgroundResource(R.drawable.check_box_header_tick)
+                    markUnRead!!.setVisibility(View.VISIBLE)
+                    markRead!!.setVisibility(View.GONE)
+                } else {
+                    messageRead!!.setBackgroundResource(R.drawable.check_box_header)
+                    markRead!!.setVisibility(View.GONE)
+                    markUnRead!!.setVisibility(View.VISIBLE)
+                }
+                readMessageAdapter!!.notifyDataSetChanged()
+                //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+            } else {
+                PreferenceManager().setisVisibleReadBox(mContext,false)
+                for (i in 0 until mMessageReadList.size) {
+                    if (mMessageReadList.get(i).isChecked) {
+                        mMessageReadList.get(i).isChecked=false
+                    }
+                }
+                markUnRead!!.setVisibility(View.GONE)
+                messageRead!!.setVisibility(View.GONE)
+                msgReadSelect!!.setVisibility(View.GONE)
+                readMessageAdapter!!.notifyDataSetChanged()
+                //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+            }
+           var click_read= PreferenceManager().getclick_count_read(mContext)
+            click_read=click_read++
+            PreferenceManager().setclick_count_read(mContext,click_read)
+
+           // click_count_read++
+        } else if (v ==messageUnRead) {
+            if (PreferenceManager().getclick_count(mContext) % 2 === 0) {
+               PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                for (i in 0 until unreadArray.size) {
+                    unreadArray.get(i).isChecked=true
+                }
+                /*for (i in 0 until AppController().mMessageUnreadList.size) {
+                    AppController().mMessageUnreadList.get(i).isChecked=true
+                }*/
+                var selected = false
+                for (i in 0 until unreadArray.size) {
+                    if (unreadArray.get(i).isChecked) {
+                        selected = true
+                    } else {
+                        selected = false
+                        break
+                    }
+                }
+                /*for (i in 0 until AppController().mMessageUnreadList.size) {
+                    if (AppController().mMessageUnreadList.get(i).isChecked) {
+                        selected = true
+                    } else {
+                        selected = false
+                        break
+                    }
+                }*/
+                if (selected) {
+                    messageUnRead!!.setBackgroundResource(R.drawable.check_box_header_tick)
+                    markUnRead!!.setVisibility(View.GONE)
+                    markRead!!.setVisibility(View.VISIBLE)
+                } else {
+                    messageUnRead!!.setBackgroundResource(R.drawable.check_box_header)
+                    markUnRead!!.setVisibility(View.GONE)
+                    markRead!!.setVisibility(View.GONE)
+                }
+                //unReadMessageAdapter!!.notifyDataSetChanged()
+                //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+            } else {
+               PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                //Log.e("test",isVisibleUnreadBox.toString())
+                for (i in 0 until unreadArray.size) {
+                    if (unreadArray.get(i).isChecked) {
+                        unreadArray.get(i).isChecked=false
+                    }
+                }
+                /* for (i in 0 until AppController().mMessageUnreadList.size) {
+                     if (AppController().mMessageUnreadList.get(i).isChecked) {
+                         AppController().mMessageUnreadList.get(i).isChecked=false
+                     }
+                 }*/
+                messageUnRead!!.setVisibility(View.GONE)
+                msgUnread!!.setVisibility(View.GONE)
+                markRead!!.setVisibility(View.GONE)
+                messageUnRead!!.setBackgroundResource(R.drawable.check_box_header)
+                // unReadMessageAdapter!!.notifyDataSetChanged()
+                //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+            }
+            var clickcount=PreferenceManager().getclick_count(mContext)
+            clickcount=clickcount++
+            PreferenceManager().setclick_count(mContext,clickcount)
+
+            //click_count++
+        } else if (v ==unreadTxt) {
+            callTypeStatus = "1"
+            markRead!!.setVisibility(View.GONE)
+            messageUnRead!!.setVisibility(View.GONE)
+            msgReadSelect!!.setVisibility(View.GONE)
+            msgUnread!!.setVisibility(View.GONE)
+            messageRead!!.setVisibility(View.GONE)
+            markUnRead!!.setVisibility(View.GONE)
+            // messageUnRead!!.setBackgroundResource(R.drawable.check_box_header);
+            // messageUnRead!!.setBackgroundResource(R.drawable.check_box_header);
+           PreferenceManager().setisVisibleUnreadBox(mContext,false)
+            PreferenceManager().setisVisibleReadBox(mContext,false)
+            // System.out.println(" size of array"+AppController().mMessageUnreadList.size);
+            // System.out.println(" size of array"+AppController().mMessageUnreadList.size);
+            if (isProgressVisible) {
+                mProgressRelLayout!!.clearAnimation()
+                mProgressRelLayout!!.setVisibility(View.GONE)
+                isProgressVisible = false
+            }
+            typeValue = "1"
+            limitValue = 20
+            pageUnReadValue = 0
+            isAvailable = false
+            if (unreadArray.size > 0) {
+                unreadTxt!!.setBackgroundResource(R.drawable.notification_read)
+                readTxt!!.setBackgroundResource(R.drawable.notification_unread)
+                unreadTxt!!.setTextColor(
+                    mContext.getResources().getColor(R.color.white)
+                )
+                readTxt!!.setTextColor(
+                    mContext.getResources()
+                        .getColor(R.color.split_bg)
+                )
+                Log.e("adaptr","1set")
+                unReadList.visibility=View.VISIBLE
+                unReadList.layoutManager=LinearLayoutManager(mContext)
+                unReadMessageAdapter =
+                    UnReadMessageAdapter(
+                        mContext,
+                        unreadArray,
+                        messageUnRead!!,
+                        markRead!!,
+                        markUnRead!!,
+                        msgUnread!!/*,object :OnItemLongClickListener{
+                            override fun onItemLongClick(
+                                p0: AdapterView<*>?,
+                                p1: View?,
+                                p2: Int,
+                                p3: Long
+                            ): Boolean {
+                                Log.e("longclickadapter","longclick")
+                                markRead.setVisibility(
+                                    View.GONE
+                                )
+                                markUnRead!!.setVisibility(
+                                    View.GONE
+                                )
+                                messageUnRead!!.setBackgroundResource(
+                                    R.drawable.check_box_header
+                                )
+                               PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                PreferenceManager().setisVisibleReadBox(mContext,false)
+                                PreferenceManager().setclick_count(mContext,0)
+                                for (i in 0 until mMessageReadList.size) {
+                                    mMessageReadList.get(i).isMarked=false
+
+                                }
+                                for (i in 0 until mMessageUnreadList.size) {
+                                    mMessageUnreadList.get(i).isChecked=false
+
+                                }
+                                if (mMessageReadList.size > 0) {
+                                    readMessageAdapter!!.notifyDataSetChanged()
+                                    // readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+                                }
+                                unReadList.adapter=unReadMessageAdapter
+                                unReadMessageAdapter!!.notifyDataSetChanged()
+                                //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+                                messageUnRead!!.setVisibility(
+                                    View.VISIBLE
+                                )
+                                msgUnread!!.setVisibility(
+                                    View.VISIBLE
+                                )
+                                messageRead!!.setVisibility(
+                                    View.GONE
+                                )
+                                msgReadSelect!!.setVisibility(
+                                    View.GONE
+                                )
+                                return false
+                            }
+                        },object :
+                            OnItemClickListener {
+
+                            override fun onItemClick(
+                                p0: AdapterView<*>?,
+                                p1: View?,
+                                p2: Int,
+                                p3: Long
+                            ) {
+                                TODO("Not yet implemented")
+                            }
+
+
+                        }*/
+                        ,object : ClickListener {
+                            override fun onPositionClicked(position: Int) {
+                                Log.e("c1","true")
+                            }
+                            override fun onLongClicked(position: Int) {
+                                Log.e("lc1","true")
+
+                                markRead.setVisibility(
+                                    View.GONE
+                                )
+                                markUnRead!!.setVisibility(
+                                    View.GONE
+                                )
+                                messageUnRead!!.setBackgroundResource(
+                                    R.drawable.check_box_header
+                                )
+                               PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                PreferenceManager().setisVisibleReadBox(mContext,false)
+                                PreferenceManager().setclick_count(mContext,0)
+                                for (i in 0 until mMessageReadList.size) {
+                                    mMessageReadList.get(i).isMarked=false
+
+                                }
+                                for (i in 0 until mMessageUnreadList.size) {
+                                    mMessageUnreadList.get(i).isChecked=false
+
+                                }
+                                if (mMessageReadList.size > 0) {
+                                    readMessageAdapter!!.notifyDataSetChanged()
+                                    // readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+                                }
+                                unReadList.adapter=unReadMessageAdapter
+                                unReadMessageAdapter!!.notifyDataSetChanged()
+                                //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+                                messageUnRead!!.setVisibility(
+                                    View.VISIBLE
+                                )
+                                msgUnread!!.setVisibility(
+                                    View.VISIBLE
+                                )
+                                messageRead!!.setVisibility(
+                                    View.GONE
+                                )
+                                msgReadSelect!!.setVisibility(
+                                    View.GONE
+                                )
+                            }
+                        }
+                    )
+
+                unReadList.adapter=unReadMessageAdapter
+                //unReadList.onItemLongClickListener
+                msgUnreadLinear!!.setVisibility(View.VISIBLE)
+                msgReadLinear!!.setVisibility(View.GONE)
+                unReadMessageAdapter!!.notifyDataSetChanged()
+                if (isFromUnReadBottom) {
+                    unReadList!!.scrollToPosition(
+                        pageUnReadValue - 2
+                    )
+                }
+                // unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+                Log.e("adaptr","set2")
+                unReadList.layoutManager=LinearLayoutManager(mContext)
+                unReadMessageAdapter =
+                    UnReadMessageAdapter(
+                        mContext,
+                        unreadArray,
+                        messageUnRead!!,
+                        markRead!!,
+                        markUnRead!!,
+                        msgUnread!!,/*object :OnItemLongClickListener{
+                            override fun onItemLongClick(
+                                p0: AdapterView<*>?,
+                                p1: View?,
+                                p2: Int,
+                                p3: Long
+                            ): Boolean {
+                                Log.e("longclickadapter","longclick")
+                                markRead.setVisibility(
+                                    View.GONE
+                                )
+                                markUnRead!!.setVisibility(
+                                    View.GONE
+                                )
+                                messageUnRead!!.setBackgroundResource(
+                                    R.drawable.check_box_header
+                                )
+                               PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                PreferenceManager().setisVisibleReadBox(mContext,false)
+                                PreferenceManager().setclick_count(mContext,0)
+                                for (i in 0 until mMessageReadList.size) {
+                                    mMessageReadList.get(i).isMarked=false
+
+                                }
+                                for (i in 0 until mMessageUnreadList.size) {
+                                    mMessageUnreadList.get(i).isChecked=false
+
+                                }
+                                if (mMessageReadList.size > 0) {
+                                    readMessageAdapter!!.notifyDataSetChanged()
+                                    // readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+                                }
+                                unReadList.adapter=unReadMessageAdapter
+                                unReadMessageAdapter!!.notifyDataSetChanged()
+                                //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+                                messageUnRead!!.setVisibility(
+                                    View.VISIBLE
+                                )
+                                msgUnread!!.setVisibility(
+                                    View.VISIBLE
+                                )
+                                messageRead!!.setVisibility(
+                                    View.GONE
+                                )
+                                msgReadSelect!!.setVisibility(
+                                    View.GONE
+                                )
+                                return false
+                            }
+                        },object :
+                            OnItemClickListener {
+
+                            override fun onItemClick(
+                                p0: AdapterView<*>?,
+                                p1: View?,
+                                p2: Int,
+                                p3: Long
+                            ) {
+                                TODO("Not yet implemented")
+                            }
+
+
+                        }*/
+                        object : ClickListener {
+                            override fun onPositionClicked(position: Int) {
+                                Log.e("click","true")
+                            }
+                            override fun onLongClicked(position: Int) {
+                                Log.e("longclick","true")
+                                markRead.setVisibility(
+                                    View.GONE
+                                )
+                                markUnRead!!.setVisibility(
+                                    View.GONE
+                                )
+                                messageUnRead!!.setBackgroundResource(
+                                    R.drawable.check_box_header
+                                )
+                               PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                PreferenceManager().setisVisibleReadBox(mContext,false)
+                                PreferenceManager().setclick_count(mContext,0)
+                                for (i in 0 until mMessageReadList.size) {
+                                    mMessageReadList.get(i).isMarked=false
+
+                                }
+                                for (i in 0 until mMessageUnreadList.size) {
+                                    mMessageUnreadList.get(i)
+
+                                }
+                                if (mMessageReadList.size > 0) {
+                                    readMessageAdapter!!.notifyDataSetChanged()
+                                    // readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+                                }
+                                unReadList.adapter=unReadMessageAdapter
+                                unReadMessageAdapter!!.notifyDataSetChanged()
+                                //unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+                                messageUnRead!!.setVisibility(
+                                    View.VISIBLE
+                                )
+                                msgUnread!!.setVisibility(
+                                    View.VISIBLE
+                                )
+                                messageRead!!.setVisibility(
+                                    View.GONE
+                                )
+                                msgReadSelect!!.setVisibility(
+                                    View.GONE
+                                )
+                            }
+                        }
+                    )
+                unReadList.adapter=unReadMessageAdapter
+                unReadList!!.setAdapter(unReadMessageAdapter)
+                unReadMessageAdapter!!.setOnBottomReachedListener(
+                    object : OnBottomReachedListener {
+                        override fun onBottomReached(position: Int) {
+                            if (position == mMessageUnreadList.size - 1) {
+                                if (!isAvailable) {
+                                    isFromUnReadBottom = true
+                                    if (PreferenceManager().getisVisibleUnreadBox(mContext)==true){
+                                    //if (isVisibleUnreadBox) {
+                                        markRead!!.setVisibility(View.GONE)
+                                        markUnRead!!.setVisibility(View.GONE)
+                                        messageUnRead!!.setBackgroundResource(
+                                            R.drawable.check_box_header
+                                        )
+                                       PreferenceManager().setisVisibleUnreadBox(mContext,true)
+                                        PreferenceManager().setisVisibleReadBox(mContext,false)
+                                        PreferenceManager().setclick_count(mContext,0)
+                                        for (i in 0 until mMessageReadList.size) {
+                                            mMessageReadList.get(i).isMarked=false
+                                        }
+                                        for (i in 0 until mMessageUnreadList.size) {
+                                            mMessageUnreadList.get(i)
+                                                .isChecked=false
+                                        }
+                                    }
+                                    typeValue = "1"
+                                    limitValue = 20
+                                    pageUnReadValue =
+                                        pageUnReadValue + limitValue
+                                    callPushNotification(
+                                        typeValue,
+                                        limitValue.toString(),
+                                        pageUnReadValue.toString()
+                                    )
+                                    // Toast.makeText(mContext,  "Reached", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            //   System.out.println("position bottom"+position);
+                        }
+                    })
+                callPushNotification(
+                    typeValue,
+                    limitValue.toString(),
+                    pageUnReadValue.toString()
+                )
+            } else {
+                callPushNotification(
+                    typeValue,
+                    limitValue.toString(),
+                    pageUnReadValue.toString()
+                )
+            }
+        } else if (v === readTxt) {
+            callTypeStatus = "2"
+            markRead!!.setVisibility(View.GONE)
+            msgReadSelect!!.setVisibility(View.GONE)
+            messageUnRead!!.setVisibility(View.GONE)
+            msgUnread!!.setVisibility(View.GONE)
+            messageRead!!.setVisibility(View.GONE)
+            markUnRead!!.setVisibility(View.GONE)
+            if (isProgressVisible) {
+                mProgressRelLayout!!.clearAnimation()
+                mProgressRelLayout!!.setVisibility(View.GONE)
+                isProgressVisible = false
+            }
+            // messageUnRead!!.setBackgroundResource(R.drawable.check_box_header);
+            // messageUnRead!!.setBackgroundResource(R.drawable.check_box_header);
+           PreferenceManager().setisVisibleUnreadBox(mContext,false)
+            PreferenceManager().setisVisibleReadBox(mContext,false)
+            //  System.out.println(" size of array"+AppController().mMessageReadList.size);
+
+            //  System.out.println(" size of array"+AppController().mMessageReadList.size);
+            typeValue = "2"
+            limitValue = 20
+            pageReadValue = 0
+            isReadAvailable = false
+            if (mMessageReadList.size > 0) {
+                readTxt!!.setBackgroundResource(R.drawable.notification_read)
+                unreadTxt!!.setBackgroundResource(R.drawable.notification_unread)
+                readTxt!!.setTextColor(
+                    mContext.getResources().getColor(R.color.white)
+                )
+                unreadTxt!!.setTextColor(
+                    mContext.getResources()
+                        .getColor(R.color.split_bg)
+                )
+                //set adapter
+                readList.visibility=View.VISIBLE
+                readList.layoutManager=LinearLayoutManager(mContext)
+                readMessageAdapter = ReadMessageAdapter(
+                    mContext,
+                    mMessageReadList,
+                    messageRead!!,
+                    markUnRead!!,
+                    markRead!!,
+                    msgReadSelect!!,
+                    object : ClickListener {
+                        override fun onPositionClicked(position: Int) {
+                            markRead.setVisibility(View.GONE)
+                            markUnRead!!.setVisibility(View.GONE)
+                            messageRead!!.setVisibility(View.GONE)
+                            msgReadSelect!!.setVisibility(View.GONE)
+                            messageUnRead!!.setVisibility(View.GONE)
+                            msgUnread!!.setVisibility(View.GONE)
+                           PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                            PreferenceManager().setisVisibleReadBox(mContext,false)
+                            val intent: Intent = Intent(
+                                mContext,
+                                MessageDetail::class.java
+                            )
+                            intent.putExtra(
+                                "title",
+                                mMessageReadList.get(position).title
+                            )
+                            intent.putExtra(
+                                "message",
+                                mMessageReadList.get(position).message
+                            )
+                            intent.putExtra(
+                                "date",
+                                mMessageReadList.get(position).day
+                            )
+                            ///intent.putExtra("position",position);
+                            mContext.startActivity(intent)
+                        }
+
+                        override fun onLongClicked(position: Int) {
+                            markRead.setVisibility(View.GONE)
+                            markUnRead!!.setVisibility(View.GONE)
+                            PreferenceManager().setclick_count_read(mContext,0)
+                            // System.out.println("checkbox read visible:::::");
+                            messageRead!!.setBackgroundResource(R.drawable.check_box_header)
+                            PreferenceManager().setisVisibleReadBox(mContext,true)
+                           PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                            for (i in 0 until mMessageReadList.size) {
+                                mMessageReadList.get(i).isMarked=false
+                            }
+                            for (i in 0 until mMessageUnreadList.size) {
+                                mMessageUnreadList.get(i).isChecked=false
+                            }
+                            if (mMessageUnreadList.size > 0) {
+                                unReadList.adapter=unReadMessageAdapter
+                                unReadMessageAdapter!!.notifyDataSetChanged()
+                                // unReadMessageAdapter.notifyItemRangeChanged(0, unReadMessageAdapter.getItemCount());
+                            }
+                            readMessageAdapter!!.notifyDataSetChanged()
+                            //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+                            messageRead!!.setVisibility(View.VISIBLE)
+                            msgReadSelect!!.setVisibility(View.VISIBLE)
+                            messageUnRead!!.setVisibility(View.GONE)
+                            msgUnread!!.setVisibility(View.GONE)
+                            noMsgAlertRelative!!.setVisibility(View.GONE)
+                            noMsgText!!.setVisibility(View.GONE)
+                        }
+                    }
+                )
+                readList.adapter=readMessageAdapter
+                msgUnreadLinear!!.setVisibility(View.GONE)
+                msgReadLinear!!.setVisibility(View.VISIBLE)
+                if (isFromReadBottom) {
+                    readList!!.scrollToPosition(
+                        pageReadValue - 1
+                    )
+                }
+                readMessageAdapter!!.notifyDataSetChanged()
+                //readMessageAdapter.notifyItemRangeChanged(0, readMessageAdapter.getItemCount());
+                readList.adapter=readMessageAdapter
+                //readList!!.setAdapter(readMessageAdapter)
+                readMessageAdapter!!.setOnBottomReachedListener(object :
+                    OnBottomReachedListener {
+                    override fun onBottomReached(position: Int) {
+                        if (position == mMessageReadList.size - 2) {
+                            if (!isReadAvailable) {
+                                isFromReadBottom = true
+                                if (PreferenceManager().getisVisibleReadBox(mContext)==true){
+                               // if (isVisibleReadBox) {
+                                    markRead!!.setVisibility(View.GONE)
+                                    markUnRead!!.setVisibility(View.GONE)
+                                    PreferenceManager().setclick_count_read(mContext,0)
+                                    // System.out.println("checkbox read visible:::::");
+                                    messageRead!!.setBackgroundResource(
+                                        R.drawable.check_box_header
+                                    )
+                                    PreferenceManager().setisVisibleReadBox(mContext,true)
+                                   PreferenceManager().setisVisibleUnreadBox(mContext,false)
+                                    for (i in 0 until mMessageReadList.size) {
+                                        mMessageReadList.get(i).isMarked=false
+                                    }
+                                    for (i in 0 until mMessageUnreadList.size) {
+                                        mMessageUnreadList.get(i).isChecked=false
+                                    }
+                                }
+                                typeValue = "2"
+                                limitValue = 20
+                                pageReadValue =
+                                    pageReadValue + limitValue
+                                callPushNotification(
+                                    typeValue,
+                                    limitValue.toString(),
+                                    pageReadValue.toString()
+                                )
+                                //  Toast.makeText(mContext,  "Reached", Toast.LENGTH_SHORT).show();
+                            }
+                            //Toast.makeText(mContext,  "Reached", Toast.LENGTH_SHORT).show();
+                        }
+
+                        //    System.out.println("position bottom"+position);
+                    }
+                })
+                callPushNotification(
+                    typeValue,
+                    limitValue.toString(),
+                    pageReadValue.toString()
+                )
+            } else {
+                callPushNotification(
+                    typeValue,
+                    limitValue.toString(),
+                    pageReadValue.toString()
+                )
+            }
+        }
+        }
+    override fun onResume() {
+        super.onResume()
+        if (PreferenceManager().getisfromUnread(mContext)==true) {
+        /*if (AppController().isfromUnread) {*/
+            unreadTxt!!.setBackgroundResource(R.drawable.notification_read)
+            readTxt!!.setBackgroundResource(R.drawable.notification_unread)
+            //            for(int i = 0; i<AppController.mMessageUnreadList.size(); i++)
+//            {
+//                if (AppController.pushId.equalsIgnoreCase(AppController.mMessageUnreadList.get(i).getPushid()))
+//                {
+//                    AppController.mMessageUnreadList.remove(i);
+//                }
+//            }
+            unReadMessageAdapter!!.notifyDataSetChanged()
+            PreferenceManager().setIsfromUnread(mContext,false)
+           // AppController().isfromUnread = false
+            callstatusapi("1", PreferenceManager().getpushId(mContext).toString())
+        } else if (PreferenceManager().getisfromRead(mContext)==true){
+            unreadTxt!!.setBackgroundResource(R.drawable.notification_unread)
+            readTxt!!.setBackgroundResource(R.drawable.notification_read)
+            readTxt!!.setTextColor(
+                mContext.getResources().getColor(R.color.white)
+            )
+            unreadTxt!!.setTextColor(
+                mContext.getResources().getColor(R.color.split_bg)
+            )
+            PreferenceManager().setisfromRead(mContext,false)
+           // AppController().isfromRead = false
+            markRead.setVisibility(View.GONE)
+            markUnRead!!.setVisibility(View.GONE)
+            messageRead!!.setVisibility(View.GONE)
+            msgReadSelect!!.setVisibility(View.GONE)
+            messageUnRead!!.setVisibility(View.GONE)
+            msgUnread!!.setVisibility(View.GONE)
+           PreferenceManager().setisVisibleUnreadBox(mContext,false)
+            PreferenceManager().setisVisibleReadBox(mContext,false)
+            readMessageAdapter!!.notifyDataSetChanged()
+        }
+        if (!PreferenceManager().getUserId(mContext)
+                .equals("")
+        ) {
+          /*  AppController.getInstance().getGoogleAnalyticsTracker()
+                .set("&uid", PreferenceManager().getUserId(NotificationFragmentPagination.mContext))
+            AppController.getInstance().getGoogleAnalyticsTracker()
+                .set("&cid", PreferenceManager().getUserId(NotificationFragmentPagination.mContext))
+            AppController.getInstance().trackScreenView(
+                "Notification Screen Fragment. " + "(" + PreferenceManager().getUserEmail(
+                    NotificationFragmentPagination.mContext
+                ) + ")" + " " + "(" + Calendar.getInstance().time + ")"
+            )*/
+        }
+        // System.out.println("testinngresume");
+    }
+    }

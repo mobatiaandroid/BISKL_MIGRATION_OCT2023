@@ -41,23 +41,29 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import com.example.bskl_kotlin.R
-import com.example.bskl_kotlin.activity.attendance.AttendanceInfoActivity
 import com.example.bskl_kotlin.activity.calendar.CalendarInfoActivity
+import com.example.bskl_kotlin.activity.calender.ListViewCalendar
+import com.example.bskl_kotlin.activity.home.model.DeviceRegisterApiModel
 import com.example.bskl_kotlin.activity.home.model.DeviceregisterModel
 import com.example.bskl_kotlin.activity.home.model.StudDetailsUsermodel
 import com.example.bskl_kotlin.activity.home.model.TimeTableStudentModel
+import com.example.bskl_kotlin.activity.home.model.UserDetailsApiModel
 import com.example.bskl_kotlin.activity.home.model.UserDetailsModel
 import com.example.bskl_kotlin.activity.notification.NotificationInfoActivity
 import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.constants.BsklNameConstants
 import com.example.bskl_kotlin.constants.BsklTabConstants
 import com.example.bskl_kotlin.fragment.absence.AbsenceFragment
-import com.example.bskl_kotlin.fragment.calendar.CalendarFragment
+import com.example.bskl_kotlin.fragment.attendance.AttendanceInfoActivity
+import com.example.bskl_kotlin.fragment.attendance.AttendenceFragment
+
 import com.example.bskl_kotlin.fragment.contactus.ContactUsFragment
 import com.example.bskl_kotlin.fragment.home.HomeScreenFragment
+import com.example.bskl_kotlin.fragment.home.tokenM
 import com.example.bskl_kotlin.fragment.messages.NotificationFragmentPagination
 import com.example.bskl_kotlin.fragment.news.NewsFragment
 import com.example.bskl_kotlin.fragment.reports.ReportFragment
+import com.example.bskl_kotlin.fragment.safeguarding.SafeGuardingFragment
 import com.example.bskl_kotlin.fragment.settings.SettingsFragment
 import com.example.bskl_kotlin.fragment.social_media.SocialMediaFragment
 import com.example.bskl_kotlin.fragment.timetable.TimeTableFragment
@@ -96,7 +102,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
     lateinit var headerTitle: TextView
     lateinit var studentDetailList: ArrayList<StudDetailsUsermodel>
     lateinit var timeTableStudArray: ArrayList<TimeTableStudentModel>
-    private var mFragment: Fragment? = null
+    private var mFragment: Fragment?=null
     var tabPositionProceed = 0
     var sPosition = 0
 
@@ -127,7 +133,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
         initSet()
         extras = intent.extras!!
         if (extras != null) {
-            notificationRecieved = extras.getInt("Notification_Recieved", 0)
+            //notificationRecieved = extras.getInt("Notification_Recieved", 0)
             fromsplash = extras.getBoolean("fromsplash")
             Log.e("NOTIFY", notificationRecieved.toString())
         }
@@ -191,9 +197,11 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
             mContext.contentResolver,
             Settings.Secure.ANDROID_ID
         )
+        var devicereg=DeviceRegisterApiModel(
+            tokenM, "2",androidId,
+            PreferenceManager().getUserId(mContext).toString())
         val call: Call<DeviceregisterModel> = ApiClient.getClient.deviceRegister(
-            PreferenceManager().getaccesstoken(mContext).toString(),"", "2",androidId,
-            PreferenceManager().getUserId(mContext).toString()
+            devicereg,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString()
         )
 
         call.enqueue(object : Callback<DeviceregisterModel> {
@@ -375,6 +383,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
         mHomeListView.setOnItemClickListener {adapterView, view, position, id ->
             if (PreferenceManager().getIfHomeItemClickEnabled(mContext)) {
                 Log.e("position homelist", position.toString())
+                Log.e("position homelist type", PreferenceManager().getHomeListType(mContext).toString())
 
                 displayView(position)
             }
@@ -498,22 +507,22 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                     .javaClass
                     .toString()
                     .equals(
-                        "class com.mobatia.bskl.fragment.settings.SettingsFragment"
+                        "class com.example.bskl_kotlin.fragment.settings.SettingsFragment"
                     )) && !(currentFragment
                     .javaClass
                     .toString()
                     .equals(
-                        "class com.mobatia.bskl.fragment.notification.NotificationFragmentPagination"
+                        "class com.example.bskl_kotlin.fragment.notification.NotificationFragmentPagination"
                     )) && !(currentFragment
                     .javaClass
                     .toString()
                     .equals(
-                        "class com.mobatia.bskl.fragment.calendar.ListViewCalendar"
+                        "class com.example.bskl_kotlin.fragment.calendar.ListViewCalendar"
                     )) && !(currentFragment
                     .javaClass
                     .toString()
                     .equals(
-                        "class com.mobatia.bskl.fragment.attendance.AttendenceFragment"
+                        "class com.example.bskl_kotlin.fragment.attendance.AttendenceFragment"
                     ))
             ) {
                 mFragment = SettingsFragment()
@@ -557,7 +566,97 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                 startActivity(intent)
             }
         }
+        imageButton2.visibility = View.VISIBLE
         //mDrawerToggle!!.syncState()
+        homePageLogoImg.setOnClickListener {
+            val fm = supportFragmentManager
+            val currentFragment = fm.findFragmentById(R.id.frame_container)
+            println(
+                "bskl current fragment "
+                        + currentFragment!!.javaClass.toString()
+            )
+            if (currentFragment
+                    .javaClass
+                    .toString()
+                    .equals(
+                        "class com.example.bskl_kotlin.fragment.settings.SettingsFragment"
+                    )
+            ) {
+//                    onBackPressed();
+                displayView(0)
+            }
+        }
+        imageButton2.setOnClickListener {
+
+//                Toast.makeText(getApplicationContext(), "Forward Button is clicked", Toast.LENGTH_LONG).show();
+            val fm = supportFragmentManager
+            val currentFragment = fm.findFragmentById(R.id.frame_container)
+            println(
+                "bskl current fragment "
+                        + currentFragment!!.javaClass.toString()
+            )
+            if (!(currentFragment
+                    .javaClass
+                    .toString()
+                    .equals(
+                        "class com.example.bskl_kotlin.fragment.settings.SettingsFragment"
+                    )) && !(currentFragment
+                    .javaClass
+                    .toString()
+                    .equals(
+                        "class com.example.bskl_kotlin.fragment.notification.NotificationFragmentPagination"
+                    )) && !(currentFragment
+                    .javaClass
+                    .toString()
+                    .equals(
+                        "class com.example.bskl_kotlin.fragment.calendar.ListViewCalendar"
+                    )) && !(currentFragment
+                    .javaClass
+                    .toString()
+                    .equals(
+                        "class com.example.bskl_kotlin.fragment.attendance.AttendenceFragment"
+                    ))
+            ) {
+                mFragment = SettingsFragment()
+                if (mFragment != null) {
+                    imageButton2.visibility = View.INVISIBLE
+                    val fragmentManager = supportFragmentManager
+                    fragmentManager.beginTransaction()
+                        .add(R.id.frame_container, mFragment!!, bsklNameConstants.SETTINGS)
+                        .addToBackStack(bsklNameConstants.SETTINGS).commit()
+                    mDrawerLayout.closeDrawer(linearLayout)
+                    supportActionBar!!.setTitle(R.string.null_value)
+                    imageButton2.visibility = View.INVISIBLE
+                }
+            } else if (currentFragment!!.javaClass.toString().equals(
+                    "class com.example.bskl_kotlin.fragment.notification.NotificationFragmentPagination"
+                )
+            ) {
+                val intent = Intent(
+                    mContext,
+                    NotificationInfoActivity::class.java
+                )
+                startActivity(intent)
+            } else if (currentFragment!!.javaClass.toString().equals(
+                    "class com.example.bskl_kotlin.fragment.calendar.ListViewCalendar"
+                )
+            ) {
+                val intent = Intent(
+                    mContext,
+                    CalendarInfoActivity::class.java
+                )
+                startActivity(intent)
+            } else if (currentFragment!!.javaClass.toString().equals(
+                    "class com.example.bskl_kotlin.fragment.attendance.AttendenceFragment"
+                )
+            ) {
+                val intent = Intent(
+                    mContext,
+                    AttendanceInfoActivity::class.java
+                )
+                startActivity(intent)
+            }
+        }
 
     }
     override fun onPostCreate(savedInstanceState: Bundle?) {
@@ -567,9 +666,9 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
     }
 
     fun setUserDetails() {
+        var userdetail= UserDetailsApiModel(PreferenceManager().getUserId(mContext).toString())
         val call: Call<UserDetailsModel> = ApiClient.getClient.user_details(
-            PreferenceManager().getaccesstoken(mContext).toString(),
-            PreferenceManager().getUserId(mContext).toString()
+            userdetail,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString()
         )
 
         call.enqueue(object : Callback<UserDetailsModel> {
@@ -587,7 +686,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                 if (responsedata!!.responsecode.equals("200")) {
                     if (responsedata!!.response.statuscode.equals("303")) {
                         //String userId=respObj.optString(JTAG_USER_ID);
-                        //PreferenceManager.setUserId(mContext, respObj.optString(JTAG_USER_ID));
+                        //PreferenceManager().setUserId(mContext, respObj.optString(JTAG_USER_ID));
                         PreferenceManager().setPhoneNo(
                             mContext,
                             responsedata!!.response.responseArray.mobileno
@@ -616,6 +715,9 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                             mContext,
                             responsedata!!.response.responseArray.reportmailmerge
                         )
+
+                        Log.e("reporthome",PreferenceManager().getReportMailMerge(mContext).toString())
+                        Log.e("reporthome", responsedata!!.response.responseArray.reportmailmerge.toString())
                         PreferenceManager().setCorrespondenceMailMerge(
                             mContext,
                             responsedata!!.response.responseArray.correspondencemailmerge
@@ -683,7 +785,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                         //  System.out.println("Replace current version"+replaceVersion);
                         if (!PreferenceManager().getVersionFromApi(mContext).equals("")) {
                             if (versionNumberAsInteger > replaceCurrentVersion) {
-                                //AppUtils.showDialogAlertUpdate(mContext)
+                                //AppUtils().showDialogAlertUpdate(mContext)
                             }
                         }
                         if (responsedata!!.response.timetable_student.size > 0) {
@@ -969,7 +1071,10 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                         } else {
                             PreferenceManager().setHomeSafeGuarding(mContext, "0")
                         }
-
+Log.e("absence",PreferenceManager().getHomeReportAbsence(mContext).toString())
+Log.e("getHomeSafeGuarding",PreferenceManager().getHomeSafeGuarding(mContext).toString())
+Log.e("getHomeAttendance",PreferenceManager().getHomeAttendance(mContext).toString())
+Log.e("getHomeTimetable",PreferenceManager().getHomeTimetable(mContext).toString())
                         if (PreferenceManager().getHomeReportAbsence(mContext)
                                 .equals("0") && PreferenceManager().getHomeSafeGuarding(
                                 mContext
@@ -1592,7 +1697,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                             // Calendar
                             imageButton2.setImageResource(R.drawable.tutorial_icon)
                             imageButton2.visibility = View.VISIBLE
-                            mFragment = CalendarFragment(
+                            mFragment = ListViewCalendar(
                                 mListItemArray.get(position),
                                 bsklTabConstants.TAB_CALENDAR
                             )
@@ -1611,6 +1716,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                         }
 
                         3 -> {
+                            Log.e("news","fragment")
                             // News
                             imageButton2.setImageResource(R.drawable.settings)
                             imageButton2.visibility = View.VISIBLE
@@ -1631,6 +1737,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
 
                         5 -> {
 
+
                             // Report
                             imageButton2.visibility = View.VISIBLE
                             imageButton2.setImageResource(R.drawable.settings)
@@ -1645,7 +1752,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                             // Absence
                             /* Log.e(
                                 "HOME LIST TYPE C6**",
-                                PreferenceManager.getHomeListType(mContext)
+                                PreferenceManager().getHomeListType(mContext)
                             )*/
                             if (PreferenceManager().getHomeListType(mContext).equals("1")) {
 
@@ -1695,11 +1802,9 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 // Attendance
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
-                                /* mFragment = AttendenceFragment(
-                                    mListItemArray.get(position),
-                                    TAB_ATTENDANCE
+                                mFragment = AttendenceFragment(
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("4")
                             ) {
@@ -1708,11 +1813,9 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE111")
-                                /* mFragment = AttendenceFragment(
-                                    mListItemArray.get(position),
-                                    TAB_ATTENDANCE
+                                mFragment = AttendenceFragment(
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("5")
                             ) {
@@ -1720,22 +1823,19 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 // safeGuarding
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                /* mFragment = SafeGuardingFragment(
-                                    mListItemArray.get(position),
-                                    TAB_SAFE_GUARDING
+                                 mFragment = SafeGuardingFragment(
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("6")
                             ) {
                                 // safeGuarding
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                /* mFragment = SafeGuardingFragment(
-                                    mListItemArray.get(position),
-                                    TAB_SAFE_GUARDING
+                                 mFragment = SafeGuardingFragment(
+
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("7")
                             ) {
@@ -1743,11 +1843,10 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 // safeGuarding
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                /* mFragment = SafeGuardingFragment(
-                                    mListItemArray.get(position),
-                                    TAB_SAFE_GUARDING
+                                mFragment = SafeGuardingFragment(
+
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("8")
                             ) {
@@ -1755,11 +1854,10 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 // SafeGuarding
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                /*mFragment = SafeGuardingFragment(
-                                    mListItemArray.get(position),
-                                    TAB_SAFE_GUARDING
+                                mFragment = SafeGuardingFragment(
+
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else {
                                 // Report Absence
                                 imageButton2.setImageResource(R.drawable.settings)
@@ -1916,11 +2014,9 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 // Attendance
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
-                                /*mFragment = AttendenceFragment(
-                                    mListItemArray.get(position),
-                                    TAB_ATTENDANCE
+                                mFragment = AttendenceFragment(
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("8")
                             ) {
@@ -1928,11 +2024,9 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 // Attendance
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
-                                /* mFragment = AttendenceFragment(
-                                    mListItemArray.get(position),
-                                    TAB_ATTENDANCE
+                                mFragment = AttendenceFragment(
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("9")
                             ) {
@@ -1982,11 +2076,9 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE444")
-                                /*  mFragment = AttendenceFragment(
-                                    mListItemArray.get(position),
-                                    TAB_ATTENDANCE
+                                 mFragment = AttendenceFragment(
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("12")
                             ) {
@@ -1995,21 +2087,18 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE555")
-                                /* mFragment = AttendenceFragment(
-                                    mListItemArray.get(position),
-                                    TAB_ATTENDANCE
+                                mFragment = AttendenceFragment(
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else {
 
                                 // SafeGuarding
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
-                                /*mFragment = SafeGuardingFragment(
-                                    mListItemArray.get(position),
-                                    TAB_SAFE_GUARDING
+                                mFragment = SafeGuardingFragment(
+
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             }
                         }
 
@@ -2209,11 +2298,9 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE666")
-                                /* mFragment = AttendenceFragment(
-                                    mListItemArray.get(position),
-                                    TAB_ATTENDANCE
+                                mFragment = AttendenceFragment(
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("16")
                             ) {
@@ -2221,11 +2308,9 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE777")
-                                /* mFragment = AttendenceFragment(
-                                    mListItemArray.get(position),
-                                    TAB_ATTENDANCE
+                                mFragment = AttendenceFragment(
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else {
                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
@@ -2309,6 +2394,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
 
                     }
                 } else {
+                    Log.e("reportmailmerge","0")
                     when (position) {
                         0 -> {
                             // home
@@ -2338,7 +2424,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                             // Calendar
                             imageButton2.setImageResource(R.drawable.tutorial_icon)
                             imageButton2.visibility = View.VISIBLE
-                            mFragment = CalendarFragment(
+                            mFragment = ListViewCalendar(
                                 mListItemArray.get(position),
                                 bsklTabConstants.TAB_CALENDAR
                             )
@@ -2356,29 +2442,29 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                             replaceFragmentsSelected(position)
                         }
 
-                        /* 3 -> {
+                         3 -> {
                             // News
                             imageButton2.setImageResource(R.drawable.settings)
                             imageButton2.visibility = View.VISIBLE
                             mFragment =
-                                NewsFragment(mListItemArray.get(position), TAB_NEWS)
+                                NewsFragment(mListItemArray.get(position), bsklTabConstants.TAB_NEWS)
                             replaceFragmentsSelected(position)
-                        }*/
+                        }
 
-                        /* 4 -> {
+                         4 -> {
                             // Social media
                             imageButton2.visibility = View.VISIBLE
                             imageButton2.setImageResource(R.drawable.settings)
                             mFragment = SocialMediaFragment(
                                 mListItemArray.get(position),
-                                TAB_SOCIAL_MEDIA
+                                bsklTabConstants.TAB_SOCIAL_MEDIA
                             )
                             replaceFragmentsSelected(position)
-                        }*/
+                        }
 
-                        /* 5 ->
-                    if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
+                         5 ->
+                    if (AppUtils().isNetworkConnected(mContext)) {
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
                                     getString(R.string.not_available_limitted_access),
@@ -2386,14 +2472,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     R.drawable.round
                                 )
                             } else {
-                                AppUtils.showDialogAlertDismiss(
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     "Network Error",
                                     getString(R.string.no_internet),
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }*/
+                            }
 
                         6 ->                             // Absence
                             if (PreferenceManager().getHomeListType(mContext).equals("1")) {
@@ -2426,8 +2512,8 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                /* if (AppUtils.isNetworkConnected(mContext)) {
-                                    AppUtils.showDialogAlertDismiss(
+                                 if (AppUtils().isNetworkConnected(mContext)) {
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
                                         getString(R.string.not_available_limitted_access),
@@ -2435,14 +2521,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                         R.drawable.round
                                     )
                                 } else {
-                                   *//* AppUtils.showDialogAlertDismiss(
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         "Network Error",
                                         getString(R.string.no_internet),
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
-                                    )*//*
-                                }*/
+                                    )
+                                }
                             }
 
                         7 ->                             // SafeGuarding
@@ -2484,8 +2570,8 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                /*  if (AppUtils.isNetworkConnected(mContext)) {
-                                    AppUtils.showDialogAlertDismiss(
+                                  if (AppUtils().isNetworkConnected(mContext)) {
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
                                         getString(R.string.not_available_limitted_access),
@@ -2493,14 +2579,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                         R.drawable.round
                                     )
                                 } else {
-                                    AppUtils.showDialogAlertDismiss(
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         "Network Error",
                                         getString(R.string.no_internet),
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }*/
+                                }
                             }
 
                         8 ->                             // Attendance
@@ -2546,8 +2632,8 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                /* if (AppUtils.isNetworkConnected(mContext)) {
-                                    AppUtils.showDialogAlertDismiss(
+                                 if (AppUtils().isNetworkConnected(mContext)) {
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
                                         getString(R.string.not_available_limitted_access),
@@ -2555,14 +2641,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                         R.drawable.round
                                     )
                                 } else {
-                                    AppUtils.showDialogAlertDismiss(
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         "Network Error",
                                         getString(R.string.no_internet),
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }*/
+                                }
                             }
                         9 -> if (PreferenceManager().getHomeListType(mContext)
                                 .equals("8") || PreferenceManager().getHomeListType(mContext)
@@ -2600,8 +2686,8 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 replaceFragmentsSelected(position)
                             }
                         } else {
-                            /* if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
+                             if (AppUtils().isNetworkConnected(mContext)) {
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
                                     getString(R.string.not_available_limitted_access),
@@ -2609,14 +2695,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     R.drawable.round
                                 )
                             } else {
-                                AppUtils.showDialogAlertDismiss(
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     "Network Error",
                                     getString(R.string.no_internet),
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }*/
+                            }
                         }
 
                         10 -> {
@@ -2700,9 +2786,9 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 )
                             }
 
-                        /* 2 ->
-                            if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
+                         2 ->
+                            if (AppUtils().isNetworkConnected(mContext)) {
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
                                     getString(R.string.not_available),
@@ -2710,18 +2796,18 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     R.drawable.round
                                 )
                             } else {
-                                AppUtils.showDialogAlertDismiss(
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     "Network Error",
                                     getString(R.string.no_internet),
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }*/
+                            }
 
-                        /*3 ->                             // News
-                            if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
+                        3 ->                             // News
+                            if (AppUtils().isNetworkConnected(mContext)) {
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
                                     getString(R.string.not_available),
@@ -2729,18 +2815,18 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     R.drawable.round
                                 )
                             } else {
-                                AppUtils.showDialogAlertDismiss(
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     "Network Error",
                                     getString(R.string.no_internet),
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }*/
+                            }
 
-                        /*4 ->                             // Social media
-                            if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
+                        4 ->                             // Social media
+                            if (AppUtils().isNetworkConnected(mContext)) {
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
                                     getString(R.string.not_available),
@@ -2748,18 +2834,18 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     R.drawable.round
                                 )
                             } else {
-                                AppUtils.showDialogAlertDismiss(
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     "Network Error",
                                     getString(R.string.no_internet),
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }*/
+                            }
 
-                        /* 5 ->                             // Report
-                            if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
+                         5 ->                             // Report
+                            if (AppUtils().isNetworkConnected(mContext)) {
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
                                     getString(R.string.not_available),
@@ -2767,14 +2853,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     R.drawable.round
                                 )
                             } else {
-                                AppUtils.showDialogAlertDismiss(
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     "Network Error",
                                     getString(R.string.no_internet),
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }*/
+                            }
 
                         6 ->                             // Absence
                             if (PreferenceManager().getHomeListType(mContext).equals("1")) {
@@ -2807,8 +2893,8 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                /* if (AppUtils.isNetworkConnected(mContext)) {
-                                    AppUtils.showDialogAlertDismiss(
+                                 if (AppUtils().isNetworkConnected(mContext)) {
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
                                         getString(R.string.not_available),
@@ -2816,14 +2902,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                         R.drawable.round
                                     )
                                 } else {
-                                    AppUtils.showDialogAlertDismiss(
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         "Network Error",
                                         getString(R.string.no_internet),
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }*/
+                                }
                             }
 
                         7 ->                             // Attendance
@@ -2865,8 +2951,8 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                /*if (AppUtils.isNetworkConnected(mContext)) {
-                                    AppUtils.showDialogAlertDismiss(
+                                if (AppUtils().isNetworkConnected(mContext)) {
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
                                         getString(R.string.not_available),
@@ -2874,14 +2960,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                         R.drawable.round
                                     )
                                 } else {
-                                    AppUtils.showDialogAlertDismiss(
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         "Network Error",
                                         getString(R.string.no_internet),
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }*/
+                                }
                             }
 
                         8 ->                             // Absence
@@ -2927,8 +3013,8 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                /* if (AppUtils.isNetworkConnected(mContext)) {
-                                    AppUtils.showDialogAlertDismiss(
+                                 if (AppUtils().isNetworkConnected(mContext)) {
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
                                         getString(R.string.not_available),
@@ -2936,14 +3022,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                         R.drawable.round
                                     )
                                 } else {
-                                    AppUtils.showDialogAlertDismiss(
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         "Network Error",
                                         getString(R.string.no_internet),
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }*/
+                                }
                             }
 
                         9 -> if (PreferenceManager().getHomeListType(mContext)
@@ -2982,8 +3068,8 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 replaceFragmentsSelected(position)
                             }
                         } else {
-                            /*  if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
+                              if (AppUtils().isNetworkConnected(mContext)) {
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
                                     getString(R.string.not_available),
@@ -2991,14 +3077,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     R.drawable.round
                                 )
                             } else {
-                                AppUtils.showDialogAlertDismiss(
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     "Network Error",
                                     getString(R.string.no_internet),
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }*/
+                            }
                         }
 
                         10 -> {
@@ -3079,9 +3165,9 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     R.drawable.roundred
                                 )
                             }
-                        /*2 ->                             // Messages
-                            if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
+                        2 ->                             // Messages
+                            if (AppUtils().isNetworkConnected(mContext)) {
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
                                     getString(R.string.not_available),
@@ -3089,18 +3175,18 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     R.drawable.round
                                 )
                             } else {
-                                AppUtils.showDialogAlertDismiss(
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     "Network Error",
                                     getString(R.string.no_internet),
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }*/
+                            }
 
-                        /* 3 ->                             // News
-                            if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
+                         3 ->                             // News
+                            if (AppUtils().isNetworkConnected(mContext)) {
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
                                     getString(R.string.not_available),
@@ -3108,14 +3194,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     R.drawable.round
                                 )
                             } else {
-                                AppUtils.showDialogAlertDismiss(
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     "Network Error",
                                     getString(R.string.no_internet),
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }*/
+                            }
 
                         4 ->                             // Social media
                             if (AppUtils().isNetworkConnected(mContext)) {
@@ -3178,8 +3264,8 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                /* if (AppUtils.isNetworkConnected(mContext)) {
-                                    AppUtils.showDialogAlertDismiss(
+                                 if (AppUtils().isNetworkConnected(mContext)) {
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
                                         getString(R.string.not_available),
@@ -3187,14 +3273,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                         R.drawable.round
                                     )
                                 } else {
-                                    AppUtils.showDialogAlertDismiss(
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         "Network Error",
                                         getString(R.string.no_internet),
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }*/
+                                }
                             }
 
                         7 ->                             // Attendance
@@ -3236,8 +3322,8 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                /*if (AppUtils.isNetworkConnected(mContext)) {
-                                    AppUtils.showDialogAlertDismiss(
+                                if (AppUtils().isNetworkConnected(mContext)) {
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
                                         getString(R.string.not_available),
@@ -3245,14 +3331,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                         R.drawable.round
                                     )
                                 } else {
-                                    AppUtils.showDialogAlertDismiss(
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         "Network Error",
                                         getString(R.string.no_internet),
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }*/
+                                }
                             }
 
                         8 ->                             // Absence
@@ -3298,8 +3384,8 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     replaceFragmentsSelected(position)
                                 }
                             } else {
-                                /* if (AppUtils.isNetworkConnected(mContext)) {
-                                    AppUtils.showDialogAlertDismiss(
+                                 if (AppUtils().isNetworkConnected(mContext)) {
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         getString(R.string.alert_heading),
                                         getString(R.string.not_available),
@@ -3307,14 +3393,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                         R.drawable.round
                                     )
                                 } else {
-                                    AppUtils.showDialogAlertDismiss(
+                                    AppUtils().showDialogAlertDismiss(
                                         mContext as Activity,
                                         "Network Error",
                                         getString(R.string.no_internet),
                                         R.drawable.nonetworkicon,
                                         R.drawable.roundred
                                     )
-                                }*/
+                                }
                             }
 
                         9 -> if (PreferenceManager().getHomeListType(mContext)
@@ -3353,8 +3439,8 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                 replaceFragmentsSelected(position)
                             }
                         } else {
-                            /* if (AppUtils.isNetworkConnected(mContext)) {
-                                AppUtils.showDialogAlertDismiss(
+                             if (AppUtils().isNetworkConnected(mContext)) {
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     getString(R.string.alert_heading),
                                     getString(R.string.not_available),
@@ -3362,14 +3448,14 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     R.drawable.round
                                 )
                             } else {
-                                AppUtils.showDialogAlertDismiss(
+                                AppUtils().showDialogAlertDismiss(
                                     mContext as Activity,
                                     "Network Error",
                                     getString(R.string.no_internet),
                                     R.drawable.nonetworkicon,
                                     R.drawable.roundred
                                 )
-                            }*/
+                            }
                         }
 
                         10 -> {
@@ -3471,7 +3557,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                         .javaClass
                         .toString()
                         .equals(
-                            "class com.mobatia.bskl.fragment.settings.SettingsFragment"
+                            "class com.example.bskl_kotlin.fragment.settings.SettingsFragment"
                         ))
                 ) {
                     imageButton2.visibility = View.VISIBLE
@@ -3482,8 +3568,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                         .javaClass
                         .toString()
                         .equals(
-                            "class com.mobatia.bskl.fragment.home.HomeScreenFragment",
-                            ignoreCase = true
+                            "class com.example.bskl_kotlin.fragment.home.HomeScreenFragment"
                         )
                 ) {
 
@@ -3497,24 +3582,24 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                         .javaClass
                         .toString()
                         .equals(
-                            "class com.mobatia.bskl.fragment.contact_us.ContactUsFragment"
+                            "class com.example.bskl_kotlin.fragment.contact_us.ContactUsFragment"
                         )
                             || currentFragment
                         .javaClass
                         .toString()
                         .equals(
-                            "class com.mobatia.bskl.fragment.notification.NotificationFragmentPagination"
+                            "class com.example.bskl_kotlin.fragment.notification.NotificationFragmentPagination"
                         )
                             || currentFragment
                         .javaClass
                         .toString()
                         .equals(
-                            "class com.mobatia.bskl.fragment.calendar.ListViewCalendar"
+                            "class com.example.bskl_kotlin.fragment.calendar.ListViewCalendar"
                         ) || currentFragment
                         .javaClass
                         .toString()
                         .equals(
-                            "class com.mobatia.bskl.fragment.attendance.AttendenceFragment"
+                            "class com.example.bskl_kotlin.fragment.attendance.AttendenceFragment"
                         ))
                 ) {
 //                    imageButton.setImageResource(R.drawable.hamburgerbtn);
@@ -3552,7 +3637,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
             supportActionBar!!.setTitle(R.string.null_value)
         }
     }
-    private fun proceedAfterPermission(position: Int) {
+    /*private fun proceedAfterPermission(position: Int) {
         println("workingPerm1")
         if (!PreferenceManager().getUserId(mContext).equals("")) {
             if (PreferenceManager().getIsVisible(mContext).equals("0")) {
@@ -3677,74 +3762,66 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                             ) {
 
                                 // Attendance
-                                /*  imageButton2.setImageResource(R.drawable.tutorial_icon)
+                                  imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE888")
                                 mFragment = AttendenceFragment(
-                                    HomeActivity.mListItemArray.get(position),
-                                    TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("4")
                             ) {
 
                                 // Attendance
-                                /* imageButton2.setImageResource(R.drawable.tutorial_icon)
+                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE999")
                                 mFragment = AttendenceFragment(
-                                    HomeActivity.mListItemArray.get(position),
-                                    TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("5")
                             ) {
 
                                 // safeGuarding
-                                /* imageButton2.setImageResource(R.drawable.settings)
+                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
                                 mFragment = SafeGuardingFragment(
-                                    HomeActivity.mListItemArray.get(position),
-                                    TAB_SAFE_GUARDING
+
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("6")
                             ) {
                                 // safeGuarding
-                                /*  imageButton2.setImageResource(R.drawable.settings)
+                                  imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
                                 mFragment = SafeGuardingFragment(
-                                    HomeActivity.mListItemArray.get(position),
-                                    TAB_SAFE_GUARDING
+
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("7")
                             ) {
 
                                 // safeGuarding
-                                /* imageButton2.setImageResource(R.drawable.settings)
+                                 imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
                                 mFragment = SafeGuardingFragment(
-                                    HomeActivity.mListItemArray.get(position),
-                                    TAB_SAFE_GUARDING
+
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("8")
                             ) {
 
                                 // SafeGuarding
-                                /*  imageButton2.setImageResource(R.drawable.settings)
+                                  imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
                                 mFragment = SafeGuardingFragment(
-                                    HomeActivity.mListItemArray.get(position),
-                                    TAB_SAFE_GUARDING
+
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else {
                                 // Report Absence
                                 imageButton2.setImageResource(R.drawable.settings)
@@ -3869,27 +3946,23 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                             ) {
 
                                 // Attendance
-                                /*   imageButton2.setImageResource(R.drawable.tutorial_icon)
+                                   imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE101010")
                                 mFragment = AttendenceFragment(
-                                    HomeActivity.mListItemArray.get(position),
-                                    TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("8")
                             ) {
 
                                 // Attendance
-                                /* imageButton2.setImageResource(R.drawable.tutorial_icon)
+                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE121212")
                                 mFragment = AttendenceFragment(
-                                    HomeActivity.mListItemArray.get(position),
-                                    TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("9")
                             ) {
@@ -3935,37 +4008,33 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                             ) {
 
                                 // Attendance
-                                /* imageButton2.setImageResource(R.drawable.tutorial_icon)
+                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE131313")
                                 mFragment = AttendenceFragment(
-                                    HomeActivity.mListItemArray.get(position),
-                                    TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else if (PreferenceManager().getHomeListType(mContext)
                                     .equals("12")
                             ) {
 
                                 // Attendance
                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
-                                /* imageButton2.visibility = View.VISIBLE
-                                Log.e("WORKING HOME LIST", "CASE141414")
+                                imageButton2.setImageResource(R.drawable.tutorial_icon)
+                                imageButton2.visibility = View.VISIBLE
+                                Log.e("WORKING HOME LIST", "CASE151515")
                                 mFragment = AttendenceFragment(
-                                    HomeActivity.mListItemArray.get(position),
-                                    TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else {
 
                                 // SafeGuarding
-                                /*  imageButton2.setImageResource(R.drawable.settings)
+                                  imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
                                 mFragment = SafeGuardingFragment(
-                                    HomeActivity.mListItemArray.get(position),
-                                    TAB_SAFE_GUARDING
+
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             }
 
                         8 ->                             // Attendance
@@ -4150,14 +4219,12 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                                     .equals("15")
                             ) {
                                 //Attendance
-                                /* imageButton2.setImageResource(R.drawable.tutorial_icon)
+                                 imageButton2.setImageResource(R.drawable.tutorial_icon)
                                 imageButton2.visibility = View.VISIBLE
                                 Log.e("WORKING HOME LIST", "CASE151515")
                                 mFragment = AttendenceFragment(
-                                    HomeActivity.mListItemArray.get(position),
-                                    TAB_ATTENDANCE
                                 )
-                                replaceFragmentsSelected(position)*/
+                                replaceFragmentsSelected(position)
                             } else {
                                  imageButton2.setImageResource(R.drawable.settings)
                                 imageButton2.visibility = View.VISIBLE
@@ -4265,13 +4332,13 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
 
                         1 -> {
                             // Calendar
-                            /* imageButton2.setImageResource(R.drawable.tutorial_icon)
+                            *//* imageButton2.setImageResource(R.drawable.tutorial_icon)
                             imageButton2.visibility = View.VISIBLE
                             mFragment = ListViewCalendar(
                                 HomeActivity.mListItemArray.get(position),
                                 TAB_CALENDAR
                             )
-                            replaceFragmentsSelected(position)*/
+                            replaceFragmentsSelected(position)*//*
                         }
 
                         2 -> {
@@ -4296,13 +4363,13 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
 
                         4 -> {
                             // Social media
-                            /* imageButton2.visibility = View.VISIBLE
+                            *//* imageButton2.visibility = View.VISIBLE
                             imageButton2.setImageResource(R.drawable.settings)
                             mFragment = SocialMediaFragment(
                                 HomeActivity.mListItemArray.get(position),
                                 TAB_SOCIAL_MEDIA
                             )
-                            replaceFragmentsSelected(position)*/
+                            replaceFragmentsSelected(position)*//*
                         }
 
                         5 ->                             // Report
@@ -5331,7 +5398,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
             }
         }
 //        replaceFragmentsSelected(position);
-    }
+    }*/
 
     fun onNavigationItemSelected(item: MenuItem): Boolean {
         return false

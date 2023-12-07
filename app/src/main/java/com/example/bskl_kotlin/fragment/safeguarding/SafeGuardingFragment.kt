@@ -1,8 +1,8 @@
-/*
 package com.example.bskl_kotlin.fragment.safeguarding
 
 //import com.example.bskl_kotlin.fragment.safeguarding.adapter.SafeGuardingAdapter
 import ApiClient
+import TypeModel
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
@@ -26,15 +26,18 @@ import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.common.model.CommonResponseModel
 import com.example.bskl_kotlin.fragment.absence.model.StudentModel
 import com.example.bskl_kotlin.fragment.safeguarding.adapter.SafeGuardingAdapter
+import com.example.bskl_kotlin.fragment.safeguarding.model.SafeguardingApiModel
 import com.example.bskl_kotlin.fragment.safeguarding.model.SafeguardingResponseModel
-import com.example.bskl_kotlin.fragment.safeguarding.model.TypeModel
+import com.example.bskl_kotlin.fragment.safeguarding.model.SubmitSafeguardingApiModel
+import com.example.bskl_kotlin.fragment.safeguarding.model.SubmitSafeguardingResponseModel
 import com.example.bskl_kotlin.manager.AppUtils
-import okhttp3.ResponseBody
+import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
 class SafeGuardingFragment:Fragment() {
     lateinit var  mRootView: View
@@ -104,8 +107,10 @@ class SafeGuardingFragment:Fragment() {
     }
 
     fun callSafeGuarding() {
-        val call: Call<SafeguardingResponseModel> = ApiClient.getClient.safeguarding( PreferenceManager().getaccesstoken(mContext).toString(),
-             PreferenceManager().getUserId(mContext).toString())
+        var safemodel=SafeguardingApiModel(PreferenceManager().getUserId(mContext).toString())
+        val call: Call<SafeguardingResponseModel> = ApiClient.getClient.safeguarding(
+            safemodel,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString()
+             )
 
          call.enqueue(object : Callback<SafeguardingResponseModel> {
              override fun onFailure(call: Call<SafeguardingResponseModel>, t: Throwable) {
@@ -124,23 +129,25 @@ class SafeGuardingFragment:Fragment() {
 
                  if (response.body()!!.responsecode.equals("200")) {
                      if (response.body()!!.response.statuscode.equals("303")) {
-                         typeArrayList = ArrayList<TypeModel>()
-                         */
-/*for (t in 0 until typeData.length()) {
+                         typeArrayList = ArrayList()
+/*                         val typeData: ArrayList<TypeModel> = response.body()!!.response.type
+if (typeData.size>0){
+                         for (t in 0 until typeData.size) {
                              Log.e("TYPE", "WORKS")
+                             val typeObject = typeData[t]
                              val tModel = TypeModel()
-                             tModel.setStud_id(typeObject.optString("stud_id"))
-                             tModel.setType(typeObject.optString("type"))
-                             SafeGuardingFragment.typeArrayList.add(tModel)
-                         }*//*
-
+                             tModel.stud_id = typeObject.stud_id
+                             tModel.type = typeObject.type
+                             typeArrayList.add(tModel)
+                         }
+                     }*/
                          mStudentAttendanceList = ArrayList<StudentModel>()
                          mStudentAttendanceListCopy = ArrayList<StudentModel>()
                         for(i in response.body()!!.response.attendance_data.indices)
                         {
                             val mStudentAttendanceModel = StudentModel()
-                            mStudentAttendanceModel.abscenceId=response.body()!!.response.attendance_data.get(i).id
-                            mStudentAttendanceModel.absenceCodeId=response.body()!!.response.attendance_data.get(i).absenceCodeId
+                            mStudentAttendanceModel.abscenceId=response.body()!!.response.attendance_data.get(i).id.toString()
+                            mStudentAttendanceModel.absenceCodeId=response.body()!!.response.attendance_data.get(i).absenceCodeId.toString()
                             mStudentAttendanceModel.isPresent=response.body()!!.response.attendance_data.get(i).isPresent
                             mStudentAttendanceModel.date=response.body()!!.response.attendance_data.get(i) .date
 
@@ -151,7 +158,7 @@ class SafeGuardingFragment:Fragment() {
                             mStudentAttendanceModel.mSection=response.body()!!.response.attendance_data.get(i).form
                             mStudentAttendanceModel.mId=response.body()!!.response.attendance_data.get(i).stud_id
                             mStudentAttendanceModel.mPhoto=response.body()!!.response.attendance_data.get(i).photo
-                            mStudentAttendanceModel.alumi=("0")
+                            mStudentAttendanceModel.alumini=("0")
                             mStudentAttendanceModel.status=response.body()!!.response.attendance_data.get(i).status
                             mStudentAttendanceModel.parent_id=response.body()!!.response.attendance_data.get(i).parent_id
                             mStudentAttendanceModel.parent_name=response.body()!!.response.attendance_data.get(i).parent_name
@@ -162,16 +169,14 @@ class SafeGuardingFragment:Fragment() {
                             if (typeArrayList.size > 0) {
                                 for (l in typeArrayList.indices) {
                                     if (response.body()!!.response.attendance_data.get(i).stud_id.equals(
-                                            typeArrayList.get(l).stud_id,
-                                            ignoreCase = true
+                                            typeArrayList.get(l).stud_id
                                         )
                                     ) {
                                         mStudentAttendanceModel.type=(typeArrayList.get(l).type)
-                                        */
-/*Log.e(
+Log.e(
                                             "TYPE",
-                                            typeArrayList.get(l).type
-                                        )*//*
+    typeArrayList.get(l).type.toString()
+                                        )
 
                                     }
                                 }
@@ -185,7 +190,7 @@ class SafeGuardingFragment:Fragment() {
 
 
                             if (response.body()!!.response.attendance_data.get(i).isPresent.equals("0", ignoreCase = true)) {
-                                val absenceCodedId: String = response.body()!!.response.attendance_data.get(i).absenceCodeId!!
+                                val absenceCodedId: String = response.body()!!.response.attendance_data.get(i).absenceCodeId.toString()!!
                                 var code = ""
 
                                 for (j in response.body()!!.response.codes.indices) {
@@ -320,7 +325,7 @@ class SafeGuardingFragment:Fragment() {
 
          })
     }
-     fun reset() {
+  /*   fun reset() {
          val call: Call<CommonResponseModel> = ApiClient.getClient.reset( PreferenceManager().getaccesstoken(mContext).toString(),
               PreferenceManager().getUserId(mContext).toString())
 
@@ -364,7 +369,7 @@ class SafeGuardingFragment:Fragment() {
               }
 
           })
-    }
+    }*/
     private fun initialiseUI() {
 
         currentDateTextView = mRootView!!.findViewById(R.id.currentDateTextView)
@@ -393,18 +398,20 @@ class SafeGuardingFragment:Fragment() {
 
   fun  submitAbsence( attendance_id:String,  student_id:String,   status:String,   details:String)
   {
-      val call: Call<CommonResponseModel> = ApiClient.getClient.submitsafedaurding( PreferenceManager().getaccesstoken(mContext).toString(),
-          PreferenceManager().getUserId(mContext).toString(),student_id,attendance_id,status,details)
+      var submitsafe=SubmitSafeguardingApiModel(PreferenceManager().getUserId(mContext).toString(),student_id,attendance_id,status,details)
+      val call: Call<SubmitSafeguardingResponseModel> = ApiClient.getClient.submitsafeguarding(
+          submitsafe,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString(),
+          )
 
-      call.enqueue(object : Callback<CommonResponseModel> {
-          override fun onFailure(call: Call<CommonResponseModel>, t: Throwable) {
+      call.enqueue(object : Callback<SubmitSafeguardingResponseModel> {
+          override fun onFailure(call: Call<SubmitSafeguardingResponseModel>, t: Throwable) {
               Log.e("Failed", t.localizedMessage)
 
           }
 
           override fun onResponse(
-              call: Call<CommonResponseModel>,
-              response: Response<CommonResponseModel>
+              call: Call<SubmitSafeguardingResponseModel>,
+              response: Response<SubmitSafeguardingResponseModel>
           ) {
 
               val responsedata = response.body()
@@ -449,7 +456,7 @@ class SafeGuardingFragment:Fragment() {
     //
     //            final VolleyWrapper manager = new VolleyWrapper(URL_POST_SUBMIT_SAFE_GUARDING);
     //            String[] name = {JTAG_ACCESSTOKEN, JTAG_USER_IDS, "attendance_id", "status", "details"};
-    //            String[] value = {PreferenceManager.getAccessToken(mContext), PreferenceManager.getUserId(mContext), attendance_id, status, details};
+    //            String[] value = {PreferenceManager().getAccessToken(mContext), PreferenceManager().getUserId(mContext), attendance_id, status, details};
     //            manager.getResponsePOST(mContext, 11, name, value, new VolleyWrapper.ResponseListener() {
     //
     //                @Override
@@ -538,4 +545,4 @@ class SafeGuardingFragment:Fragment() {
         dialog.show()
     }
 
-}*/
+}

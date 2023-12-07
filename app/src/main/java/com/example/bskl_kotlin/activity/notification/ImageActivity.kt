@@ -5,11 +5,15 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
 import android.webkit.WebChromeClient
+import android.webkit.WebResourceError
+import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -17,6 +21,7 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -27,9 +32,12 @@ import com.example.bskl_kotlin.fragment.messages.model.PushNotificationModel
 import com.example.bskl_kotlin.manager.AppController
 import com.example.bskl_kotlin.manager.AppUtils
 import com.example.bskl_kotlin.R
+import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.fragment.news.NewsFragment
 
 class ImageActivity:AppCompatActivity() {
    lateinit var mContext: Context
+   lateinit var activity:Activity
 
     lateinit var mWebView: WebView
     lateinit var mProgressRelLayout: RelativeLayout
@@ -41,7 +49,7 @@ class ImageActivity:AppCompatActivity() {
     var anim: RotateAnimation? = null
 
     var extras: Bundle? = null
-    lateinit var relativeHeader: RelativeLayout
+     var relativeHeader: RelativeLayout?=null
    // var headermanager: HeaderManager? = null
    lateinit var back: ImageView
     lateinit var home: ImageView
@@ -52,31 +60,38 @@ class ImageActivity:AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.comingup_detailweb_view_layout)
-        AppController().isfromUnread = false
-        AppController().isfromUnreadSingle = false
+        mContext = this
+        activity=this
+        PreferenceManager().setIsfromUnread(mContext,false)
+        PreferenceManager().setIsfromUnreadSingle(mContext,false)
+        /*AppController().isfromUnread = false
+        AppController().isfromUnreadSingle = false*/
 
         mContext = this
+        activity=this
         extras = intent.extras
         if (extras != null) {
             mLoadUrl = extras!!.getString("webViewComingDetail")!!
             title = extras!!.getString("title")!!
             position = extras!!.getInt("position")
-            AppController().isfromUnread = extras!!.getBoolean("isfromUnread")
-            AppController().isfromUnreadSingle = extras!!.getBoolean("isfromUnreadSingle")
-            AppController().isfromRead = extras!!.getBoolean("isfromRead")
-            alertlist = extras!!.getSerializable("PASSING_ARRAY") as ArrayList<PushNotificationModel>
+            PreferenceManager().setIsfromUnread(mContext,extras!!.getBoolean("isfromUnread"))
+            PreferenceManager().setIsfromUnreadSingle(mContext,extras!!.getBoolean("isfromUnreadSingle"))
+            PreferenceManager().setisfromRead(mContext,extras!!.getBoolean("isfromRead"))
+           // alertlist = extras!!.getSerializable("PASSING_ARRAY") as ArrayList<PushNotificationModel>
         }
-        Toast.makeText(mContext, "login", Toast.LENGTH_SHORT).show()
+        alertlist=PreferenceManager().getUnreadList(mContext)
+
         init()
+        Log.e("loadurl",mLoadUrl)
         getWebViewSettings()
     }
     private fun init(){
-        if (AppController().isfromUnread) {
-            for (i in 0 until AppController().mMessageUnreadList.size) {
-                if (AppController().mMessageUnreadList.get(position).pushid
-                        .equals(AppController().mMessageUnreadList.get(i).pushid)
+        if (PreferenceManager().getisfromUnread(mContext)==true){
+            for (i in 0 until PreferenceManager().getUnreadList(mContext).size) {
+                if (PreferenceManager().getUnreadList(mContext).get(position).pushid
+                        .equals(PreferenceManager().getUnreadList(mContext).get(i).pushid)
                 ) {
-                    AppController().mMessageUnreadList.removeAt(i)
+                    PreferenceManager().getUnreadList(mContext).removeAt(i)
                 }
             }
         }
@@ -116,11 +131,13 @@ class ImageActivity:AppCompatActivity() {
         studentRecycleUnread.adapter = mStudentRecyclerAdapter
         if (alertlist[position].student_name.equals("")) {
             studentRecycleUnread.visibility = View.GONE
+
         }
 
     }
 
     private fun getWebViewSettings(){
+        Log.e("web","webfunct")
         mProgressRelLayout.visibility = View.GONE
         anim = RotateAnimation(
             0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f,
@@ -163,14 +180,37 @@ class ImageActivity:AppCompatActivity() {
         //mWebView.settings.setAppCacheEnabled(true)
         mWebView.settings.javaScriptEnabled = true
         mWebView.settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+        val userAgent =
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+        mWebView.getSettings().setUserAgentString(userAgent)
+        mWebView.webViewClient = MyWebViewClient(activity)
+        if (mLoadUrl.startsWith("http:") || mLoadUrl.startsWith("https:") || mLoadUrl.startsWith("www.")) {
+            Log.e("web","http")
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mLoadUrl))
+            startActivity(intent)
+            true
+        } else {
+            Log.e("web","no http")
+            mWebView.loadDataWithBaseURL(
+                "file:///android_asset/fonts/",
+                mLoadUrl,
+                "text/html; charset=utf-8",
+                "utf-8",
+                "about:blank"
+            )
+            true
+        }
+        mWebView.loadUrl(mLoadUrl!!)
 
-        mWebView.webViewClient = object : WebViewClient() {
+      /*  mWebView.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
                 return if (url.startsWith("http:") || url.startsWith("https:") || url.startsWith("www.")) {
+                    Log.e("web","http")
                     val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
                     startActivity(intent)
                     true
                 } else {
+                    Log.e("web","no http")
                     view.loadDataWithBaseURL(
                         "file:///android_asset/fonts/",
                         mLoadUrl,
@@ -183,6 +223,7 @@ class ImageActivity:AppCompatActivity() {
             }
 
             override fun onPageFinished(view: WebView, url: String) {
+                Log.e("webpage","finish")
                 mProgressRelLayout.clearAnimation()
                 mProgressRelLayout.visibility = View.GONE
                 if (AppUtils().checkInternet(mContext) && loadingFlag) {
@@ -213,17 +254,18 @@ class ImageActivity:AppCompatActivity() {
                 super.onPageStarted(view, url, favicon)
             }
 
-            /*
+            *//*
                  * (non-Javadoc)
                  *
                  * @see
                  * android.webkit.WebViewClient#onReceivedError(android.webkit.WebView
                  * , int, java.lang.String, java.lang.String)
-                 */
+                 *//*
             override fun onReceivedError(
                 view: WebView, errorCode: Int,
                 description: String, failingUrl: String
             ) {
+                Log.e("webpage","error")
                 mProgressRelLayout.clearAnimation()
                 mProgressRelLayout.visibility = View.GONE
                 if (AppUtils().checkInternet(mContext)) {
@@ -235,7 +277,11 @@ class ImageActivity:AppCompatActivity() {
                 }
                 super.onReceivedError(view, errorCode, description, failingUrl)
             }
-        }
+        }*/
+        mWebView.settings.cacheMode = WebSettings.LOAD_CACHE_ELSE_NETWORK
+        var userAgentt =
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3"
+        mWebView.getSettings().setUserAgentString(userAgentt)
         mErrorFlag = mLoadUrl == ""
         if (mLoadUrl != null && !mErrorFlag) {
             println("NAS load url $mLoadUrl")
@@ -258,8 +304,31 @@ class ImageActivity:AppCompatActivity() {
 
     }
     override fun onBackPressed() {
-        AppController().pushId = alertlist[position].pushid
+        PreferenceManager().setpushId(mContext,alertlist[position].pushid)
+        //AppController().pushId = alertlist[position].pushid
         finish()
+    }
+    class MyWebViewClient internal constructor(private val activity: Activity) : WebViewClient() {
+
+        @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+            val url: String = request?.url.toString()
+            view?.loadUrl(url)
+           // progressbar.visibility= View.GONE
+            return true
+        }
+
+        override fun shouldOverrideUrlLoading(webView: WebView, url: String): Boolean {
+            webView.loadUrl(url)
+           // progressbar.visibility= View.GONE
+            return true
+        }
+
+        override fun onReceivedError(view: WebView, request: WebResourceRequest, error: WebResourceError) {
+            //progressbar.visibility= View.GONE
+            Log.e("ERROR",error.toString())
+            //Toast.makeText(activity, "Got Error! $error", Toast.LENGTH_SHORT).show()
+        }
     }
 
 }

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/seperator"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/split_bg" />
+
+    <RelativeLayout
+        android:id="@+id/relSub"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp">
+
+
+        <com.github.siyamed.shapeimageview.CircularImageView
+            android:id="@+id/iconImg"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/boy"
+            app:siBorderColor="#A0DAE5"
+            app:siBorderWidth="1dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_toLeftOf="@+id/arrowImg"
+            android:layout_toRightOf="@+id/iconImg">
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                android:id="@+id/studentName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:singleLine="true"
+                android:text="Student 1"
+                android:textColor="@color/black" />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                android:id="@+id/studentAlumini"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/studentName"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="5dp"
+                android:singleLine="true"
+                android:textColor="@color/cleargreyColor" />
+
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/arrowImg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/arrow" />
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/seperatorBottom"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/relSub"
+        android:background="@color/split_bg" />
+
+</RelativeLayout>

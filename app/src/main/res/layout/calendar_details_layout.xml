@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white">
+    <!--    <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true">-->
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp">
+            <ImageView
+                android:id="@+id/textImg"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:src="@drawable/message"/>
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/msgTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_toRightOf="@+id/textImg"
+                android:layout_toLeftOf="@+id/add_cl"
+                android:text="fjdhfjdfhdjfhdjfhdkfjd"/>
+            <ImageView
+                android:id="@+id/add_cl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:src="@drawable/add_calendar"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="30dp"/>
+
+        </RelativeLayout>
+        <!-- <RelativeLayout
+             android:id="@+id/relSub"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+              android:layout_marginLeft="5dp">
+
+             <ImageView
+                 android:layout_width="25dp"
+                 android:layout_height="25dp"
+                 android:src="@drawable/student"
+                 android:id="@+id/imagicon"
+                 android:layout_centerHorizontal="true"
+                 android:layout_alignParentLeft="true"
+                 />
+
+
+
+             <com.mobatia.bskl.manager.TextViewFontSansProRegularColorBlack
+                 android:id="@+id/studName"
+                 style="@style/textstyleblack"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginRight="5dp"
+                 android:layout_marginLeft="5dp"
+                 android:text="Arjun js"
+                 android:textColor="@color/grey"
+                 android:gravity="center_vertical"
+                 android:layout_centerInParent="true"
+                 android:layout_toRightOf="@+id/imagicon"
+                 android:singleLine="true" />
+
+
+         </RelativeLayout>-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/studentRecycle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"                />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:layout_marginRight="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_height="match_parent">
+            <WebView
+                android:id="@+id/webView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="false"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:focusableInTouchMode="false"
+                android:overScrollMode="never"
+                android:scrollbars="none" />
+            <include
+                android:id="@+id/progressDialog"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                layout="@layout/custom_progress_layout"
+                android:visibility="visible" />
+            <com.example.bskl_kotlin.manager.SmartTextView
+                android:id="@+id/txt"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="10dp"
+                app:justified="true"
+                android:visibility="gone"
+                android:layout_marginRight="8dp"
+                android:layout_marginLeft="8dp"
+                android:textSize="16sp" />
+
+            <com.example.bskl_kotlin.manager.SmartTextView
+                android:id="@+id/mDateTv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="14sp"
+                android:paddingTop="10dp"
+                android:visibility="gone"
+
+                app:justified="true"
+                android:textColor="@color/logout_user"
+                android:gravity="center|right"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="5dp"
+                />
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                android:id="@+id/mTimeTv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:textSize="14sp"
+                android:paddingTop="10dp"
+                android:visibility="gone"
+
+                android:textColor="@color/logout_user"
+                android:gravity="center|right"
+                android:layout_marginRight="10dp"
+                />
+        </LinearLayout>
+    </LinearLayout>
+    <!--
+        </ScrollView>
+    -->
+</RelativeLayout>

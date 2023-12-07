@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/tools"
+    android:padding="5dp"
+    android:layout_gravity="top"
+    android:gravity="top"
+    app:ignore="NamespaceTypo">
+
+
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentTop="true"
+    android:orientation="horizontal">
+        <com.example.bskl_kotlin.activity.calender.utils.CustomCalendarViewLibrary
+                android:id="@+id/calendar_view_second"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+            android:layout_gravity="top"
+            android:gravity="top"
+                android:background="@color/white"
+                app:calendarBackgroundColor="@color/white"
+            app:calendarBackgroundColorHoliday="@color/calendarbg"
+            app:calendarTitleTextColor="@color/black"
+                app:currentDayOfMonthColor="@color/black"
+                app:dayOfMonthTextColor="@color/black"
+                app:dayOfWeekTextColor="@color/black"
+                app:disabledDayBackgroundColor="@color/white"
+                app:disabledDayTextColor="@color/grey"
+                app:selectedDayBackgroundColor="@color/white"
+                app:titleLayoutBackgroundColor="@color/white"
+                app:weekLayoutBackgroundColor="@color/white"/>
+</LinearLayout>
+
+</RelativeLayout>

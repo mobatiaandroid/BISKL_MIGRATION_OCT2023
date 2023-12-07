@@ -27,13 +27,17 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.common.model.StudentListApiModel
 import com.example.bskl_kotlin.common.model.StudentListModel
 import com.example.bskl_kotlin.common.model.StudentListResponseModel
 import com.example.bskl_kotlin.constants.OnItemClickListener
 import com.example.bskl_kotlin.constants.addOnItemClickListener
 import com.example.bskl_kotlin.fragment.absence.adapter.StudentSpinnerAdapter
+import com.example.bskl_kotlin.fragment.reports.adapter.ReportsRecyclerAdapter
+import com.example.bskl_kotlin.fragment.reports.model.ReportsApiModel
 import com.example.bskl_kotlin.fragment.reports.model.ReportsDataModel
 import com.example.bskl_kotlin.fragment.reports.model.ReportsModel
+import com.example.bskl_kotlin.fragment.reports.model.StudentInfoModel
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -117,9 +121,11 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
 
     fun getStudentsListAPI() {
         studentsModelArrayList = ArrayList()
+        var studlist=
+            StudentListApiModel( PreferenceManager().getUserId(com.example.bskl_kotlin.fragment.home.mContext).toString())
+
         val call: Call<StudentListResponseModel> = ApiClient.getClient.student_list(
-            PreferenceManager().getaccesstoken(mContext).toString(),
-            PreferenceManager().getUserId(mContext).toString()
+            studlist,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString()
         )
 
         call.enqueue(object : Callback<StudentListResponseModel> {
@@ -321,10 +327,10 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
                 alumini=mStudentList[position].alumi.toString()
                 textViewYear.setText("Class : " + mStudentList.get(position).mClass)
 
-               /* PreferenceManager.setStudentID(mContext, studentId)
-                PreferenceManager.setStudentName(mContext, studentName)
-                PreferenceManager.setStudentPhoto(mContext, studentImg)
-                PreferenceManager.setStudentClass(mContext, studentClass)*/
+               /* PreferenceManager().setStudentID(mContext, studentId)
+                PreferenceManager().setStudentName(mContext, studentName)
+                PreferenceManager().setStudentPhoto(mContext, studentImg)
+                PreferenceManager().setStudentClass(mContext, studentClass)*/
 
                 if (!stud_img.equals("")) {
                     Glide.with(mContext) //1
@@ -378,8 +384,9 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
     private fun reportlistApi(){
 
         reportslist=ArrayList()
+        var reportmodel=ReportsApiModel(stud_id)
         val call: Call<ReportsModel> = ApiClient.getClient.progress_report(
-            PreferenceManager().getaccesstoken(mContext).toString(),stud_id)
+            reportmodel,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString())
 
         call.enqueue(object : Callback<ReportsModel> {
             override fun onFailure(call: Call<ReportsModel>, t: Throwable) {
@@ -392,22 +399,65 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
                 response: Response<ReportsModel>
             ) {
 
+//                    studentsModelArrayList = new ArrayList<>();//wrong
+                val mStudentModel = ArrayList<StudentInfoModel>()
                 val responsedata = response.body()
                 if (responsedata!!.responsecode.equals("200")){
                     if (responsedata!!.response.statuscode.equals("303")){
 
-                        reportslist=responsedata!!.response.responseArray
-                        if (reportslist.size>0){
+                        val data: ArrayList<StudentInfoModel> = responsedata!!.response.responseArray
+
+                        if (data.size > 0) {
                             noDataRelative.visibility = View.GONE
                             mRecycleView.visibility = View.VISIBLE
-                        }else{
+                            for (i in 0 until data.size) {
+                                val dataObject = data[i]
+                                val model = StudentInfoModel(dataObject.acyear,dataObject.mDataModel)
+                                val mDatamodel: ArrayList<ReportsDataModel> =
+                                    ArrayList<ReportsDataModel>()
+                                val list: ArrayList<ReportsDataModel> = dataObject.mDataModel
+                                if (list.size > 0) {
+
+                                    for (x in 0 until list.size) {
+                                        val listObject = list[x]
+                                        val xmodel=ReportsDataModel(listObject.id,listObject.reporting_cycle,listObject.academic_year,
+                                            listObject.class_id,listObject.email_sent_date,listObject.updated_on,listObject.reportcycleid,
+                                            listObject.file,listObject.school_code_id,listObject.stud_id,listObject.isams_id)
+                                        mDatamodel.add(xmodel)
+                                      /*  val xmodel = ReportsDataModel("",listObject.academic_year,listObject.class_id,
+                                            listObject.reporting_cycle,listObject.file,listObject.stud_id,listObject.created_on,listObject.updated_on)
+                                        mDatamodel.add(xmodel)*/
+                                    }
+                                  /*  Log.e("size reports",mStudentModel.size.toString())
+                                    val llm = LinearLayoutManager(mContext)
+
+                                    mRecycleView.layoutManager = llm
+                                    mRecycleView.visibility = View.VISIBLE
+                                    val mRecyclerViewMainAdapter =
+                                        ReportsRecyclerAdapter(mContext, mStudentModel)
+                                    mRecycleView.adapter = mRecyclerViewMainAdapter*/
+                                }
+
+                               model.mDataModel=mDatamodel
+
+                                mStudentModel.add(model)
+                                Log.e("size reports",mStudentModel.size.toString())
+                                val llm = LinearLayoutManager(mContext)
+
+                                mRecycleView.layoutManager = llm
+                                mRecycleView.visibility = View.VISIBLE
+                                val mRecyclerViewMainAdapter =
+                                    ReportsRecyclerAdapter(mContext, mStudentModel)
+                                mRecycleView.adapter = mRecyclerViewMainAdapter
+                            }
+                        } else {
                             mRecycleView.visibility = View.GONE
                             noDataRelative.visibility = View.VISIBLE
-
                             alertTxtRelative.visibility = View.VISIBLE
                             alertText.visibility = View.VISIBLE
                             noDataImg.visibility = View.VISIBLE
                             noDataTxt.text = "Currently you have no reports"
+//                                Toast.makeText(getActivity(), "No progress reports available.", Toast.LENGTH_SHORT).show();
                         }
 
 

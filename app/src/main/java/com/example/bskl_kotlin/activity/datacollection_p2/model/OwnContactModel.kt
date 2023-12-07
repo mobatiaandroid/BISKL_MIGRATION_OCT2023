@@ -1,9 +1,33 @@
 package com.example.bskl_kotlin.activity.datacollection_p2.model
 
-import com.google.gson.annotations.SerializedName
-
 class OwnContactModel(
-    @SerializedName("id")var id:String,
+    var id: String? = null,
+    var user_id: String? = null,
+    var title: String? = null,
+    var name: String? = null,
+    var last_name: String? = null,
+    var relationship: String? = null,
+    var email: String? = null,
+    var phone: String? = null,
+    var code: String? = null,
+    var user_mobile: String? = null,
+    var student_id: String? = null,
+    var address1: String? = null,
+    var address2: String? = null,
+    var address3: String? = null,
+    var town: String? = null,
+    var state: String? = null,
+    var country: String? = null,
+    var pincode: String? = null,
+    var status: String? = null,
+    var created_at: String? = null,
+    var updated_at: String? = null,
+    var correspondencemailmerge: String? = null,
+    var reportmailmerge: String? = null,
+    var justcontact: String? = null,
+    var isUpdated: Boolean = false,
+    var isConfirmed: Boolean = false
+   /* @SerializedName("id")var id:String,
     @SerializedName("user_id")var user_id:String,
     @SerializedName("title")var title:String,
     @SerializedName("name")var name:String,
@@ -29,7 +53,7 @@ class OwnContactModel(
     @SerializedName("created_at")var created_at:String,
     @SerializedName("updated_at")var updated_at:String,
     @SerializedName("isUpdated")var isUpdated:Boolean,
-    @SerializedName("isConfirmed")var isConfirmed:Boolean
+    @SerializedName("isConfirmed")var isConfirmed:Boolean*/
 
 
 )

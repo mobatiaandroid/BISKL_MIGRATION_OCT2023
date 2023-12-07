@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rounded_rec_blue">
+
+        <com.example.bskl_kotlin.manager.TextViewFontSansProBoldColorSplit
+            android:id="@+id/textViewTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="12dp"
+            android:layout_marginEnd="12dp"
+            android:gravity="center"
+            android:text="STUDENT RUNNING LATE"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorWhite
+            android:id="@+id/textViewStudentName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:gravity="center"
+            android:text="What time they are expected to arrive"
+            app:layout_constraintEnd_toEndOf="@+id/textViewTitle"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitle"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTitle"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+            android:id="@+id/textViewTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:paddingLeft="5dp"
+            android:paddingTop="1dp"
+            android:paddingBottom="1dp"
+            android:drawablePadding="5dp"
+            android:background="@drawable/rounded_rec_calendars_white"
+            android:drawableRight="@drawable/ccp_down_arrow"
+            android:gravity="center"
+            android:hint="Select Time"
+            android:textColorHint="@color/cleargreyColor"
+            app:layout_constraintEnd_toEndOf="@+id/textViewTitle"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitle"
+            app:layout_constraintTop_toBottomOf="@+id/textViewStudentName"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.example.bskl_kotlin.manager.EditTextFontSansProRegular
+            android:id="@+id/textViewComments"
+            android:layout_width="0dp"
+            android:layout_height="100dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded__curve_rec"
+            android:gravity="top|left"
+            android:hint="Comments"
+            android:minLines="4"
+            android:textColor="@color/black"
+            android:textColorHint="@color/cleargreyColor"
+            app:layout_constraintEnd_toEndOf="@+id/textViewTitle"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="@+id/textViewTitle"
+            app:layout_constraintTop_toBottomOf="@+id/textViewTime"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <com.example.bskl_kotlin.manager.ButtonFontSansProRegular
+            android:id="@+id/btnSubmit"
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:layout_marginBottom="12dp"
+            android:background="@drawable/buttonsubmit_new"
+            android:gravity="center"
+            android:text="Submit"
+            android:textColor="@color/black"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@+id/textViewComments"
+            app:layout_constraintStart_toStartOf="@+id/textViewComments"
+            app:layout_constraintTop_toBottomOf="@+id/textViewComments" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
+

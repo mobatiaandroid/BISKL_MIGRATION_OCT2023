@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <LinearLayout
+            android:id="@+id/namelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="top"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/nameTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:text="Name"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProBold
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:layout_weight="5"
+                android:textSize="14sp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/black"
+                />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/nameValueTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="55"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/emaillayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="top"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/emailTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:text="Email"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProBold
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:layout_weight="5"
+                android:textSize="14sp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/black"
+                />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/emailValueTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="55"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/phonelayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:gravity="top"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal"
+            android:weightSum="100">
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/phoneTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="40"
+                android:text="Mobile Number"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProBold
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=":"
+                android:layout_weight="5"
+                android:textSize="14sp"
+                android:gravity="center_horizontal"
+                android:textColor="@color/black"
+                />
+
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegularColorBlack
+                android:id="@+id/phoneValueTextView"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="55"
+                android:textColor="@color/black"
+                android:textSize="14sp" />
+        </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/light_grey" />
+    </LinearLayout>
+</RelativeLayout>

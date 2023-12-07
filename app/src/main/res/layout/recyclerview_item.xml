@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gL_1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.01" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gL_2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.15" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gL_3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.29" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gL_4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.43" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gL_5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.57" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gL_6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.71" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gL_7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.85" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/gL_8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.99" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/titleLabel"
+        android:layout_width="0dp"
+        android:layout_height="24dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="@color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/titleLine2"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:background="@drawable/line_shape"
+        android:gravity="center"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/dayTitle4"
+        app:layout_constraintEnd_toEndOf="@+id/dayTitle_7"
+        app:layout_constraintStart_toStartOf="@+id/dayTitle_1"
+        app:layout_constraintTop_toTopOf="@+id/dayTitle4"
+        app:layout_constraintVertical_bias="0.6" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_1"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/dayTitle_1"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:maxLength="3"
+        android:text="Sun"
+        android:textColor="@color/black"
+        android:textSize="6sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_2"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_1"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_2"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_3"
+        app:layout_constraintStart_toStartOf="@+id/gL_2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/datTitle_2"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="Mon"
+        android:textColor="@color/black"
+        android:textSize="6sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_3"
+        app:layout_constraintStart_toStartOf="@+id/gL_2"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_3"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_4"
+        app:layout_constraintStart_toStartOf="@+id/gL_3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/dayTitle_3"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:maxLength="3"
+        android:text="Tue"
+        android:textColor="@color/black"
+        android:textSize="6sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_4"
+        app:layout_constraintStart_toStartOf="@+id/gL_3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_4"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_5"
+        app:layout_constraintStart_toStartOf="@+id/gL_4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/dayTitle4"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="Wed"
+        android:textColor="@color/black"
+        android:textSize="6sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_5"
+        app:layout_constraintStart_toStartOf="@+id/gL_4"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_5"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_6"
+        app:layout_constraintStart_toStartOf="@+id/gL_5"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/dayTitle5"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:maxLength="3"
+        android:text="Thu"
+        android:textColor="@color/black"
+        android:textSize="6sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_6"
+        app:layout_constraintStart_toStartOf="@+id/gL_5"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_6"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_7"
+        app:layout_constraintStart_toStartOf="@+id/gL_6"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/dayTitle_6"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:maxLength="3"
+        android:text="Fri"
+        android:textColor="@color/black"
+        android:textSize="6sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_7"
+        app:layout_constraintStart_toStartOf="@+id/gL_6"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_7"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="44dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_8"
+        app:layout_constraintStart_toStartOf="@+id/gL_7"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/dayTitle_7"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:maxLength="3"
+        android:text="Sat"
+        android:textColor="@color/black"
+        android:textSize="6sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_8"
+        app:layout_constraintStart_toStartOf="@+id/gL_7"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_8"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_1"
+        app:layout_constraintTop_toBottomOf="@+id/label_1" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_9"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_2"
+        app:layout_constraintTop_toBottomOf="@+id/label_2" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_10"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_3"
+        app:layout_constraintTop_toBottomOf="@+id/label_3" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_11"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_4"
+        app:layout_constraintTop_toBottomOf="@+id/label_4" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_12"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_6"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_5"
+        app:layout_constraintTop_toBottomOf="@+id/label_5" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_13"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_7"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_6"
+        app:layout_constraintTop_toBottomOf="@+id/label_6" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_14"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_8"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_7"
+        app:layout_constraintTop_toBottomOf="@+id/label_7" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_15"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_1"
+        app:layout_constraintTop_toBottomOf="@+id/label_8" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_16"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_2"
+        app:layout_constraintTop_toBottomOf="@+id/label_9" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_17"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_3"
+        app:layout_constraintTop_toBottomOf="@+id/label_10" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_18"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_4"
+        app:layout_constraintTop_toBottomOf="@+id/label_11" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_19"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_6"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_5"
+        app:layout_constraintTop_toBottomOf="@+id/label_12" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_20"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_7"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_6"
+        app:layout_constraintTop_toBottomOf="@+id/label_13" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_21"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_8"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_7"
+        app:layout_constraintTop_toBottomOf="@+id/label_14" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_22"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_1"
+        app:layout_constraintTop_toBottomOf="@+id/label_15" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_23"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_2"
+        app:layout_constraintTop_toBottomOf="@+id/label_16" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_24"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_3"
+        app:layout_constraintTop_toBottomOf="@+id/label_17" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_25"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_4"
+        app:layout_constraintTop_toBottomOf="@+id/label_18" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_26"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_6"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_5"
+        app:layout_constraintTop_toBottomOf="@+id/label_19" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_27"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_7"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_6"
+        app:layout_constraintTop_toBottomOf="@+id/label_20" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_28"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_8"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_7"
+        app:layout_constraintTop_toBottomOf="@+id/label_21" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_29"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_1"
+        app:layout_constraintTop_toBottomOf="@+id/label_22" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_30"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_2"
+        app:layout_constraintTop_toBottomOf="@+id/label_23" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_31"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_3"
+        app:layout_constraintTop_toBottomOf="@+id/label_24" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_32"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_4"
+        app:layout_constraintTop_toBottomOf="@+id/label_25" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_33"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_6"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_5"
+        app:layout_constraintTop_toBottomOf="@+id/label_26" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_34"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_7"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_6"
+        app:layout_constraintTop_toBottomOf="@+id/label_27" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_35"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_8"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_7"
+        app:layout_constraintTop_toBottomOf="@+id/label_28" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_36"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_1"
+        app:layout_constraintTop_toBottomOf="@+id/label_29" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_37"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_2"
+        app:layout_constraintTop_toBottomOf="@+id/label_30" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_38"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_3"
+        app:layout_constraintTop_toBottomOf="@+id/label_31" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_39"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_4"
+        app:layout_constraintTop_toBottomOf="@+id/label_32" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_40"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_6"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_5"
+        app:layout_constraintTop_toBottomOf="@+id/label_33" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_41"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_7"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_6"
+        app:layout_constraintTop_toBottomOf="@+id/label_34" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_42"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_8"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_7"
+        app:layout_constraintTop_toBottomOf="@+id/label_35" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_43"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_2"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_1"
+        app:layout_constraintTop_toBottomOf="@+id/label_36" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_44"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_3"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_2"
+        app:layout_constraintTop_toBottomOf="@+id/label_37" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_45"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_4"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_3"
+        app:layout_constraintTop_toBottomOf="@+id/label_38" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_46"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_5"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_4"
+        app:layout_constraintTop_toBottomOf="@+id/label_39" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_47"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_6"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_5"
+        app:layout_constraintTop_toBottomOf="@+id/label_40" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_48"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_7"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_6"
+        app:layout_constraintTop_toBottomOf="@+id/label_41" />
+
+    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+        android:id="@+id/label_49"
+        android:layout_width="0dp"
+        android:layout_height="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="2dp"
+        android:background="@color/white"
+        android:gravity="center"
+        android:text="0"
+        android:textColor="@color/black"
+        android:textSize="8sp"
+        app:layout_constraintEnd_toStartOf="@+id/gL_8"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/gL_7"
+        app:layout_constraintTop_toBottomOf="@+id/label_42" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/relativeHeader"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        style="@style/NestedScrollBarStyle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <com.github.siyamed.shapeimageview.CircularImageView
+                android:id="@+id/iconImg"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_gravity="center_horizontal"
+                android:src="@drawable/boy"
+                app:siBorderColor="#A0DAE5"
+                app:siBorderWidth="1dp" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/studentDetail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/white"
+                android:clipToPadding="false"
+                android:visibility="invisible"
+                android:overScrollMode="never"
+                android:scrollbars="vertical" />
+            <LinearLayout
+                android:id="@+id/passportDetailLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorBlackNoSize
+                    android:id="@+id/passportHead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Passport"
+                    android:textColor="@color/black"
+                    android:textSize="17dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/split_bg" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/passportDetailRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:clipToPadding="false"
+                    android:visibility="invisible"
+                    android:overScrollMode="never"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/visaPermitDetailLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/namelayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:gravity="top"
+                    android:layout_centerVertical="true"
+                    android:orientation="horizontal"
+                    android:weightSum="100">
+
+                    <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorBlackNoSize                        android:id="@+id/nameTextView"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="40"
+                        android:textColor="@color/black"
+                        android:text="Visa / Permit"
+                        android:textSize="17dp" />
+
+                    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="@string/no_need"
+                        android:layout_weight="60"
+                        android:textSize="12sp"
+                        android:textColor="@color/black"
+                        />
+
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/split_bg" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/visaPermitDetailRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:clipToPadding="false"
+                    android:visibility="invisible"
+                    android:overScrollMode="never"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/otherContactLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorBlackNoSize
+                    android:id="@+id/studentInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Family Contacts"
+                    android:textColor="@color/black"
+                    android:textSize="17dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/split_bg" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/studentRelationship"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/nextOfKinLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorBlackNoSize
+                    android:id="@+id/nextKinInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Next of Kins"
+                    android:textColor="@color/black"
+                    android:textSize="17dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/split_bg" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    android:id="@+id/noNxtOfKin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="@string/no_next_of_kin_data"
+                    android:visibility="gone"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/red"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/nextOfKinRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/localEmergencyLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorBlackNoSize
+                    android:id="@+id/localEmergencyInfo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Emergency Contacts"
+                    android:textColor="@color/black"
+                    android:textSize="17dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/split_bg" />
+
+                <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    android:id="@+id/noLocalEmergency"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/red"
+                    android:text="@string/no_local_emergency"
+                    android:visibility="gone"/>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/localEmergencyRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:clipToPadding="false"
+                    android:overScrollMode="never"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/medicalInsDetailLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorBlackNoSize
+                    android:id="@+id/medicalInsHead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Medical Insurance"
+                    android:textColor="@color/black"
+                    android:textSize="17dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/split_bg" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/medicalInsDetailRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:clipToPadding="false"
+                    android:visibility="invisible"
+                    android:overScrollMode="never"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/personalInsDetailLinear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="invisible"
+                android:layout_marginTop="5dp"
+                android:orientation="vertical">
+
+                <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorBlackNoSize
+                    android:id="@+id/personalInsHead"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Personal Accident Insurance"
+                    android:textColor="@color/black"
+                    android:textSize="17dp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/split_bg" />
+
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/personalInsDetailRecycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/white"
+                    android:clipToPadding="false"
+                    android:visibility="invisible"
+                    android:overScrollMode="never"
+                    android:scrollbars="vertical" />
+            </LinearLayout>
+            <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                android:id="@+id/infoTxt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="@string/student_info"
+                android:gravity="center"
+                android:padding="5dp"
+                android:background="@drawable/settings_student_detail"
+                android:layout_marginTop="20dp"/>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
+</LinearLayout>

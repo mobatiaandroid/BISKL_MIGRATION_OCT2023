@@ -89,6 +89,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
 
         //        ShortcutBadger.with(this).count(badgeCount); //for 1.1.3
         intent = Intent(this, HomeActivity::class.java)
+        Log.e("firehome","firehome")
         intent!!.action = java.lang.Long.toString(System.currentTimeMillis())
         val mIntent = Intent("badgenotify")
         LocalBroadcastManager.getInstance(this).sendBroadcast(mIntent)

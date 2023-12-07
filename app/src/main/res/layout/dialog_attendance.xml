@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:background="@color/white"
+
+    >
+    <RelativeLayout
+        android:id="@+id/topRelative"
+        android:layout_width="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_height="wrap_content">
+        <com.example.bskl_kotlin.manager.TextViewFontDJ5ColorBlackNoSize
+            android:id="@+id/titleTextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="left|center"
+            android:layout_centerVertical="true"
+            android:text="Attendance List"
+            android:layout_toLeftOf="@+id/closeImageView"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/closeImageView"
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/close_calendar"/>
+    </RelativeLayout>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_attendance"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:layout_below="@+id/topRelative"
+        android:layout_margin="10dp"
+        android:scrollbars="vertical" />
+
+</RelativeLayout>
