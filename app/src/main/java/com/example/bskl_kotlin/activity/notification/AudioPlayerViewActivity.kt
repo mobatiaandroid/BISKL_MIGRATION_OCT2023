@@ -88,7 +88,7 @@ class AudioPlayerViewActivity:AppCompatActivity() {
         llm.orientation = LinearLayoutManager.HORIZONTAL
         studentRecycleUnread.layoutManager = llm
         val mStudentRecyclerAdapter =
-            StudentUnReadRecyclerAdapter(mContext, alertlist[position].studentArray)
+            StudentUnReadRecyclerAdapter(mContext, alertlist[position].studentArray!!)
         studentRecycleUnread.adapter = mStudentRecyclerAdapter
         if (alertlist[position].student_name.equals("")) {
             studentRecycleUnread.visibility = View.GONE

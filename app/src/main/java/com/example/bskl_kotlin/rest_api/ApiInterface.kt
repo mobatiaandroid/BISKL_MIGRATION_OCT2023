@@ -354,7 +354,7 @@ interface ApiInterface {
         @Field("user_ids") user_ids: String,
         @Field("status") status: String*/
     ): Call<UserprofileResponseModel>
-    @POST("userprofile")
+    @POST("userprofile_studentdetails")
     fun userprofile_studentdetails(
         @Body userprofile_studentdetails: UserprofileStudentApiModel,
         @Header("Authorization") token:String

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BSKL_KOTLIN</string>
+    <string name="app_name">BSKL</string>
     <string name="search_hint">Search...</string>
     <string name="no_result_found">Results not found</string>
     <string name="select_country">Select a country</string>

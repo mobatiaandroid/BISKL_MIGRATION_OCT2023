@@ -87,6 +87,7 @@ class UserDetailActivity:AppCompatActivity() {
     }
 
     private fun getUserProfileApi() {
+        studentsModelArrayList= ArrayList()
         var usermodel= UserprofileApiModel(
             PreferenceManager().getUserId(context).toString() )
         val call: Call<UserprofileResponseModel> = ApiClient.getClient.userprofile(
@@ -183,7 +184,7 @@ class UserDetailActivity:AppCompatActivity() {
                 context,
                 StudentListActivity::class.java
             )
-            intent.putExtra("studentlist", studentsModelArrayList)
+            intent.putParcelableArrayListExtra("studentlist", studentsModelArrayList)
             startActivity(intent)
         })
 

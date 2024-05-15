@@ -12,7 +12,7 @@ class PushNotificationModel (
     @SerializedName("favourite")var favourite:String,
     @SerializedName("isChecked")var isChecked:Boolean,
     @SerializedName("isMarked")var isMarked:Boolean,
-    @SerializedName("studentArray")var studentArray:ArrayList<String>,
+    @SerializedName("studentArray")var studentArray:ArrayList<String>?,
     @SerializedName("status")var status:String,
     @SerializedName("pushtime")var pushtime:String,
     @SerializedName("date")var date:String,

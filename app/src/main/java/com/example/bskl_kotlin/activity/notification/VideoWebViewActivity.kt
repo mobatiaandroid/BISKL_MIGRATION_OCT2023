@@ -91,7 +91,7 @@ PreferenceManager().setIsfromUnread(mContext,false)
         llm.orientation = LinearLayoutManager.HORIZONTAL
         studentRecycleUnread.layoutManager = llm
         val mStudentRecyclerAdapter =
-            StudentUnReadRecyclerAdapter(mActivity, videolist[position].studentArray)
+            StudentUnReadRecyclerAdapter(mActivity, videolist[position].studentArray!!)
         studentRecycleUnread.adapter = mStudentRecyclerAdapter
         webView.webViewClient = HelloWebViewClient(proWebView!!,textcontent)
         webView.settings.javaScriptEnabled = true

@@ -155,7 +155,7 @@ class HomeActivity:AppCompatActivity(), AdapterView.OnItemLongClickListener,
                 applicationContext,
                 R.anim.fade_out
             )
-
+                Log.e("fromhomesplash","fromhomesplash")
             animSlide.startOffset = 500
             homePageLogoImg.startAnimation(animSlide)
             animSlide.setAnimationListener(object : AnimationListener {

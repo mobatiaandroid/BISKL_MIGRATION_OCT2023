@@ -2,6 +2,7 @@ package com.example.bskl_kotlin.activity.datacollection_p2.model
 
 class StudentModelNew (
     var mId: String? = null,
+    var mIsams_id: String? = null,
     var isConfirmed: Boolean = false,
     var goingStatus: String? = null,
     var mName: String? = null ,

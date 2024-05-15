@@ -20,20 +20,18 @@ import android.webkit.WebViewClient
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.activity.notification.adapter.StudentUnReadRecyclerAdapter
+import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.fragment.messages.model.PushNotificationModel
 import com.example.bskl_kotlin.manager.AppController
 import com.example.bskl_kotlin.manager.AppUtils
-import com.example.bskl_kotlin.R
-import com.example.bskl_kotlin.common.PreferenceManager
-import com.example.bskl_kotlin.fragment.news.NewsFragment
 
 class ImageActivity:AppCompatActivity() {
    lateinit var mContext: Context
@@ -126,8 +124,9 @@ class ImageActivity:AppCompatActivity() {
         val llm = LinearLayoutManager(mContext)
         llm.orientation = LinearLayoutManager.HORIZONTAL
         studentRecycleUnread.layoutManager = llm
+
         val mStudentRecyclerAdapter =
-            StudentUnReadRecyclerAdapter(mContext, alertlist[position].studentArray)
+            StudentUnReadRecyclerAdapter(mContext, alertlist[position].studentArray!!)
         studentRecycleUnread.adapter = mStudentRecyclerAdapter
         if (alertlist[position].student_name.equals("")) {
             studentRecycleUnread.visibility = View.GONE

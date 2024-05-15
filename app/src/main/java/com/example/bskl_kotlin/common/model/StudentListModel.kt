@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 class StudentListModel (
     @SerializedName("id")var id:String,
+    @SerializedName("isams_id")var isamsid:String,
     @SerializedName("name")var name:String,
     @SerializedName("class")var mClass:String,
     @SerializedName("section")var section:String,
@@ -11,5 +12,5 @@ class StudentListModel (
     @SerializedName("photo")var photo:String,
     @SerializedName("progressreport")var progressreport:String,
     @SerializedName("alumi")var alumi:String,
-    @SerializedName("type")var type:String,
+    @SerializedName("type")var type:String
 )

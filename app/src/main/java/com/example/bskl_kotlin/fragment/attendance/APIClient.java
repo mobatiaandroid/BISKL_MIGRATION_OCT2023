@@ -9,7 +9,7 @@ public class APIClient {
 
     private static Retrofit retrofit;
     //    private static final String BASE_URL = "https://beta.mobatia.in:8888/nas-dubai-development/";
-    private static final String BASE_URL = "http://gama.mobatia.in:8080/BISKL2023/public/Api-V1/";
+    private static final String BASE_URL = "http://gama.mobatia.in:8080/bisklv10/public/Api-V1/";
 //    private static final String BASE_URL = "https://cms.nasdubai.ae/nais/";
 //    private static Retrofit retrofit = null;
 

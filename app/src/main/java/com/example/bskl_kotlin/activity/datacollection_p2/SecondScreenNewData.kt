@@ -38,7 +38,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class SecondScreenNewData(studentImage: String, studentId: String, studentName: String) : Fragment() {
+class SecondScreenNewData(var student_Image: String, var studentId: String, var student_Name: String) : Fragment() {
     lateinit var mContext: Context
     val myCalendar = Calendar.getInstance()
     var C_positoin = 0
@@ -82,7 +82,7 @@ class SecondScreenNewData(studentImage: String, studentId: String, studentName: 
     var SecondArray = ArrayList<String>()
     var HaveMedINS = "YES"
     var HavePerINS = "YES"
-    var studentId = ""
+   // var studentId = ""
     var studentImage = ""
     var studentNamePass = ""
     var medInsurancePolicyNo = ""
@@ -143,7 +143,7 @@ class SecondScreenNewData(studentImage: String, studentId: String, studentName: 
         } else {
             studImg.setImageResource(R.drawable.boy)
         }
-        studentName.setText(studentNamePass)
+        studentName.setText(student_Name)
         //    mInsuranceDetailArrayList= PreferenceManager().getInsuranceDetailArrayList(mContext);
         //    mInsuranceDetailArrayList= PreferenceManager().getInsuranceDetailArrayList(mContext);
         CommonClass.mInsuranceDetailArrayList =
@@ -425,6 +425,7 @@ class SecondScreenNewData(studentImage: String, studentId: String, studentName: 
             if (CommonClass.isInsuranceEdited || CommonClass.isPassportEdited) {
                 var studentPos = -1
                 var id = ""
+                var isams_id = ""
                 var studName = ""
                 var studClass = ""
                 var studSection = ""
@@ -440,6 +441,7 @@ class SecondScreenNewData(studentImage: String, studentId: String, studentName: 
                         ) {
                             studentPos = i
                             id = CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                            isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                             studName = CommonClass.mStudentDataArrayList.get(i).mName.toString()
                             studClass = CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                             studSection = CommonClass.mStudentDataArrayList.get(i).mSection.toString()
@@ -453,6 +455,7 @@ class SecondScreenNewData(studentImage: String, studentId: String, studentName: 
                 }
                 val model = StudentModelNew()
                 model.mId=id
+                model.mIsams_id=isams_id
                 model.mName=studName
                 model.mClass=studClass
                 model.mSection=studSection

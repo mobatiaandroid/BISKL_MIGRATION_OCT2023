@@ -27,6 +27,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.CircleCrop
 import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.common.ProgressBarDialog
 import com.example.bskl_kotlin.common.model.StudentListApiModel
 import com.example.bskl_kotlin.common.model.StudentListModel
 import com.example.bskl_kotlin.common.model.StudentListResponseModel
@@ -75,6 +76,7 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
     var type = ""
 
     lateinit var reportslist:ArrayList<ReportsDataModel>
+    var progressBarDialog: ProgressBarDialog? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -99,7 +101,7 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
     }
 
     private fun initUi() {
-
+        progressBarDialog = ProgressBarDialog(mContext)
         alertText = requireView().findViewById<TextView>(R.id.noDataTxt)
         mStudentSpinner = requireView().findViewById<LinearLayout>(R.id.studentSpinner)
         studentName = requireView().findViewById<TextView>(R.id.studentName)
@@ -149,9 +151,6 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
                         if (response.body()!!.response.data.size > 0) {
 
                             studentsModelArrayList.addAll(response.body()!!.response.data)
-                            Log.e("listsize",studentsModelArrayList.size.toString())
-                            Log.e("id","empty")
-                            Log.e("name",studentsModelArrayList[0].name.toString())
                             studentName.setText(studentsModelArrayList[0].name)
                             stud_id = studentsModelArrayList[0].id.toString()
                             stud_name = studentsModelArrayList[0].name.toString()
@@ -382,6 +381,7 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
         dialog.show()
     }
     private fun reportlistApi(){
+        progressBarDialog!!.show()
 
         reportslist=ArrayList()
         var reportmodel=ReportsApiModel(stud_id)
@@ -390,7 +390,7 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
 
         call.enqueue(object : Callback<ReportsModel> {
             override fun onFailure(call: Call<ReportsModel>, t: Throwable) {
-                Log.e("Failed", t.localizedMessage)
+                progressBarDialog!!.dismiss()
 
             }
 
@@ -398,6 +398,7 @@ class ReportFragment(title: String, tabId: String) : Fragment() {
                 call: Call<ReportsModel>,
                 response: Response<ReportsModel>
             ) {
+                progressBarDialog!!.dismiss()
 
 //                    studentsModelArrayList = new ArrayList<>();//wrong
                 val mStudentModel = ArrayList<StudentInfoModel>()

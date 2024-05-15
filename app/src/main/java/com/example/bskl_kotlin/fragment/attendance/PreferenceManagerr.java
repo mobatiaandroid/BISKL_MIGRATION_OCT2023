@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.bskl_kotlin.R;
+import com.example.bskl_kotlin.fragment.calendar.model.CalendarModel;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -2756,6 +2757,23 @@ public class PreferenceManagerr   {
         mSafeGuarding = prefs.getString("safeguarding_group", "0");
         return mSafeGuarding;
     }
+   public static void  setStudentList(ArrayList<CalendarModel> list, Context context){
+        SharedPreferences prefs = context.getSharedPreferences(SHARED_PREF_NAS,
+                Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(list);
+        editor.putString("KinDetails", json);
+        editor.apply();     // This line is IMPORTANT !!!
+    }
 
+    public static ArrayList<CalendarModel> getStudentList(Context context){
+        SharedPreferences prefs = context.getSharedPreferences(SHARED_PREF_NAS,
+                Context.MODE_PRIVATE);
+        Gson gson = new Gson();
+        String json = prefs.getString("KinDetails", null);
+        Type type = new TypeToken<ArrayList<CalendarModel>>() {}.getType();
+        return gson.fromJson(json, type);
+    }
 
 }

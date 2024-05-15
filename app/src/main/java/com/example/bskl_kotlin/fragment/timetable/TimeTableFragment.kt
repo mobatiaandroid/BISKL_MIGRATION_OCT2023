@@ -24,6 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.common.ProgressBarDialog
 import com.example.bskl_kotlin.common.model.StudentListApiModel
 import com.example.bskl_kotlin.common.model.StudentListModel
 import com.example.bskl_kotlin.common.model.StudentListResponseModel
@@ -111,6 +112,7 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
     var TimeTableWeekListAdapter: TimeTableWeekListAdapter? = null
     var dayOfTheWeek: String? = null
     lateinit var tipContainer: ToolTipLayout
+    var progressBarDialog: ProgressBarDialog? = null
 
     //var quickAction: QuickAction? = null
     // var quickIntent: QuickAction? = null
@@ -530,6 +532,8 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
     }
 
     private fun getReportListAPI( i: Int) {
+        progressBarDialog!!.show()
+
         mMondayArrayList= ArrayList()
         mTuesdayArrayList= ArrayList()
         mwednesdayArrayList= ArrayList()
@@ -544,6 +548,8 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
 
         call.enqueue(object : Callback<TimetableResponseModel> {
             override fun onFailure(call: Call<TimetableResponseModel>, t: Throwable) {
+                progressBarDialog!!.dismiss()
+
                 Log.e("Failed", t.localizedMessage)
 
             }
@@ -555,6 +561,7 @@ class TimeTableFragment(title: String, tabId: String):Fragment() {
 
                 val responsedata: String = response.body().toString()
                 try {
+                    progressBarDialog!!.dismiss()
 
                     Log.e("responsedata", responsedata)
                     //val obj: JSONObject = JSONObject("response")
@@ -1361,6 +1368,8 @@ if (i==0){
         primaryArrayList = java.util.ArrayList()
         secondaryArrayList = java.util.ArrayList()
         bothArrayList = java.util.ArrayList()
+        progressBarDialog = ProgressBarDialog(mContext)
+
         alertText = mRootView!!.findViewById(R.id.noDataTxt)
         mStudentSpinner = mRootView!!.findViewById(R.id.studentSpinner)
         studentName = mRootView!!.findViewById(R.id.studentName)

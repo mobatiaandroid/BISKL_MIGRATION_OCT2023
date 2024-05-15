@@ -1,5 +1,4 @@
 package com.example.bskl_kotlin.activity.datacollection_p2
-import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -215,9 +214,7 @@ class FirstScreenNewData : Fragment() {
         } else {
             AppController.kinArrayShow=PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!
             //PreferenceManager().setkinArrayShow("kinshow",mContext,PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!)
-           /* AppController.kinArrayShow =
-                PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!
-            CommonClass.kinArrayPass = PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!*/
+            CommonClass.kinArrayPass = PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!
         }
         Log.e("comm",AppController.kinArrayShow.size.toString())
         if (AppController.kinArrayShow.size > 0) {
@@ -226,7 +223,7 @@ class FirstScreenNewData : Fragment() {
             for (i in 0 until AppController.kinArrayShow.size) {
                 //   System.out.println("A_DATA: "+AppController.kinArrayShow.get(i).name);
             }
-Log.e("kinad",AppController.kinArrayShow.size.toString())
+Log.e("kinad",CommonClass.kinArrayPass.size.toString())
             var llm=LinearLayoutManager(mContext)
             mRecyclerView!!.layoutManager=llm
             familyKinRecyclerAdapter =
@@ -1943,6 +1940,7 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                         model.isNewData=true
                                         model.isConfirmed=true
                                         CommonClass.kinArrayPass.add(model)
+                                        Log.e("sizeArray", CommonClass.kinArrayPass.size.toString())
                                         AppController.kinArrayShow.add(model)
                                         if (PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext) == null) {
                                             PreferenceManager().saveKinDetailsArrayList(
@@ -3732,7 +3730,7 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
             }
 
             override fun afterTextChanged(s: Editable) {
-                Log.e("afterTextChanged: ", "name Chaange")
+                Log.e("afterTextChanged: ", "name Chaangecontact")
                 CommonClass.isKinEdited = true
                 var status = ""
                 var request = ""
@@ -3787,14 +3785,19 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 model.correspondencemailmerge=corresspondence
                 model.justcontact=justcontact
                 model.relationship=contacts
+                Log.e("suucess2","success2")
                 if (AppController.kinArrayShow.get(position).isNewData!! == true) {
                     model.isNewData=true
                 } else {
                     model.isNewData=false
                 }
                 model.isConfirmed=false
+                Log.e("suucess1", CommonClass.kinArrayPass.size.toString())
                 for (j in 0 until CommonClass.kinArrayPass.size) {
+                    Log.e("suucess","success")
                     val dataId: String = CommonClass.kinArrayPass.get(j).id.toString()
+                    Log.e("id1", IDs)
+                    Log.e("dataId", dataId)
                     if (IDs.equals(dataId)) {
                         kinArrayPassPos = j
                     }

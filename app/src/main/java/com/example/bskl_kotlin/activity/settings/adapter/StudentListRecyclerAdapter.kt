@@ -2,6 +2,7 @@ package com.example.bskl_kotlin.activity.settings.adapter
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,8 +31,9 @@ class StudentListRecyclerAdapter (
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
 
-        if (mStudentList[position].alumini.equals("0")) {
+        if (mStudentList[position].alumi.equals("0")) {
             holder.studentAlumini.visibility = View.VISIBLE
+           // Log.e("classselection", mStudentList[position].classAndSection!!)
             holder.studentAlumini.setText(mStudentList[position].classAndSection)
             holder.imgIcon.visibility = View.VISIBLE
             holder.arrowImg.visibility = View.VISIBLE
@@ -42,7 +44,7 @@ class StudentListRecyclerAdapter (
             holder.arrowImg.visibility = View.GONE
         }
 
-        holder.studentName.setText(mStudentList[position].studName)
+        holder.studentName.setText(mStudentList[position].studentname)
         holder.imgIcon.visibility = View.VISIBLE
         // holder.listTxtClass.setText(mStudentList.get(position).getmClass());
         // holder.listTxtClass.setText(mStudentList.get(position).getmClass());
