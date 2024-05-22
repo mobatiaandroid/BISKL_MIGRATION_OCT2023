@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.view.Window
 import android.widget.Button
@@ -67,6 +68,10 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
             studentId = extras!!.getString("studentId")!!
             studentName = extras!!.getString("studentName")!!
             studentImage = extras!!.getString("studentImage")!!
+            Log.e("studentId",studentId)
+            Log.e("studentName",studentName)
+            Log.e("studentImage",studentImage)
+
         }
         pager = findViewById(R.id.viewPager)
         bottomLinear = findViewById(R.id.bottomLinear)
@@ -153,6 +158,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                      println("Insrance empty works passport")
                      var studentPos = -1
                      var id = ""
+                     var isams_id = ""
                      var studName = ""
                      var studClass = ""
                      var studSection = ""
@@ -163,12 +169,14 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                      val studentID: String =CommonClass.mPassportDetailArrayList.get(CommonClass.confirmingPosition).student_id.toString()
                          //CommonClass.mPassportDetailArrayList.get(CommonClass.confirmingPosition)
                              //.student_id.toString()
+                     Log.e("student_id",studentId)
                      if (CommonClass.mStudentDataArrayList.size > 0) {
                          for (i in 0 until CommonClass.mStudentDataArrayList.size) {
                              if (CommonClass.mStudentDataArrayList.get(i).mId.toString()
-                                     .equals(studentID)) {
+                                     .equals(studentId)) {
                                  studentPos = i
                                  id = CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                                 isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                                  studName = CommonClass.mStudentDataArrayList.get(i).mName.toString()
                                  studClass = CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                                  studSection =
@@ -184,6 +192,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                      }
                      val model = StudentModelNew()
                      model.mId=id
+                     model.mIsams_id=isams_id
                      model.mName=studName
                      model.mClass=studClass
                      model.mSection=studSection
@@ -231,6 +240,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
              if (emptyValueCheckInsurance().equals("", ignoreCase = true)) {
                  var studentPos = -1
                  var id = ""
+                 var isams_id =""
                  var studName = ""
                  var studClass = ""
                  var studSection = ""
@@ -247,6 +257,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                                  .equals(studentID)) {
                              studentPos = i
                              id = CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                             isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                              studName = CommonClass.mStudentDataArrayList.get(i).mName.toString()
                              studClass = CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                              studSection = CommonClass.mStudentDataArrayList.get(i).mSection.toString()
@@ -260,6 +271,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                  }
                  val model = StudentModelNew()
                  model.mId=id
+                 model.mIsams_id=isams_id
                  model.mName=studName
                  model.mClass=studClass
                  model.mSection=studSection
@@ -296,6 +308,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
              if (emptyValueCheckPassport().equals("", ignoreCase = true)) {
                  var studentPos = -1
                  var id = ""
+                 var isams_id =""
                  var studName = ""
                  var studClass = ""
                  var studSection = ""
@@ -313,6 +326,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                          ) {
                              studentPos = i
                              id = CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                             isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                              studName = CommonClass.mStudentDataArrayList.get(i).mName.toString()
                              studClass = CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                              studSection = CommonClass.mStudentDataArrayList.get(i).mSection.toString()
@@ -326,6 +340,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                  }
                  val model = StudentModelNew()
                  model.mId=id
+                 model.mIsams_id=isams_id
                  model.mName=studName
                  model.mClass=studClass
                  model.mSection=studSection
@@ -361,6 +376,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
              if (emptyValueCheckInsurance().equals("", ignoreCase = true)) {
                  var studentPos = -1
                  var id = ""
+                 var isams_id =""
                  var studName = ""
                  var studClass = ""
                  var studSection = ""
@@ -377,6 +393,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                                  .equals(studentID)) {
                              studentPos = i
                              id = CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                             isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                              studName = CommonClass.mStudentDataArrayList.get(i).mName.toString()
                              studClass = CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                              studSection = CommonClass.mStudentDataArrayList.get(i).mSection.toString()
@@ -390,6 +407,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                  }
                  val model = StudentModelNew()
                  model.mId=id
+                 model.mIsams_id=isams_id
                  model.mName=studName
                  model.mClass=studClass
                  model.mSection=studSection
@@ -427,6 +445,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                  if (emptyValueCheckPassport().equals("", ignoreCase = true)) {
                      var studentPos = -1
                      var id = ""
+                     var isams_id =""
                      var studName = ""
                      var studClass = ""
                      var studSection = ""
@@ -444,6 +463,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                              ) {
                                  studentPos = i
                                  id = CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                                 isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                                  studName = CommonClass.mStudentDataArrayList.get(i).mName.toString()
                                  studClass = CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                                  studSection =
@@ -459,6 +479,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                      }
                      val model = StudentModelNew()
                      model.mId=id
+                     model.mIsams_id=isams_id
                      model.mName=studName
                      model.mClass=studClass
                      model.mSection=studSection
@@ -502,6 +523,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
              if (emptyValueCheckPassport().equals("", ignoreCase = true)) {
                  var studentPos = -1
                  var id = ""
+                 var isams_id = ""
                  var studName = ""
                  var studClass = ""
                  var studSection = ""
@@ -520,6 +542,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                              studentPos = i
                              id = CommonClass.mStudentDataArrayList.get(i).mId.toString()
                              studName = CommonClass.mStudentDataArrayList.get(i).mName.toString()
+                             isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                              studClass = CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                              studSection = CommonClass.mStudentDataArrayList.get(i).mSection.toString()
                              studHouse = CommonClass.mStudentDataArrayList.get(i).mHouse.toString()
@@ -532,6 +555,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
                  }
                  val model = StudentModelNew()
                  model.mId=id
+                 model.mIsams_id=isams_id
                  model.mName=studName
                  model.mClass=studClass
                  model.mSection=studSection
@@ -566,7 +590,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
         
     }
     override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onPageSelected(position: Int) {
@@ -696,7 +720,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
     }
 
     override fun onPageScrollStateChanged(state: Int) {
-        TODO("Not yet implemented")
+
     }
 
     override fun onCheckedChanged(group: RadioGroup?, checkedId: Int) {
@@ -723,6 +747,9 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
          * @return
          */
         override fun getItem(position: Int): Fragment {
+            Log.e("studid",studid)
+            Log.e("studname",studname)
+
             return if (PreferenceManager().getDataCollectionTriggerType(mContext)
                     .equals("1")
             ) {
@@ -804,6 +831,9 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
         val pos: Int = CommonClass.confirmingPosition
         var feild = ""
         println("Insrance empty works passport 101010dd")
+        Log.e("not_have_a_valid_passport", PreferenceManager().getPassportDetailArrayList(mContext).get(pos)
+            .not_have_a_valid_passport!!
+        )
         if (PreferenceManager().getPassportDetailArrayList(mContext).get(pos)
                 .not_have_a_valid_passport.equals("1")
         ) {
@@ -950,6 +980,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
     }
 
     private fun ShowCondition(whoValueEmpty: String, page: String) {
+        Log.e("page",page)
         val dialog = Dialog(mContext)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
@@ -971,6 +1002,7 @@ class SecondScreenDataCollection:FragmentActivity(), ViewPager.OnPageChangeListe
         } else if (whoValueEmpty.equals("Please Tick the Agreement.", ignoreCase = true)) {
             text.text = "Please Tick the Agreement."
         } else {
+            Log.e("Alert","ALert")
             text.text = "Please enter the $whoValueEmpty"
         }
         textHead.text = "Alert"

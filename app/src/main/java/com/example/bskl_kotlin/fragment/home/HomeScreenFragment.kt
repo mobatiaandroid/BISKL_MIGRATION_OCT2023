@@ -44,7 +44,6 @@ import com.example.bskl_kotlin.activity.datacollection_p2.model.KinModel
 import com.example.bskl_kotlin.activity.datacollection_p2.model.OwnContactModel
 import com.example.bskl_kotlin.activity.datacollection_p2.model.PassportDetailModel
 import com.example.bskl_kotlin.activity.datacollection_p2.model.StudentModelNew
-import com.example.bskl_kotlin.activity.home.CalendarFragment
 import com.example.bskl_kotlin.activity.home.HomeActivity
 import com.example.bskl_kotlin.activity.home.model.AppFeatureModel
 import com.example.bskl_kotlin.activity.home.model.NationalityModel
@@ -60,7 +59,6 @@ import com.example.bskl_kotlin.constants.BsklNameConstants
 import com.example.bskl_kotlin.constants.BsklTabConstants
 import com.example.bskl_kotlin.fragment.absence.AbsenceFragment
 import com.example.bskl_kotlin.fragment.attendance.AttendenceFragment
-
 import com.example.bskl_kotlin.fragment.contactus.ContactUsFragment
 import com.example.bskl_kotlin.fragment.home.model.CountriesApiModel
 import com.example.bskl_kotlin.fragment.home.model.CountriesModel
@@ -638,23 +636,29 @@ class HomeScreenFragment(title:String,
                             responsedata
                             !!.response.responseArray.trigger_type
                         )
-                        val prefAlreadyTriggered: String? =
+                        var prefAlreadyTriggered: String =
                             PreferenceManager().getAlreadyTriggered(mContext)
                         Log.e("trigger",responsedata!!.response.responseArray.trigger_date)
                         alreadyTriggered =   responsedata!!.response.responseArray.trigger_date
-
+                        Log.e("alreadyTriggered", alreadyTriggered)
+                        Log.e("prefAlreadyTriggered", prefAlreadyTriggered!!)
                         val versionFromPreference: String =
                             PreferenceManager().getVersionFromApi(mContext)!!.replace(".", "")
                         val versionNumberAsInteger = versionFromPreference.toInt()
                         if (prefAlreadyTriggered.equals(alreadyTriggered)) {
+                            Log.e("InsideIf","insideIf")
                             PreferenceManager().setAlreadyTriggered(
-                                mContext,responsedata!!.response.responseArray.trigger_date
+                                mContext,alreadyTriggered
 
                             )
                         } else {
+                            Log.e("outside","outsideif")
                             PreferenceManager().setAlreadyTriggered(
                                 mContext,
-                                responsedata!!.response.responseArray.trigger_date
+                                alreadyTriggered
+                            )
+                            Log.e("prefAlreadyTriggered1",
+                                PreferenceManager().getAlreadyTriggered(mContext)!!
                             )
                             PreferenceManager().setIsAlreadyEnteredOwnContact(mContext, false)
                             PreferenceManager().setIsAlreadyEnteredKin(mContext, false)
@@ -667,6 +671,8 @@ class HomeScreenFragment(title:String,
                                 PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)
                             mOwnArrayList= ArrayList()
                             //PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)!!.clear()
+                            Log.e("saveprefkinArray", CommonClass.kinArrayPass.size.toString())
+                            Log.e("saveprefkinArrayShow", AppController.kinArrayShow.size.toString())
                             PreferenceManager().saveOwnDetailArrayList(
                                 mOwnArrayList,
                                 "OwnContact",
@@ -680,6 +686,8 @@ class HomeScreenFragment(title:String,
                                 CommonClass.kinArrayPass,"kinshow",
                                 mContext
                             )
+
+
                             var mInsurance: ArrayList<InsuranceDetailModel> = ArrayList()
 //                                PreferenceManager().getInsuranceDetailArrayList(mContext)
 
@@ -693,6 +701,7 @@ class HomeScreenFragment(title:String,
                             var mStuudent: ArrayList<StudentModelNew> = ArrayList()
                                // PreferenceManager().getInsuranceStudentList(mContext)
                             mStuudent= ArrayList()
+
                             PreferenceManager().saveInsuranceStudentList(mStuudent, mContext)
                         }
 
@@ -1583,6 +1592,7 @@ Log.e("prfkin",PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!
                                             .equals("1")
                                     ) {
                                         println("QWE: inside Collection")
+
                                         val i = Intent(
                                             activity,
                                             DataCollectionHome::class.java
@@ -1632,6 +1642,7 @@ Log.e("log access",PreferenceManager().getaccesstoken(mContext).toString())
                                 if (dataObject.alumi.equals("0")) {
                                     val studentModel = StudentModelNew()
                                     studentModel.mId=dataObject.id
+                                    studentModel.mIsams_id=dataObject.isamsid
                                     studentModel.mName=dataObject.name
                                     studentModel.mClass=dataObject.mClass
                                     studentModel.mSection=dataObject.section
@@ -1640,24 +1651,28 @@ Log.e("log access",PreferenceManager().getaccesstoken(mContext).toString())
                                     studentModel.isConfirmed=false
                                     studentModel.progressReport=dataObject.progressreport
                                     studentModel.alumini=dataObject.alumi
-
+                                    println("student list1 add works")
 //                                        AppController().mStudentDataArrayList.add(addStudentDetails(dataObject));
                                     studentsModelArrayList.add(studentModel)
+                                    PreferenceManager().setStudentIsamId(mContext,studentsModelArrayList.get(i).mIsams_id)
                                 }
+
                             }
+
                             if (!PreferenceManager().getIsAlreadyEnteredStudentList(
                                     mContext
                                 ) || PreferenceManager().getInsuranceStudentList(mContext)
                                     .size == 0
                             ) {
                                 println("student list add works")
+                                Log.e("isams_ids", studentsModelArrayList.get(0).mIsams_id!!)
                                 PreferenceManager().setIsAlreadyEnteredStudentList(mContext, true)
                                 CommonClass.mStudentDataArrayList = studentsModelArrayList
-                                PreferenceManager().saveInsuranceStudentList(
-                                    studentsModelArrayList,
-                                    mContext
-                                )
+                                PreferenceManager().saveInsuranceStudentList(studentsModelArrayList, mContext)
                             } else {
+                                Log.e("mStudentDataArrayList",
+                                    studentsModelArrayList.size.toString()
+                                )
                                 CommonClass.mStudentDataArrayList =
                                     PreferenceManager().getInsuranceStudentList(mContext)
                             }

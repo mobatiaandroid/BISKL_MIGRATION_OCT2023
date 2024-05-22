@@ -25,7 +25,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bskl_kotlin.R
 import com.example.bskl_kotlin.activity.home.HomeActivity
@@ -40,18 +39,16 @@ import com.example.bskl_kotlin.activity.login.model.LoginModel
 import com.example.bskl_kotlin.activity.login.model.LoginResponseModel
 import com.example.bskl_kotlin.common.InternetCheckClass
 import com.example.bskl_kotlin.common.PreferenceManager
+import com.example.bskl_kotlin.common.ProgressBarDialog
 import com.example.bskl_kotlin.fragment.attendance.PreferenceManagerr
 import com.example.bskl_kotlin.fragment.settings.model.TriggerUserModel
 import com.example.bskl_kotlin.manager.AppUtils
 import com.example.bskl_kotlin.manager.countrypicker.CountryCodePicker
 import com.google.firebase.FirebaseApp
 import com.google.firebase.messaging.FirebaseMessaging
-import org.json.JSONArray
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.util.Calendar
 
 class LoginActivity:AppCompatActivity() {
     lateinit var mContext: Context
@@ -84,6 +81,8 @@ class LoginActivity:AppCompatActivity() {
     lateinit var loginMain: RelativeLayout
     lateinit var homePageLogoImg: ImageView
     lateinit var homePageLogoIm2: ImageView
+    var progressBarDialog: ProgressBarDialog? = null
+
     var tokenM = " "
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -91,7 +90,7 @@ class LoginActivity:AppCompatActivity() {
 
         mContext = this
         sharedprefs = PreferenceManager()
-        Toast.makeText(mContext, "login", Toast.LENGTH_SHORT).show()
+
         init()
         onClick()
 
@@ -126,6 +125,8 @@ class LoginActivity:AppCompatActivity() {
         if (extras != null) {
             fromsplash = extras!!.getBoolean("fromsplash")
         }
+        progressBarDialog = ProgressBarDialog(mContext)
+
         homePageLogoIm2 = findViewById(R.id.homePageLogoIm2)
         homePageLogoImg = findViewById(R.id.homePageLogoImg)
         relLogin = findViewById(R.id.relLogin)
@@ -402,6 +403,8 @@ mSignUpBtn.setOnClickListener {
     }
 
     private fun sendForGotpassWord() {
+        progressBarDialog!!.show()
+
         val androidId = Settings.Secure.getString(
             mContext.contentResolver,
             Settings.Secure.ANDROID_ID
@@ -416,6 +419,8 @@ mSignUpBtn.setOnClickListener {
 
         call.enqueue(object : Callback<TriggerUserModel> {
             override fun onFailure(call: Call<TriggerUserModel>, t: Throwable) {
+                progressBarDialog!!.dismiss()
+
                 Log.e("Failed", t.localizedMessage)
 
             }
@@ -424,6 +429,7 @@ mSignUpBtn.setOnClickListener {
                 call: Call<TriggerUserModel>,
                 response: Response<TriggerUserModel>
             ) {
+                progressBarDialog!!.dismiss()
 
                 val responsedata = response.body()
 
@@ -450,6 +456,7 @@ mSignUpBtn.setOnClickListener {
     }
 
     private fun callLoginApi(email:String,password:String) {
+        progressBarDialog!!.show()
         var androidID = Settings.Secure.getString(
             this.contentResolver,
             Settings.Secure.ANDROID_ID
@@ -462,6 +469,8 @@ mSignUpBtn.setOnClickListener {
 
         call.enqueue(object : Callback<LoginResponseModel> {
             override fun onFailure(call: Call<LoginResponseModel>, t: Throwable) {
+                progressBarDialog!!.dismiss()
+
                 Log.e("Failed", t.localizedMessage)
 
             }
@@ -470,23 +479,79 @@ mSignUpBtn.setOnClickListener {
                 call: Call<LoginResponseModel>,
                 response: Response<LoginResponseModel>
             ) {
+                progressBarDialog!!.dismiss()
 
                 val responsedata = response.body()
-                var userEmailFull=userNameEdtTxt.text.toString()
-                var userName=responsedata!!.response.responseArray.name
-                var userId=responsedata!!.response.responseArray.userid
-                var userNumber=responsedata!!.response.responseArray.mobileno
-                var token=responsedata!!.response.responseArray.token
-                PreferenceManager().setUserId(mContext, userId)
-                PreferenceManagerr.setUserId(mContext,userId)
-                PreferenceManager().setUserName(mContext, userName)
-                PreferenceManager().setUserNumber(mContext, userNumber)
-                PreferenceManager().setUserEmail(mContext, userEmailFull)
-                PreferenceManager().setaccesstoken(mContext, token)
-                PreferenceManagerr.setAccessToken(mContext, token)
-                PreferenceManager().setLoggedInStatus(mContext, "1")
-                Log.e("Response Signup", responsedata.toString())
-                setUserDetails()
+                if (responsedata!!.responsecode.equals("200", ignoreCase = true)) {
+
+                    val status_code = responsedata.response.statuscode
+                    if (status_code.equals("303", ignoreCase = true)) {
+                        var userEmailFull = userNameEdtTxt.text.toString()
+                        var userName = responsedata!!.response.responseArray.name
+                        var userId = responsedata!!.response.responseArray.userid
+                        var userNumber = responsedata!!.response.responseArray.mobileno
+                        var token = responsedata!!.response.responseArray.token
+                        PreferenceManager().setUserId(mContext, userId)
+                        PreferenceManagerr.setUserId(mContext, userId)
+                        PreferenceManager().setUserName(mContext, userName)
+                        PreferenceManager().setUserNumber(mContext, userNumber)
+                        PreferenceManager().setUserEmail(mContext, userEmailFull)
+                        PreferenceManager().setaccesstoken(mContext, token)
+                        PreferenceManagerr.setAccessToken(mContext, token)
+                        PreferenceManager().setLoggedInStatus(mContext, "1")
+                        Log.e("Response Signup", responsedata.toString())
+                        setUserDetails()
+                    } else if (status_code.equals("301", ignoreCase = true)) {
+                        AppUtils().showDialogAlertDismiss(
+                            mContext as Activity,
+                            getString(R.string.error_heading),
+                            getString(R.string.missing_parameter),
+                            R.drawable.infoicon,
+                            R.drawable.round
+                        )
+                    } else if (status_code.equals("304", ignoreCase = true)) {
+                        AppUtils().showDialogAlertDismiss(
+                            mContext as Activity,
+                            getString(R.string.error_heading),
+                            getString(R.string.email_exists),
+                            R.drawable.infoicon,
+                            R.drawable.round
+                        )
+                    } else if (status_code.equals("208", ignoreCase = true)) {
+                        AppUtils().showDialogAlertDismiss(
+                            mContext as Activity,
+                            getString(R.string.error_heading),
+                            getString(R.string.not_active),
+                            R.drawable.infoicon,
+                            R.drawable.round
+                        )
+                    } else if (status_code.equals("305", ignoreCase = true)) {
+                        AppUtils().showDialogAlertDismiss(
+                            mContext as Activity,
+                            getString(R.string.error_heading),
+                            getString(R.string.incrct_pswd),
+                            R.drawable.infoicon,
+                            R.drawable.round
+                        )
+                    } else if (status_code.equals("306", ignoreCase = true)) {
+                        AppUtils().showDialogAlertDismiss(
+                            mContext as Activity,
+                            getString(R.string.error_heading),
+                            getString(R.string.invalid_email) + "(" + userNameEdtTxt.getText()
+                                .toString() + ")" + " " + getString(R.string.invalid_email_end),
+                            R.drawable.infoicon,
+                            R.drawable.round
+                        )
+                    } else {
+                        AppUtils().showDialogAlertDismiss(
+                            mContext as Activity,
+                            getString(R.string.error_heading),
+                            getString(R.string.common_error),
+                            R.drawable.infoicon,
+                            R.drawable.round
+                        )
+                    }
+                }
                // showSuccessAlert("Successfully Logged In","Success")
             }
         })

@@ -44,8 +44,10 @@ import com.example.bskl_kotlin.activity.calender.model.CalenderBadgeResponseMode
 
 import com.example.bskl_kotlin.activity.calender.model.CalenderMonthModel;
 import com.example.bskl_kotlin.activity.calender.utils.CalendarListener;
+import com.example.bskl_kotlin.common.PreferenceManager;
 import com.example.bskl_kotlin.fragment.attendance.APIClient;
 import com.example.bskl_kotlin.fragment.attendance.PreferenceManagerr;
+import com.example.bskl_kotlin.activity.calendar.CalenderDetailActivity;
 import com.example.bskl_kotlin.fragment.calendar.CalenderDetailActivity;
 import com.example.bskl_kotlin.fragment.calendar.adapter.MyRecyclerViewAdapter;
 import com.example.bskl_kotlin.fragment.calendar.model.CalendarModel;
@@ -233,7 +235,8 @@ public class ListViewCalendar extends Fragment implements  View.OnClickListener,
                 mIntent.putExtra("position", position);
                 mIntent.putExtra("tittle", mEventArrayListFilterList.get(position).getTittle());
                 mIntent.putExtra("date", mEventArrayListFilterList.get(position).getDate());
-                mIntent.putExtra("PASS_ARRAY_LIST", mEventArrayListFilterList);
+               PreferenceManagerr.setStudentList(mEventArrayListFilterList,mContext);
+               // mIntent.putExtra("PASS_ARRAY_LIST", mEventArrayListFilterList);
                 mContext.startActivity(mIntent);
 
 

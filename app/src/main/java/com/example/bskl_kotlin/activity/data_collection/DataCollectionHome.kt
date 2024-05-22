@@ -158,6 +158,8 @@ class DataCollectionHome:AppCompatActivity(), ViewPager.OnPageChangeListener,
             val respObj = JSONObject(data)
             own_details = respObj.getJSONArray("own_details")
             kin_details = respObj.getJSONArray("kin_details")
+            Log.e("own_details", own_details.toString())
+            Log.e("kin_details", kin_details.toString())
             emergency_details = respObj.getJSONArray("local_emergency_details")
         } catch (e: Exception) {
         }
@@ -251,6 +253,8 @@ class DataCollectionHome:AppCompatActivity(), ViewPager.OnPageChangeListener,
                 } else {
                     var isFound = false
                     var foundPosition = -1
+
+
                     if (CommonClass.mStudentDataArrayList.size > 0) {
                         for (i in 0 until CommonClass.mStudentDataArrayList.size) {
                             if (!isFound) {

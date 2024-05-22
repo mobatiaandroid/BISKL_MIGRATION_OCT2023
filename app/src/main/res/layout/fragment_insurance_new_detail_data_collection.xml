@@ -397,13 +397,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    <com.example.bskl_kotlin.manager.TextViewFontSansProRegular
+                    <com.example.bskl_kotlin.manager.TextViewFontSansProBoldColorBlack
                         android:id="@+id/medicalNoteHeadTxt"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/medical_note"
                         android:textSize="16sp"
                         android:textColor="@color/black"
+                        android:textStyle="bold"
                         android:layout_marginLeft="10dp"
                         android:layout_marginTop="10dp"/>
                     <com.example.bskl_kotlin.manager.TextViewFontSansProRegular

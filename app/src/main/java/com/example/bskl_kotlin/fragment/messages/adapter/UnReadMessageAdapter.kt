@@ -129,7 +129,7 @@ class UnReadMessageAdapter(private var mContext:Context, var mMessageUnreadList:
             Log.e("typemessage",mMessageUnreadList.get(position).type)
             var mIntent: Intent
             if (mMessageUnreadList.get(position).type
-                    .equals("image") || mMessageUnreadList.get(position)
+                    .equals("Image") || mMessageUnreadList.get(position)
                     .type.equals("text") || mMessageUnreadList[position].type.equals("Text")||mMessageUnreadList.get(
                     position
                 ).type.equals("")

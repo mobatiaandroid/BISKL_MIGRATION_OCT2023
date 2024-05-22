@@ -63,7 +63,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class ThirdScreenNewData(studentImage: String, studentId: String, studentName: String) : Fragment() {
+class ThirdScreenNewData(studentImage: String, var student_Id: String, studentName: String) : Fragment() {
     lateinit  var mContext: Context
     lateinit var checkStudentMalysianImg: ImageView
     lateinit var CloseIcon:android.widget.ImageView
@@ -272,6 +272,7 @@ class ThirdScreenNewData(studentImage: String, studentId: String, studentName: S
                     Log.e("It Worked ", "BUG")
                     var studentPos = -1
                     var id = ""
+                    var isams_id = ""
                     var studName = ""
                     var studClass = ""
                     var studSection = ""
@@ -285,15 +286,16 @@ class ThirdScreenNewData(studentImage: String, studentId: String, studentName: S
                         "It Worked ",
                         "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
                     )
-                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mIsams_id.toString())
                     if ( CommonClass.mStudentDataArrayList.size > 0) {
                         for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
                             if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
-                                    .equals(studentID)
+                                    .equals(student_Id)
                             ) {
                                 Log.e("It Worked ", "BUG position$i")
                                 studentPos = i
                                 id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                                isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                                 studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                                 studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                                 studSection =
@@ -308,6 +310,7 @@ class ThirdScreenNewData(studentImage: String, studentId: String, studentName: S
                         }
                         val model = StudentModelNew()
                         model.mId=id
+                        model.mIsams_id=isams_id
                         model.mName=studName
                         model.mClass=studClass
                         model.mSection=studSection
@@ -729,6 +732,7 @@ CloseIcon.setOnClickListener {
     if ( CommonClass.isInsuranceEdited ||  CommonClass.isPassportEdited) {
         var studentPos = -1
         var id = ""
+        var isams_id = ""
         var studName = ""
         var studClass = ""
         var studSection = ""
@@ -744,6 +748,7 @@ CloseIcon.setOnClickListener {
                 ) {
                     studentPos = i
                     id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                    isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                     studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                     studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                     studSection =  CommonClass.mStudentDataArrayList.get(i).mSection.toString()
@@ -757,6 +762,7 @@ CloseIcon.setOnClickListener {
         }
         val model = StudentModelNew()
         model.mId=id
+        model.mIsams_id=isams_id
         model.mName=studName
         model.mClass=studClass
         model.mSection=studSection
@@ -809,6 +815,7 @@ CloseIcon.setOnClickListener {
                     Log.e("It Worked ", "BUG")
                     var studentPos = -1
                     var id = ""
+                    var isams_id = ""
                     var studName = ""
                     var studClass = ""
                     var studSection = ""
@@ -822,15 +829,16 @@ CloseIcon.setOnClickListener {
                         "It Worked ",
                         "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
                     )
-                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mIsams_id.toString())
                     if ( CommonClass.mStudentDataArrayList.size > 0) {
                         for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
                             if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
-                                    .equals(studentID)
+                                    .equals(student_Id)
                             ) {
                                 Log.e("It Worked ", "BUG position$i")
                                 studentPos = i
                                 id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                                isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                                 studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                                 studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                                 studSection =
@@ -845,6 +853,7 @@ CloseIcon.setOnClickListener {
                         }
                         val model = StudentModelNew()
                         model.mId=id
+                        model.mIsams_id=isams_id
                         model.mName=studName
                         model.mClass=studClass
                         model.mSection=studSection
@@ -1047,6 +1056,7 @@ CloseIcon.setOnClickListener {
                     Log.e("It Worked ", "BUG")
                     var studentPos = -1
                     var id = ""
+                    var isams_id = ""
                     var studName = ""
                     var studClass = ""
                     var studSection = ""
@@ -1060,15 +1070,16 @@ CloseIcon.setOnClickListener {
                         "It Worked ",
                         "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
                     )
-                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mIsams_id.toString())
                     if ( CommonClass.mStudentDataArrayList.size > 0) {
                         for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
                             if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
-                                    .equals(studentID)
+                                    .equals(student_Id)
                             ) {
                                 Log.e("It Worked ", "BUG position$i")
                                 studentPos = i
                                 id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                                isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                                 studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                                 studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                                 studSection =
@@ -1083,6 +1094,7 @@ CloseIcon.setOnClickListener {
                         }
                         val model = StudentModelNew()
                         model.mId=id
+                        model.mIsams_id=isams_id
                         model.mName=studName
                         model.mClass=studClass
                         model.mSection=studSection
@@ -1293,6 +1305,7 @@ CloseIcon.setOnClickListener {
                     Log.e("It Worked ", "BUG")
                     var studentPos = -1
                     var id = ""
+                    var isams_id = ""
                     var studName = ""
                     var studClass = ""
                     var studSection = ""
@@ -1306,15 +1319,16 @@ CloseIcon.setOnClickListener {
                         "It Worked ",
                         "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
                     )
-                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mIsams_id.toString())
                     if ( CommonClass.mStudentDataArrayList.size > 0) {
                         for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
                             if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
-                                    .equals(studentID)
+                                    .equals(student_Id)
                             ) {
                                 Log.e("It Worked ", "BUG position$i")
                                 studentPos = i
                                 id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                                isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                                 studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                                 studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                                 studSection =
@@ -1329,6 +1343,7 @@ CloseIcon.setOnClickListener {
                         }
                         val model = StudentModelNew()
                         model.mId=id
+                        model.mIsams_id=isams_id
                         model.mName=studName
                         model.mClass=studClass
                         model.mSection=studSection
@@ -1538,6 +1553,7 @@ CloseIcon.setOnClickListener {
                     Log.e("It Worked ", "BUG")
                     var studentPos = -1
                     var id = ""
+                    var isams_id = ""
                     var studName = ""
                     var studClass = ""
                     var studSection = ""
@@ -1551,15 +1567,16 @@ CloseIcon.setOnClickListener {
                         "It Worked ",
                         "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
                     )
-                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mIsams_id.toString())
                     if ( CommonClass.mStudentDataArrayList.size > 0) {
                         for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
                             if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
-                                    .equals(studentID)
+                                    .equals(student_Id)
                             ) {
                                 Log.e("It Worked ", "BUG position$i")
                                 studentPos = i
                                 id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                                isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                                 studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                                 studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                                 studSection =
@@ -1574,6 +1591,7 @@ CloseIcon.setOnClickListener {
                         }
                         val model = StudentModelNew()
                         model.mId=id
+                        model.mIsams_id=isams_id
                         model.mName=studName
                         model.mClass=studClass
                         model.mSection=studSection
@@ -1768,6 +1786,7 @@ CloseIcon.setOnClickListener {
                     Log.e("It Worked ", "BUG")
                     var studentPos = -1
                     var id = ""
+                    var isams_id = ""
                     var studName = ""
                     var studClass = ""
                     var studSection = ""
@@ -1781,15 +1800,16 @@ CloseIcon.setOnClickListener {
                         "It Worked ",
                         "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
                     )
-                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mIsams_id.toString())
                     if ( CommonClass.mStudentDataArrayList.size > 0) {
                         for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
                             if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
-                                    .equals(studentID)
+                                    .equals(student_Id)
                             ) {
                                 Log.e("It Worked ", "BUG position$i")
                                 studentPos = i
                                 id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                                isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                                 studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                                 studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                                 studSection =
@@ -1804,6 +1824,7 @@ CloseIcon.setOnClickListener {
                         }
                         val model = StudentModelNew()
                         model.mId=id
+                        model.mIsams_id=isams_id
                         model.mName=studName
                         model.mClass=studClass
                         model.mSection=studSection
@@ -1972,6 +1993,7 @@ CloseIcon.setOnClickListener {
                     Log.e("It Worked ", "BUG")
                     var studentPos = -1
                     var id = ""
+                    var isams_id = ""
                     var studName = ""
                     var studClass = ""
                     var studSection = ""
@@ -1981,19 +2003,21 @@ CloseIcon.setOnClickListener {
                     var studAlumini = ""
                     val studentID = studentId
                     Log.e("It Worked ", "BUG$studentID")
-                    Log.e(
-                        "It Worked ",
-                        "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
-                    )
-                    Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+
                     if ( CommonClass.mStudentDataArrayList.size > 0) {
                         for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
+                            Log.e(
+                                "It Worked ",
+                                "BUG" + ( CommonClass.mStudentDataArrayList.get(i).mId)
+                            )
+                            Log.e("It Worked ", "BUG33" + student_Id)
                             if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
-                                    .equals(studentID)
+                                    .equals(student_Id)
                             ) {
                                 Log.e("It Worked ", "BUG position$i")
                                 studentPos = i
                                 id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                                isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                                 studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                                 studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                                 studSection =
@@ -2008,6 +2032,7 @@ CloseIcon.setOnClickListener {
                         }
                         val model = StudentModelNew()
                         model.mId=id
+                        model.mIsams_id=isams_id
                         model.mName=studName
                         model.mClass=studClass
                         model.mSection=studSection
@@ -2318,6 +2343,7 @@ CloseIcon.setOnClickListener {
             Log.e("It Worked ", "BUG")
             var studentPos = -1
             var id = ""
+            var isams_id = ""
             var studName = ""
             var studClass = ""
             var studSection = ""
@@ -2331,15 +2357,16 @@ CloseIcon.setOnClickListener {
                 "It Worked ",
                 "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
             )
-            Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+            Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mIsams_id.toString())
             if ( CommonClass.mStudentDataArrayList.size > 0) {
                 for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
                     if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
-                            .equals(studentID)
+                            .equals(student_Id)
                     ) {
                         Log.e("It Worked ", "BUG position$i")
                         studentPos = i
                         id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                        isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                         studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                         studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                         studSection =  CommonClass.mStudentDataArrayList.get(i).mSection.toString()
@@ -2352,6 +2379,7 @@ CloseIcon.setOnClickListener {
                 }
                 val model = StudentModelNew()
                 model.mId=id
+                model.mIsams_id=isams_id
                 model.mName=studName
                 model.mClass=studClass
                 model.mSection=studSection
@@ -2486,6 +2514,7 @@ CloseIcon.setOnClickListener {
             Log.e("It Worked ", "BUG")
             var studentPos = -1
             var id = ""
+            var isams_id = ""
             var studName = ""
             var studClass = ""
             var studSection = ""
@@ -2499,15 +2528,16 @@ CloseIcon.setOnClickListener {
                 "It Worked ",
                 "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
             )
-            Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+            Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mIsams_id.toString())
             if ( CommonClass.mStudentDataArrayList.size > 0) {
                 for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
-                    if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
-                            .equals(studentID)
+                    if (CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                            .equals(student_Id)
                     ) {
                         Log.e("It Worked ", "BUG position$i")
                         studentPos = i
                         id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                        isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                         studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                         studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                         studSection =  CommonClass.mStudentDataArrayList.get(i).mSection.toString()
@@ -2520,6 +2550,7 @@ CloseIcon.setOnClickListener {
                 }
                 val model = StudentModelNew()
                 model.mId=id
+                model.mIsams_id=isams_id
                 model.mName=studName
                 model.mClass=studClass
                 model.mSection=studSection
@@ -2866,6 +2897,7 @@ CloseIcon.setOnClickListener {
             Log.e("It Worked ", "BUG")
             var studentPos = -1
             var id = ""
+            var isams_id = ""
             var studName = ""
             var studClass = ""
             var studSection = ""
@@ -2879,7 +2911,7 @@ CloseIcon.setOnClickListener {
                 "It Worked ",
                 "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
             )
-            Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+            Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mIsams_id.toString())
             if ( CommonClass.mStudentDataArrayList.size > 0) {
                 for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
                     if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
@@ -2888,6 +2920,7 @@ CloseIcon.setOnClickListener {
                         Log.e("It Worked ", "BUG position$i")
                         studentPos = i
                         id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                        isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                         studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                         studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                         studSection =  CommonClass.mStudentDataArrayList.get(i).mSection.toString()
@@ -2900,6 +2933,7 @@ CloseIcon.setOnClickListener {
                 }
                 val model = StudentModelNew()
                 model.mId=id
+                model.mIsams_id=isams_id
                 model.mName=studName
                 model.mClass=studClass
                 model.mSection=studSection
@@ -3060,6 +3094,7 @@ CloseIcon.setOnClickListener {
             Log.e("It Worked ", "BUG")
             var studentPos = -1
             var id = ""
+            var isams_id = ""
             var studName = ""
             var studClass = ""
             var studSection = ""
@@ -3073,7 +3108,7 @@ CloseIcon.setOnClickListener {
                 "It Worked ",
                 "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
             )
-            Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+            Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mIsams_id.toString())
             if ( CommonClass.mStudentDataArrayList.size > 0) {
                 for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
                     if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
@@ -3082,6 +3117,7 @@ CloseIcon.setOnClickListener {
                         Log.e("It Worked ", "BUG position$i")
                         studentPos = i
                         id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                        isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                         studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                         studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                         studSection =  CommonClass.mStudentDataArrayList.get(i).mSection.toString()
@@ -3094,6 +3130,7 @@ CloseIcon.setOnClickListener {
                 }
                 val model = StudentModelNew()
                 model.mId=id
+                model.mIsams_id=isams_id
                 model.mName=studName
                 model.mClass=studClass
                 model.mSection=studSection
@@ -3253,6 +3290,7 @@ CloseIcon.setOnClickListener {
             Log.e("It Worked ", "BUG")
             var studentPos = -1
             var id = ""
+            var isams_id = ""
             var studName = ""
             var studClass = ""
             var studSection = ""
@@ -3266,15 +3304,16 @@ CloseIcon.setOnClickListener {
                 "It Worked ",
                 "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
             )
-            Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+            Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mIsams_id.toString())
             if ( CommonClass.mStudentDataArrayList.size > 0) {
                 for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
                     if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
-                            .equals(studentID)
+                            .equals(student_Id)
                     ) {
                         Log.e("It Worked ", "BUG position$i")
                         studentPos = i
                         id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                        isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                         studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                         studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                         studSection =  CommonClass.mStudentDataArrayList.get(i).mSection.toString()
@@ -3287,6 +3326,7 @@ CloseIcon.setOnClickListener {
                 }
                 val model = StudentModelNew()
                 model.mId=id
+                model.mIsams_id=isams_id
                 model.mName=studName
                 model.mClass=studClass
                 model.mSection=studSection
@@ -3451,6 +3491,7 @@ CloseIcon.setOnClickListener {
             Log.e("It Worked ", "BUG")
             var studentPos = -1
             var id = ""
+            var isams_id = ""
             var studName = ""
             var studClass = ""
             var studSection = ""
@@ -3464,15 +3505,16 @@ CloseIcon.setOnClickListener {
                 "It Worked ",
                 "BUG" + java.lang.String.valueOf( CommonClass.mStudentDataArrayList.size)
             )
-            Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mId.toString())
+            Log.e("It Worked ", "BUG" +  CommonClass.mStudentDataArrayList.get(0).mIsams_id.toString())
             if ( CommonClass.mStudentDataArrayList.size > 0) {
                 for (i in 0 until  CommonClass.mStudentDataArrayList.size) {
                     if ( CommonClass.mStudentDataArrayList.get(i).mId.toString()
-                            .equals(studentID)
+                            .equals(student_Id)
                     ) {
                         Log.e("It Worked ", "BUG position$i")
                         studentPos = i
                         id =  CommonClass.mStudentDataArrayList.get(i).mId.toString()
+                        isams_id = CommonClass.mStudentDataArrayList.get(i).mIsams_id.toString()
                         studName =  CommonClass.mStudentDataArrayList.get(i).mName.toString()
                         studClass =  CommonClass.mStudentDataArrayList.get(i).mClass.toString()
                         studSection =  CommonClass.mStudentDataArrayList.get(i).mSection.toString()
@@ -3485,6 +3527,7 @@ CloseIcon.setOnClickListener {
                 }
                 val model = StudentModelNew()
                 model.mId=id
+                model.mIsams_id=isams_id
                 model.mName=studName
                 model.mClass=studClass
                 model.mSection=studSection

@@ -145,10 +145,10 @@ class ReadMessageAdapter(
             holder.msgBoxRead.setBackgroundResource(R.drawable.check_box_white_2)
         }
         holder.llReadClick.setOnClickListener {
-
+Log.e("read","read")
             var mIntent: Intent
             if (mMessageReadList.get(position).type
-                    .equals("image") ||mMessageReadList.get(position)
+                    .equals("Image") ||mMessageReadList.get(position)
                     .type.equals("text") ||mMessageReadList.get(position).type.equals("Text")||mMessageReadList.get(
                     position
                 ).type.equals("")
@@ -187,9 +187,10 @@ class ReadMessageAdapter(
                 mIntent = Intent(mContext, ImageActivity::class.java)
                 mIntent.putExtra("webViewComingDetail", pushNotificationDetail)
                 mIntent.putExtra("title",mMessageReadList.get(position).title)
-                mIntent.putExtra("isfromUnread", true)
-                mIntent.putExtra("isfromRead", false)
+                mIntent.putExtra("isfromUnread", false)
+                mIntent.putExtra("isfromRead", true)
                 //mIntent.putExtra( "PASSING_ARRAY",mMessageReadList)
+                PreferenceManager().setUnreadList(mContext,mMessageReadList)
                 mIntent.putExtra("position", position)
                 mContext.startActivity(mIntent)
             }
@@ -202,6 +203,7 @@ class ReadMessageAdapter(
                 mIntent.putExtra("isfromRead", false)
                 mIntent.putExtra("title",mMessageReadList.get(position).title)
                 //mIntent.putExtra("PASSING_ARRAY",mMessageReadList)
+
                 mContext.startActivity(mIntent)
             }
             if (mMessageReadList.get(position).type

@@ -36,6 +36,7 @@ import com.example.bskl_kotlin.fragment.messages.model.NotificationStatusApiMode
 import com.example.bskl_kotlin.fragment.messages.model.NotificationStatusModel
 import com.example.bskl_kotlin.fragment.messages.model.NotificationsNewApiModel
 import com.example.bskl_kotlin.fragment.messages.model.PushNotificationModel
+import com.example.bskl_kotlin.manager.AppController
 import com.example.bskl_kotlin.manager.AppUtils
 import com.example.bskl_kotlin.recyclerviewmanager.OnBottomReachedListener
 import com.google.firebase.messaging.FirebaseMessaging
@@ -1078,6 +1079,7 @@ var notmodel=NotificationsNewApiModel( tokenM,"2",PreferenceManager().getUserId(
                                             addUnreadMessage(unreadObject, i, responsedata.response.data.size)!!)
                                         PreferenceManager().setUnreadList(mContext,null)
                                         PreferenceManager().setUnreadList(mContext,unreadArray)
+                                        Log.e("unreadlisrtsize1",unreadArray.size.toString())
                                         Collections.sort(unreadArray,
                                             Comparator<PushNotificationModel> { o1, o2 ->
                                                 o1.dateTime.compareTo(o2.dateTime)
@@ -2024,10 +2026,12 @@ var notmodel=NotificationsNewApiModel( tokenM,"2",PreferenceManager().getUserId(
                     setchecked=mMessageUnreadListFav.get(i).isChecked
 
                 } else {
+
                     setchecked=false
 
                 }
             } else {
+
                 setchecked=false
             }
             ymodel=PushNotificationModel(0,setPushid,setMessage,seturl,setfavourite,setchecked,false,
@@ -2047,6 +2051,8 @@ return ymodel
         sdfcalender1 = SimpleDateFormat("yyyy-MM-dd")
         sdfcalender2 = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         try {
+            Log.e("pusgif",obj.pushid)
+
             var setPushid2=obj.pushid
             var setMessage2=obj.htmlmessage
             var seturl2=obj.url
@@ -2114,6 +2120,7 @@ return ymodel
             } else {
                 setmarked=false
             }
+            Log.e("setPushid2",setPushid2)
             xmodel=PushNotificationModel(0,setPushid2,setMessage2,seturl2,setfavourite2,false,
             setmarked,studList2,"1",setpushtime2,setdate2,setpushfrom2,settype2,setstudentname,"",
             setday,"","","",settitle2,"",setdatetime2)
@@ -2892,7 +2899,7 @@ unreadArray=ArrayList()
 //                    AppController.mMessageUnreadList.remove(i);
 //                }
 //            }
-            unReadMessageAdapter!!.notifyDataSetChanged()
+          //  unReadMessageAdapter!!.notifyDataSetChanged()
             PreferenceManager().setIsfromUnread(mContext,false)
            // AppController().isfromUnread = false
             callstatusapi("1", PreferenceManager().getpushId(mContext).toString())
@@ -2915,7 +2922,7 @@ unreadArray=ArrayList()
             msgUnread!!.setVisibility(View.GONE)
            PreferenceManager().setisVisibleUnreadBox(mContext,false)
             PreferenceManager().setisVisibleReadBox(mContext,false)
-            readMessageAdapter!!.notifyDataSetChanged()
+           // readMessageAdapter!!.notifyDataSetChanged()
         }
         if (!PreferenceManager().getUserId(mContext)
                 .equals("")

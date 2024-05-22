@@ -5,6 +5,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -22,23 +23,23 @@ import java.text.ParseException
 
 class StudentListActivity:AppCompatActivity() {
     lateinit var mContext:Context
-    var extras: Bundle? = null
+
 
     lateinit var studentList: RecyclerView
-    lateinit var studentsModelArrayList: ArrayList<StudentUserModel>
+     var studentsModelArrayList: ArrayList<StudentUserModel> =ArrayList()
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.student_list_activity)
-        extras = intent.extras
+
         mContext = this
 
-        if (extras != null) {
-            studentsModelArrayList = java.util.ArrayList()
+
+
             /*   mYoutubeModelArrayList = (ArrayList<YoutubeModel>) extras
-                    .getSerializable("youtubeArray");*/studentsModelArrayList =
-                extras!!.getSerializable("studentlist") as ArrayList<StudentUserModel>
-        }
+                    .getSerializable("youtubeArray");*/
+        studentsModelArrayList = intent.getParcelableArrayListExtra("studentlist")!!
+Log.e("studentsModelArrayList_size", studentsModelArrayList.size.toString())
         studentList = findViewById(R.id.studentList)
         studentList.setHasFixedSize(true)
         val llm = LinearLayoutManager(this)
@@ -82,7 +83,7 @@ class StudentListActivity:AppCompatActivity() {
             RecyclerItemListener(mContext, studentList,
                 object : RecyclerItemListener.RecyclerTouchListener {
                     override fun onClickItem(v: View?, position: Int) {
-                        if (studentsModelArrayList[position].alumini.equals("0")) {
+                        if (studentsModelArrayList[position].alumi.equals("0")) {
                             val mIntent = Intent(
                                 mContext,
                                 StudentDetailActivity::class.java

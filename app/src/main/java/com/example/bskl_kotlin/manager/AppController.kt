@@ -2,17 +2,21 @@ package com.example.bskl_kotlin.manager
 
 import android.app.Application
 import com.example.bskl_kotlin.activity.datacollection_p2.model.KinModel
+import com.example.bskl_kotlin.fragment.messages.model.PushNotificationModel
 
 
 class AppController: Application() {
   companion object{
       var instance: AppController? = null
       var kinArrayShow = ArrayList<KinModel>()
-      var kinArrayPass = ArrayList<KinModel>()
+      var mMessageReadList: java.util.ArrayList<PushNotificationModel> =
+         ArrayList<PushNotificationModel>()
+      //var kinArrayPass = ArrayList<KinModel>()
       var isKinEdited = false
       fun applicationContext(): AppController {
           return instance as AppController
       }
+
   }
 
     init {

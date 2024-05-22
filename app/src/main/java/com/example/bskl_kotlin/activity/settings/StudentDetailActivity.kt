@@ -285,20 +285,26 @@ class StudentDetailActivity:AppCompatActivity() {
                                 mOwnDetailsModelList.add(mOwnDetailsModel)
                             }
                         }
+                       if( mContactDetails.next_of_kin_contact.isNullOrEmpty())
+                       {
 
-                            val nextOfKinArray = mContactDetails.next_of_kin_contact
-                            for (j in 0 until nextOfKinArray.size) {
-                                if (nextOfKinArray.size > 0) {
-                                    val kinDetailObj = nextOfKinArray[j]
-                                    val mKinDetailModel = KinDetailsModel()
-                                    mKinDetailModel.emial=kinDetailObj.emial
-                                    mKinDetailModel.fullName=kinDetailObj.fullName
-                                    mKinDetailModel.contactNumber=kinDetailObj.contactNumber
-                                    mKinDetailModel.relationShip=kinDetailObj.relationShip
+                       }else
+                       {
+                           val nextOfKinArray = mContactDetails.next_of_kin_contact
+                           for (j in 0 until nextOfKinArray.size) {
+                               if (nextOfKinArray.size > 0) {
+                                   val kinDetailObj = nextOfKinArray[j]
+                                   val mKinDetailModel = KinDetailsModel()
+                                   mKinDetailModel.emial=kinDetailObj.emial
+                                   mKinDetailModel.fullName=kinDetailObj.fullName
+                                   mKinDetailModel.contactNumber=kinDetailObj.contactNumber
+                                   mKinDetailModel.relationShip=kinDetailObj.relationShip
 
-                                    mKinDetailsModelList.add(mKinDetailModel)
-                                }
-                            }
+                                   mKinDetailsModelList.add(mKinDetailModel)
+                               }
+                           }
+                       }
+
 
 
                         val localEmergencyArray =

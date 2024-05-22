@@ -416,7 +416,7 @@ public class PreferenceManager {
                 PREFSNAME,
                 Context.MODE_PRIVATE
             )
-            return prefs.getBoolean("result", true)
+            return prefs.getBoolean("is_already_studentlist", true)
         }
 
         fun setUserId(context: Context, userid: String?) {
@@ -817,21 +817,21 @@ public class PreferenceManager {
             return prefs.getString("safenotification", "")
         }
 
-        fun setAlreadyTriggered(context: Context, already_triggered: String?) {
+        fun setAlreadyTriggered(context: Context, already_triggered: String) {
             val prefs = context.getSharedPreferences(
                 PREFSNAME, Context.MODE_PRIVATE
             )
             val editor = prefs.edit()
-            editor.putString("already_triggered", "0")
+            editor.putString("already_triggered", already_triggered)
             editor.apply()
         }
 
-        fun getAlreadyTriggered(context: Context): String? {
+        fun getAlreadyTriggered(context: Context): String {
             val prefs = context.getSharedPreferences(
                 PREFSNAME,
                 Context.MODE_PRIVATE
             )
-            return prefs.getString("already_triggered", "")
+            return prefs.getString("already_triggered", "")!!
         }
 
         fun setReportMailMerge(context: Context, report_mail_merge: String?) {
@@ -1738,6 +1738,24 @@ public class PreferenceManager {
             editor.apply()
         }
 
+
+
+    fun setStudentIsamId(context: Context, result: String?) {
+        val prefs = context.getSharedPreferences(
+            PREFSNAME, Context.MODE_PRIVATE
+        )
+        val editor = prefs.edit()
+        editor.putString("IsamNo", result)
+        editor.apply()
+    }
+
+    fun getStudentIsamid(context: Context): String? {
+        val prefs = context.getSharedPreferences(
+            PREFSNAME,
+            Context.MODE_PRIVATE
+        )
+        return prefs.getString("IsamNo", "")
+    }
         fun setButtonThreeGuestTextImage(context: Context, result: String?) {
             val prefs = context.getSharedPreferences(
                 PREFSNAME, Context.MODE_PRIVATE
@@ -1943,5 +1961,7 @@ public class PreferenceManager {
         }
 
         /*GET ALREADY TRIGGERED*/
+
+
 
     }

@@ -140,7 +140,6 @@
                 android:textSize="14sp"
                 android:paddingTop="10dp"
                 android:visibility="gone"
-
                 android:textColor="@color/logout_user"
                 android:gravity="center|right"
                 android:layout_marginRight="10dp"

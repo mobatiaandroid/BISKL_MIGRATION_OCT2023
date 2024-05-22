@@ -14,17 +14,19 @@ import android.widget.RelativeLayout
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bskl_kotlin.R
+import com.example.bskl_kotlin.activity.datacollection_p2.model.InsuranceDetailModel
+import com.example.bskl_kotlin.activity.datacollection_p2.model.KinModel
+import com.example.bskl_kotlin.activity.datacollection_p2.model.OwnContactModel
+import com.example.bskl_kotlin.activity.datacollection_p2.model.PassportDetailModel
+import com.example.bskl_kotlin.activity.datacollection_p2.model.StudentModelNew
 import com.example.bskl_kotlin.activity.home.HomeActivity
 import com.example.bskl_kotlin.activity.home.model.DeviceRegisterApiModel
 import com.example.bskl_kotlin.activity.home.model.DeviceregisterModel
 import com.example.bskl_kotlin.activity.login.LoginActivity
-
 import com.example.bskl_kotlin.activity.tutorial.TutorialActivity
 import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.fragment.attendance.PreferenceManagerr
 import com.example.bskl_kotlin.manager.AppUtils
-import com.google.firebase.FirebaseApp
-import com.google.firebase.messaging.FirebaseMessaging
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -100,8 +102,8 @@ class SplashActivity : AppCompatActivity() {
             reltativeTop.setBackgroundResource(R.color.white)
             reltativeTopIn.setImageResource(R.drawable.logo)
         } else {
-            reltativeTop.setBackgroundResource(R.color.black)
-            reltativeTopIn.setImageResource(R.color.black)
+            reltativeTop.setBackgroundResource(R.color.white)
+            reltativeTopIn.setImageResource(R.drawable.logo)
         }
 
         postInitParams(mContext)
@@ -184,7 +186,7 @@ class SplashActivity : AppCompatActivity() {
                 if (PreferenceManager().getLoggedInStatus(mContext).equals("")) {
                     PreferenceManager().setUserId(mContext, "")
                     PreferenceManagerr.setUserId(mContext, "")
-                  /*  val dummyOwn: ArrayList<OwnContactModel> = ArrayList<OwnContactModel>()
+                    val dummyOwn: ArrayList<OwnContactModel> = ArrayList<OwnContactModel>()
                     val dummyKin: ArrayList<KinModel> = ArrayList<KinModel>()
                     val dummyInsurance: ArrayList<InsuranceDetailModel> =
                         ArrayList<InsuranceDetailModel>()
@@ -192,11 +194,11 @@ class SplashActivity : AppCompatActivity() {
                         ArrayList<PassportDetailModel>()
                     val dummyStudent: ArrayList<StudentModelNew> = ArrayList<StudentModelNew>()
                     PreferenceManager().saveOwnDetailArrayList(dummyOwn, "OwnContact", mContext)
-                    PreferenceManager().saveKinDetailsArrayListShow(dummyKin, mContext)
-                    PreferenceManager().saveKinDetailsArrayList(dummyKin, mContext)
+                   // PreferenceManager().saveKinDetailsArrayListShow(mContext,dummyKin)
+                   // PreferenceManager().saveKinDetailsArrayList(dummyKin, mContext)
                     PreferenceManager().saveInsuranceDetailArrayList(dummyInsurance, mContext)
                     PreferenceManager().savePassportDetailArrayList(dummyPassport, mContext)
-                    PreferenceManager().saveInsuranceStudentList(dummyStudent, mContext)*/
+                    PreferenceManager().saveInsuranceStudentList(dummyStudent, mContext)
                     val loginIntent = Intent(
                         mContext,
                         LoginActivity::class.java
