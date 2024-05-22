@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.bskl_kotlin.R
-import com.example.bskl_kotlin.activity.datacollection_p2.model.PassportDetailModel
 import com.example.bskl_kotlin.activity.settings.adapter.LocalEmergencyRecyclerAdapter
 import com.example.bskl_kotlin.activity.settings.adapter.NextOfKinRecyclerAdapter
 import com.example.bskl_kotlin.activity.settings.adapter.PassportDetailRecyclerAdapter
@@ -33,9 +32,6 @@ import com.example.bskl_kotlin.activity.settings.model.UserprofileStudentApiMode
 import com.example.bskl_kotlin.activity.settings.model.UserprofileStudentResponseModel
 import com.example.bskl_kotlin.common.PreferenceManager
 import com.example.bskl_kotlin.manager.AppUtils
-import com.example.kingsapp.activities.calender.model.StudentDetailModel
-import org.json.JSONArray
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

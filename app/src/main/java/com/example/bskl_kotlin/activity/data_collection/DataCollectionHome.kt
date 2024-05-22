@@ -740,6 +740,7 @@ class DataCollectionHome:AppCompatActivity(), ViewPager.OnPageChangeListener,
         val call: Call<TriggerUserModel> = ApiClient.getClient.submit_datacollection_new(
             submitdatamodel,"Bearer "+ PreferenceManager().getaccesstoken(mContext).toString()
         )
+        Log.e("call",call.toString())
 
         call.enqueue(object : Callback<TriggerUserModel> {
             override fun onFailure(call: Call<TriggerUserModel>, t: Throwable) {

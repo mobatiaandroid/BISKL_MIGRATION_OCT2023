@@ -1,5 +1,5 @@
 package com.example.bskl_kotlin.activity.datacollection_p2
-import android.app.Activity
+
 import android.app.Dialog
 import android.content.Context
 import android.graphics.Color
@@ -52,8 +52,8 @@ class FirstScreenNewData : Fragment() {
     var messageTxt: TextView? =
         null
     var nameOwnDetailTxt: TextView? = null
-    var contactTypeOwnDetailTxt: android.widget.TextView? = null
-    var HelpView: android.widget.TextView? = null
+    var contactTypeOwnDetailTxt: TextView? = null
+    var HelpView: TextView? = null
     lateinit var mContext: Context
     var changedField = ""
     var request_state = ""
@@ -87,18 +87,18 @@ class FirstScreenNewData : Fragment() {
     var ContactList: ArrayList<ContactTypeModel>? = null
     var KinArray: ArrayList<KinModel> = ArrayList<KinModel>()
     var NoDataLayout: LinearLayout? = null
-    var RecyclerLayout: android.widget.LinearLayout? = null
+    var RecyclerLayout: LinearLayout? = null
     var mRecyclerView: RecyclerView? = null
     var familyKinRecyclerAdapter: FamilyKinRecyclerAdapter? = null
     var Fname: EditText? = null
     lateinit var spinnerDialog: SpinnerDialog
     var Lname: EditText? = null
     var Email: EditText? = null
-    var Concatc_details_phone: android.widget.EditText? = null
+    var Concatc_details_phone: EditText? = null
     var NoContentPlusIcon: ImageView? =
         null
-    var RecyclerPlusIcon: android.widget.ImageView? = null
-    var CloseIcon: android.widget.ImageView? = null
+    var RecyclerPlusIcon: ImageView? = null
+    var CloseIcon: ImageView? = null
     var SubmitKinArray: ArrayList<KinModel>? = null
     var GSONarray = ArrayList<String>()
     var OwnDetailArray = ArrayList<String>()
@@ -158,8 +158,8 @@ class FirstScreenNewData : Fragment() {
         }
         val mLayoutManager: RecyclerView.LayoutManager =
             LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false)
-        mRecyclerView!!.setLayoutManager(mLayoutManager)
-        mRecyclerView!!.setItemAnimator(DefaultItemAnimator())
+        mRecyclerView!!.layoutManager = mLayoutManager
+        mRecyclerView!!.itemAnimator = DefaultItemAnimator()
 
 
 
@@ -168,7 +168,7 @@ class FirstScreenNewData : Fragment() {
 
 
         //Created By Aparna
-        if (PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext) == null) {
+        if (PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext) == null) {
             //   System.out.println("null works");
         }
 
@@ -180,61 +180,65 @@ class FirstScreenNewData : Fragment() {
                     .equals("") && !mOwnContactArrayList!![0].last_name
                     .equals("")
             ) {
-                nameOwnDetailTxt!!.setText(mOwnContactArrayList!![0].name + " " + mOwnContactArrayList!![0].last_name)
+                nameOwnDetailTxt!!.text = mOwnContactArrayList!![0].name + " " + mOwnContactArrayList!![0].last_name
             } else if (!mOwnContactArrayList!![0].name
                     .equals("") && mOwnContactArrayList!![0].last_name
                     .equals("")
             ) {
-                nameOwnDetailTxt!!.setText(mOwnContactArrayList!![0].name)
+                nameOwnDetailTxt!!.text = mOwnContactArrayList!![0].name
             } else {
-                nameOwnDetailTxt!!.setText(mOwnContactArrayList!![0].name)
+                nameOwnDetailTxt!!.text = mOwnContactArrayList!![0].name
             }
             if (!mOwnContactArrayList!![0].relationship.equals("")) {
-                contactTypeOwnDetailTxt!!.setText(mOwnContactArrayList!![0].relationship)
+                contactTypeOwnDetailTxt!!.text = mOwnContactArrayList!![0].relationship
             } else {
-                contactTypeOwnDetailTxt!!.setText("")
+                contactTypeOwnDetailTxt!!.text = ""
             }
             if (mOwnContactArrayList!![0].isUpdated) {
                 ownDetailViewRelative!!.setBackgroundResource(R.drawable.rect_background_grey)
-                confirmBtnMain!!.setVisibility(View.GONE)
+                confirmBtnMain!!.visibility = View.GONE
             } else {
                 ownDetailViewRelative!!.setBackgroundResource(R.drawable.rect_data_collection_red)
-                confirmBtnMain!!.setVisibility(View.VISIBLE)
+                confirmBtnMain!!.visibility = View.VISIBLE
             }
         }
         if (PreferenceManager().getDisplayMessage(mContext).equals("")) {
-            messageTxt!!.setText("")
+            messageTxt!!.text = ""
         } else {
-            messageTxt!!.setText(PreferenceManager().getDisplayMessage(mContext))
+            messageTxt!!.text = PreferenceManager().getDisplayMessage(mContext)
         }
         //    System.out.println("Kin array bshow nsize"+PreferenceManager().getKinDetailsArrayListShow(mContext).size);
 
         //    System.out.println("Kin array bshow nsize"+PreferenceManager().getKinDetailsArrayListShow(mContext).size);
-        Log.e("prefkinfirst",PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.size.toString())
-        if (PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext) == null) {
+        Log.e(
+            "prefkinfirst",
+            PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!.size.toString()
+        )
+        if (PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext) == null) {
         } else {
-            AppController.kinArrayShow=PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!
+            AppController.kinArrayShow =
+                PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!
             //PreferenceManager().setkinArrayShow("kinshow",mContext,PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!)
-           /* AppController.kinArrayShow =
-                PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!
-            CommonClass.kinArrayPass = PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!*/
+            /* AppController.kinArrayShow =
+                 PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!
+             CommonClass.kinArrayPass = PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!*/
         }
-        Log.e("comm",AppController.kinArrayShow.size.toString())
+        Log.e("comm", AppController.kinArrayShow.size.toString())
         if (AppController.kinArrayShow.size > 0) {
-            RecyclerLayout!!.setVisibility(View.VISIBLE)
-            NoDataLayout!!.setVisibility(View.GONE)
+            RecyclerLayout!!.visibility = View.VISIBLE
+            NoDataLayout!!.visibility = View.GONE
             for (i in 0 until AppController.kinArrayShow.size) {
                 //   System.out.println("A_DATA: "+AppController.kinArrayShow.get(i).name);
             }
-Log.e("kinad",AppController.kinArrayShow.size.toString())
-            var llm=LinearLayoutManager(mContext)
-            mRecyclerView!!.layoutManager=llm
+            Log.e("kinad", AppController.kinArrayShow.size.toString())
+            var llm = LinearLayoutManager(mContext)
+            mRecyclerView!!.layoutManager = llm
             familyKinRecyclerAdapter =
                 FamilyKinRecyclerAdapter(mContext, AppController.kinArrayShow)
             mRecyclerView!!.adapter = familyKinRecyclerAdapter
         } else {
-            NoDataLayout!!.setVisibility(View.VISIBLE)
-            RecyclerLayout!!.setVisibility(View.GONE)
+            NoDataLayout!!.visibility = View.VISIBLE
+            RecyclerLayout!!.visibility = View.GONE
         }
         mRecyclerView!!.addOnItemTouchListener(
             RecyclerItemListener(mContext, mRecyclerView!!,
@@ -266,6 +270,7 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
 
 
     }
+
     private fun ShowHelpDialog(
         activity: Context,
         help: String,
@@ -411,8 +416,10 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
             "Select Country",
             "Close"
         ) // With No Animation
-        spinnerDialog =SpinnerDialog(getActivity(),nationalStringArray,"Select Country",
-            R.style.DialogAnimations_SmileWindow,"Close") // With 	Animation
+        spinnerDialog = SpinnerDialog(
+            getActivity(), nationalStringArray, "Select Country",
+            R.style.DialogAnimations_SmileWindow, "Close"
+        ) // With 	Animation
         // setDataToAdapter(nationalStringArray);
         spinnerDialog.setCancellable(true) // for cancellable
         spinnerDialog.setShowKeyboard(false) // for open keyboard by default
@@ -577,7 +584,7 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
             //            PreferenceManager().setIsValueEmpty(mContext,"1");
 //           PreferenceManager().setWhoValueEmpty(mContext,"Please add one contact as a minimum.");
         } else {
-            Country.setText(mOwnContactArray[0].country)
+            Country.text = mOwnContactArray[0].country
             //            PreferenceManager().setIsValueEmpty(mContext,"0");
         }
         if (mOwnContactArray[0].pincode.equals("")) {
@@ -877,32 +884,32 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)!!.clear()
                 val mOwnContactData = java.util.ArrayList<OwnContactModel>()
                 val mModel = OwnContactModel()
-                mModel.id=id
-                mModel.user_id=userId
-                mModel.title=DropEdt.text.toString()
-                mModel.name=FirstName.text.toString().trim { it <= ' ' }
-                mModel.last_name=LastName.text.toString().trim { it <= ' ' }
-                mModel.relationship=RelationalSp.text.toString()
-                mModel.email=Email.text.toString().trim { it <= ' ' }
-                mModel.phone=Phone.text.toString()
-                mModel.code=CountryCode.getSelectedCountryCode()
-                mModel.user_mobile=user_mobile
-                mModel.student_id=studentId
-                mModel.address1=Adr1.text.toString().trim { it <= ' ' }
-                mModel.address2=Adr2.text.toString().trim { it <= ' ' }
-                mModel.address3=Adr3.text.toString().trim { it <= ' ' }
-                mModel.town=Twn.text.toString().trim { it <= ' ' }
-                mModel.state=State.text.toString().trim { it <= ' ' }
-                mModel.country=Country.text.toString().trim { it <= ' ' }
-                mModel.pincode=PostCode.text.toString().trim { it <= ' ' }
-                mModel.status="1"
-                mModel.created_at=created_at
-                mModel.updated_at=updated_at
-                mModel.reportmailmerge=contactOwn
-                mModel.justcontact=justContact
-                mModel.correspondencemailmerge=corresspondanceOwn
-                mModel.isUpdated=false
-                mModel.isConfirmed=false
+                mModel.id = id
+                mModel.user_id = userId
+                mModel.title = DropEdt.text.toString()
+                mModel.name = FirstName.text.toString().trim { it <= ' ' }
+                mModel.last_name = LastName.text.toString().trim { it <= ' ' }
+                mModel.relationship = RelationalSp.text.toString()
+                mModel.email = Email.text.toString().trim { it <= ' ' }
+                mModel.phone = Phone.text.toString()
+                mModel.code = CountryCode.selectedCountryCode
+                mModel.user_mobile = user_mobile
+                mModel.student_id = studentId
+                mModel.address1 = Adr1.text.toString().trim { it <= ' ' }
+                mModel.address2 = Adr2.text.toString().trim { it <= ' ' }
+                mModel.address3 = Adr3.text.toString().trim { it <= ' ' }
+                mModel.town = Twn.text.toString().trim { it <= ' ' }
+                mModel.state = State.text.toString().trim { it <= ' ' }
+                mModel.country = Country.text.toString().trim { it <= ' ' }
+                mModel.pincode = PostCode.text.toString().trim { it <= ' ' }
+                mModel.status = "1"
+                mModel.created_at = created_at
+                mModel.updated_at = updated_at
+                mModel.reportmailmerge = contactOwn
+                mModel.justcontact = justContact
+                mModel.correspondencemailmerge = corresspondanceOwn
+                mModel.isUpdated = false
+                mModel.isConfirmed = false
                 mOwnContactData.add(mModel)
                 ownDetailViewRelative!!.setBackgroundResource(R.drawable.rect_data_collection_red)
                 confirmBtnMain!!.visibility = View.VISIBLE
@@ -914,44 +921,37 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                         mContext
                     )!!.get(0).last_name.equals("")
                 ) {
-                    nameOwnDetailTxt!!.setText(
-                        PreferenceManager().getOwnDetailArrayList(
-                            "OwnContact",
-                            mContext
-                        )!!.get(0).name + " " + PreferenceManager().getOwnDetailArrayList(
-                            "OwnContact",
-                            mContext
-                        )!!.get(0).last_name
-                    )
-                } else if (!PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)!!.get(0)
+                    nameOwnDetailTxt!!.text = PreferenceManager().getOwnDetailArrayList(
+                        "OwnContact",
+                        mContext
+                    )!!.get(0).name + " " + PreferenceManager().getOwnDetailArrayList(
+                        "OwnContact",
+                        mContext
+                    )!!.get(0).last_name
+                } else if (!PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)!!
+                        .get(0)
                         .name.equals("") && PreferenceManager().getOwnDetailArrayList(
                         "OwnContact",
                         mContext
                     )!!.get(0).last_name.equals("")
                 ) {
-                    nameOwnDetailTxt!!.setText(
-                        PreferenceManager().getOwnDetailArrayList(
-                            "OwnContact",
-                            mContext
-                        )!!.get(0).name
-                    )
+                    nameOwnDetailTxt!!.text = PreferenceManager().getOwnDetailArrayList(
+                        "OwnContact",
+                        mContext
+                    )!!.get(0).name
                 } else {
-                    nameOwnDetailTxt!!.setText(
-                        PreferenceManager().getOwnDetailArrayList(
-                            "OwnContact",
-                            mContext
-                        )!!.get(0).name
-                    )
+                    nameOwnDetailTxt!!.text = PreferenceManager().getOwnDetailArrayList(
+                        "OwnContact",
+                        mContext
+                    )!!.get(0).name
                 }
                 if (!PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)!!.get(0)
                         .relationship.equals("")
                 ) {
-                    contactTypeOwnDetailTxt!!.setText(
-                        PreferenceManager().getOwnDetailArrayList(
-                            "OwnContact",
-                            mContext
-                        )!!.get(0).relationship
-                    )
+                    contactTypeOwnDetailTxt!!.text = PreferenceManager().getOwnDetailArrayList(
+                        "OwnContact",
+                        mContext
+                    )!!.get(0).relationship
                 } else {
                     contactTypeOwnDetailTxt!!.text = ""
                 }
@@ -1132,40 +1132,44 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                 R.drawable.round
                             )
                         } else {
-                            PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)!!.clear()
+                            PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)!!
+                                .clear()
                             val mOwnContactData = java.util.ArrayList<OwnContactModel>()
                             val mModel = OwnContactModel()
-                            mModel.id=id
-                            mModel.user_id=userId
-                            mModel.title=DropEdt.text.toString()
-                            mModel.name=FirstName.text.toString().trim { it <= ' ' }
-                            mModel.last_name=LastName.text.toString().trim { it <= ' ' }
-                            mModel.relationship=RelationalSp.text.toString()
-                            mModel.email=Email.text.toString().trim { it <= ' ' }
-                            mModel.phone=Phone.text.toString()
-                            mModel.code=CountryCode.getSelectedCountryCode()
-                            mModel.user_mobile=user_mobile
-                            mModel.student_id=studentId
-                            mModel.address1=Adr1.text.toString().trim { it <= ' ' }
-                            mModel.address2=Adr2.text.toString().trim { it <= ' ' }
-                            mModel.address3=Adr3.text.toString().trim { it <= ' ' }
-                            mModel.town=Twn.text.toString().trim { it <= ' ' }
-                            mModel.state=State.text.toString().trim { it <= ' ' }
-                            mModel.country=Country.text.toString().trim { it <= ' ' }
-                            mModel.pincode=PostCode.text.toString().trim { it <= ' ' }
-                            mModel.status="1"
-                            mModel.created_at= created_at.toString()
-                            mModel.updated_at=updated_at
-                            mModel.isUpdated=true
-                            mModel.isConfirmed=true
-                            mModel.reportmailmerge=contactOwn
-                            mModel.justcontact=justContact
-                            mModel.correspondencemailmerge=corresspondanceOwn
+                            mModel.id = id
+                            mModel.user_id = userId
+                            mModel.title = DropEdt.text.toString()
+                            mModel.name = FirstName.text.toString().trim { it <= ' ' }
+                            mModel.last_name = LastName.text.toString().trim { it <= ' ' }
+                            mModel.relationship = RelationalSp.text.toString()
+                            mModel.email = Email.text.toString().trim { it <= ' ' }
+                            mModel.phone = Phone.text.toString()
+                            mModel.code = CountryCode.selectedCountryCode
+                            mModel.user_mobile = user_mobile
+                            mModel.student_id = studentId
+                            mModel.address1 = Adr1.text.toString().trim { it <= ' ' }
+                            mModel.address2 = Adr2.text.toString().trim { it <= ' ' }
+                            mModel.address3 = Adr3.text.toString().trim { it <= ' ' }
+                            mModel.town = Twn.text.toString().trim { it <= ' ' }
+                            mModel.state = State.text.toString().trim { it <= ' ' }
+                            mModel.country = Country.text.toString().trim { it <= ' ' }
+                            mModel.pincode = PostCode.text.toString().trim { it <= ' ' }
+                            mModel.status = "1"
+                            mModel.created_at = created_at.toString()
+                            mModel.updated_at = updated_at
+                            mModel.isUpdated = true
+                            mModel.isConfirmed = true
+                            mModel.reportmailmerge = contactOwn
+                            mModel.justcontact = justContact
+                            mModel.correspondencemailmerge = corresspondanceOwn
                             mOwnContactData.add(mModel)
                             val gson = Gson()
                             val json = gson.toJson(mModel)
                             OwnDetailArray.add(json)
-                            PreferenceManager().saveOwnDetailsJSONArrayList(OwnDetailArray, mContext)
+                            PreferenceManager().saveOwnDetailsJSONArrayList(
+                                OwnDetailArray,
+                                mContext
+                            )
                             ownDetailViewRelative!!.setBackgroundResource(R.drawable.rect_background_grey)
                             confirmBtnMain!!.visibility = View.GONE
                             PreferenceManager().saveOwnDetailArrayList(
@@ -1174,22 +1178,20 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                 mContext
                             )
                             if (!PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)
-                                    !!.get(0).name
+                                !!.get(0).name
                                     .equals("") && !PreferenceManager().getOwnDetailArrayList(
                                     "OwnContact",
                                     mContext
                                 )!!.get(0).last_name.equals("")
                             ) {
-                                nameOwnDetailTxt!!.setText(
-                                    PreferenceManager().getOwnDetailArrayList(
-                                        "OwnContact",
-                                        mContext
-                                    )!!.get(0)
-                                        .name + " " + PreferenceManager().getOwnDetailArrayList(
-                                        "OwnContact",
-                                        mContext
-                                    )!!.get(0).last_name
-                                )
+                                nameOwnDetailTxt!!.text = PreferenceManager().getOwnDetailArrayList(
+                                    "OwnContact",
+                                    mContext
+                                )!!.get(0)
+                                    .name + " " + PreferenceManager().getOwnDetailArrayList(
+                                    "OwnContact",
+                                    mContext
+                                )!!.get(0).last_name
                             } else if (!PreferenceManager().getOwnDetailArrayList(
                                     "OwnContact",
                                     mContext
@@ -1199,29 +1201,23 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                     mContext
                                 )!!.get(0).last_name.equals("")
                             ) {
-                                nameOwnDetailTxt!!.setText(
-                                    PreferenceManager().getOwnDetailArrayList(
-                                        "OwnContact",
-                                        mContext
-                                    )!!.get(0).name
-                                )
+                                nameOwnDetailTxt!!.text = PreferenceManager().getOwnDetailArrayList(
+                                    "OwnContact",
+                                    mContext
+                                )!!.get(0).name
                             } else {
-                                nameOwnDetailTxt!!.setText(
-                                    PreferenceManager().getOwnDetailArrayList(
-                                        "OwnContact",
-                                        mContext
-                                    )!!.get(0).name
-                                )
+                                nameOwnDetailTxt!!.text = PreferenceManager().getOwnDetailArrayList(
+                                    "OwnContact",
+                                    mContext
+                                )!!.get(0).name
                             }
-                            if (!PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)!!.get(0).relationship.equals("")
+                            if (!PreferenceManager().getOwnDetailArrayList("OwnContact", mContext)!!
+                                    .get(0).relationship.equals("")
                             ) {
-                                contactTypeOwnDetailTxt!!.setText(
-                                    PreferenceManager().getOwnDetailArrayList(
-                                        "OwnContact",
-                                        mContext
-                                    )!!.get(0).relationship
-                                    
-                                )
+                                contactTypeOwnDetailTxt!!.text = PreferenceManager().getOwnDetailArrayList(
+                                    "OwnContact",
+                                    mContext
+                                )!!.get(0).relationship
                             } else {
                                 contactTypeOwnDetailTxt!!.text = ""
                             }
@@ -1259,6 +1255,7 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
         dialogButton.setOnClickListener { dialog.dismiss() }
         dialog.show()
     }
+
     fun showDialogAlertTriggerDataCollection(
         context: Context,
         msgHead: String?,
@@ -1362,7 +1359,7 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
         ContactSpinner.setOnClickListener { ContactSpinner.showDropDown() }
         ContactList!!.addAll(PreferenceManager().getContactTypeArrayList(mContext))
         val RelationalSpinnerData = ArrayList<String>()
-        Log.e("contactsize",ContactList!!.size.toString())
+        Log.e("contactsize", ContactList!!.size.toString())
         for (i in ContactList!!.indices) {
             for (j in 0 until ContactList!![i].mGlobalSirnameArray!!.size) {
                 System.out.println(
@@ -1374,8 +1371,8 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 //                System.out.println("Global: Contact: "+ ContactList.get(i).getType().equals("Title"));
             }
         }
-        Log.e("relsize",RelationalSpinnerData.size.toString())
-        var llm=LinearLayoutManager(mContext)
+        Log.e("relsize", RelationalSpinnerData.size.toString())
+        var llm = LinearLayoutManager(mContext)
         val relationalArray = ArrayAdapter(
             mContext, android.R.layout.simple_list_item_1, RelationalSpinnerData
         )
@@ -1383,16 +1380,16 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
         RelationalSpinner.setAdapter(relationalArray)
         RelationalSpinner.isFocusable = false
         RelationalSpinner.setOnClickListener {
-            Log.e("relspinn","click")
+            Log.e("relspinn", "click")
             RelationalSpinner.showDropDown()
-           /* if (!RelationalSpinner.text.toString()
-                    .equals("Driver", ignoreCase = true) && !RelationalSpinner.text.toString()
-                    .equals("Domestic Helper", ignoreCase = true)
-            ) {
-                emailKin.setHint(R.string.AST_EMAIL)
-            } else {
-                emailKin.setHint(R.string.AST_EMAIL_NO)
-            }*/
+            /* if (!RelationalSpinner.text.toString()
+                     .equals("Driver", ignoreCase = true) && !RelationalSpinner.text.toString()
+                     .equals("Domestic Helper", ignoreCase = true)
+             ) {
+                 emailKin.setHint(R.string.AST_EMAIL)
+             } else {
+                 emailKin.setHint(R.string.AST_EMAIL_NO)
+             }*/
         }
         ContactSpinner.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
@@ -1626,47 +1623,50 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                         val TempId =
                                                             "Mobatia_$tempId"
                                                         val model = KinModel()
-                                                        model.status="0"
-                                                        model.request="1"
-                                                        model.name=
+                                                        model.status = "0"
+                                                        model.request = "1"
+                                                        model.name =
                                                             firstName.text.toString()
                                                                 .trim { it <= ' ' }
-                                                        model.last_name=
+                                                        model.last_name =
                                                             lastName.text.toString()
                                                                 .trim { it <= ' ' }
-                                                        model.email=
+                                                        model.email =
                                                             emailKin.text.toString()
                                                                 .trim { it <= ' ' }
-                                                        model.title=ContactSpinner.text.toString()
-                                                        model.kin_id=TempId
-                                                        model.relationship=RelationalSpinner.text.toString()
-                                                        model.code=countryCode.textView_selectedCountry.text.toString()
-                                                        model.user_mobile=contactNumber.text.toString()
-                                                        model.student_id=""
-                                                        model.created_at=""
-                                                        model.updated_at=""
-                                                        model.correspondencemailmerge=""
-                                                        model.reportmailmerge=""
-                                                        model.justcontact=""
-                                                        model.phone=contactNumber.text.toString()
-                                                        model.id=TempId
-                                                        model.user_id=
+                                                        model.title = ContactSpinner.text.toString()
+                                                        model.kin_id = TempId
+                                                        model.relationship =
+                                                            RelationalSpinner.text.toString()
+                                                        model.code =
+                                                            countryCode.textView_selectedCountry.text.toString()
+                                                        model.user_mobile =
+                                                            contactNumber.text.toString()
+                                                        model.student_id = ""
+                                                        model.created_at = ""
+                                                        model.updated_at = ""
+                                                        model.correspondencemailmerge = ""
+                                                        model.reportmailmerge = ""
+                                                        model.justcontact = ""
+                                                        model.phone = contactNumber.text.toString()
+                                                        model.id = TempId
+                                                        model.user_id =
                                                             PreferenceManager().getUserId(
                                                                 mContext
                                                             )
-                                                        
-                                                        model.isFullFilled=true
-                                                        model.isNewData=true
-                                                        model.isConfirmed=true
+
+                                                        model.isFullFilled = true
+                                                        model.isNewData = true
+                                                        model.isConfirmed = true
                                                         CommonClass.kinArrayPass.add(model)
                                                         AppController.kinArrayShow.add(model)
                                                         if (PreferenceManager().getKinDetailsArrayListShow(
-                                                                "kinshow",mContext
+                                                                "kinshow", mContext
                                                             ) == null
                                                         ) {
                                                             PreferenceManager().saveKinDetailsArrayList(
                                                                 CommonClass.kinArrayPass,
-                                                                "kinshow",mContext
+                                                                "kinshow", mContext
                                                             )
                                                             PreferenceManager().saveKinDetailsArrayListShow(
                                                                 AppController.kinArrayShow,
@@ -1677,11 +1677,11 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                                 "kinshow", mContext
                                                             )!!.clear()
                                                             PreferenceManager().getKinDetailsArrayList(
-                                                                "kinshow",  mContext
+                                                                "kinshow", mContext
                                                             )!!.clear()
                                                             PreferenceManager().saveKinDetailsArrayList(
                                                                 CommonClass.kinArrayPass,
-                                                                "kinshow",mContext
+                                                                "kinshow", mContext
                                                             )
                                                             PreferenceManager().saveKinDetailsArrayListShow(
                                                                 AppController.kinArrayShow,
@@ -1698,8 +1698,8 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                             View.VISIBLE
                                                         NoDataLayout!!.visibility =
                                                             View.GONE
-                                                        var llm=LinearLayoutManager(mContext)
-                                                        mRecyclerView!!.layoutManager=llm
+                                                        var llm = LinearLayoutManager(mContext)
+                                                        mRecyclerView!!.layoutManager = llm
                                                         familyKinRecyclerAdapter =
                                                             FamilyKinRecyclerAdapter(
                                                                 mContext,
@@ -1716,39 +1716,42 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                         val TempId =
                                                             "Mobatia_$tempId"
                                                         val model = KinModel()
-                                                        model.status="0"
-                                                        model.request="1"
-                                                        model.name=
+                                                        model.status = "0"
+                                                        model.request = "1"
+                                                        model.name =
                                                             firstName.text.toString()
                                                                 .trim { it <= ' ' }
-                                                        model.last_name=
+                                                        model.last_name =
                                                             lastName.text.toString()
                                                                 .trim { it <= ' ' }
-                                                        model.email=
+                                                        model.email =
                                                             emailKin.text.toString()
                                                                 .trim { it <= ' ' }
-                                                        model.title=ContactSpinner.text.toString()
-                                                        model.kin_id=TempId
-                                                        model.relationship=RelationalSpinner.text.toString()
-                                                        model.code=countryCode.textView_selectedCountry.text.toString()
-                                                        model.user_mobile=contactNumber.text.toString()
-                                                        model.student_id=""
-                                                        model.created_at=""
-                                                        model.updated_at=""
-                                                        model.phone=contactNumber.text.toString()
-                                                        model.id=TempId
-                                                        model.user_id=
+                                                        model.title = ContactSpinner.text.toString()
+                                                        model.kin_id = TempId
+                                                        model.relationship =
+                                                            RelationalSpinner.text.toString()
+                                                        model.code =
+                                                            countryCode.textView_selectedCountry.text.toString()
+                                                        model.user_mobile =
+                                                            contactNumber.text.toString()
+                                                        model.student_id = ""
+                                                        model.created_at = ""
+                                                        model.updated_at = ""
+                                                        model.phone = contactNumber.text.toString()
+                                                        model.id = TempId
+                                                        model.user_id =
                                                             PreferenceManager().getUserId(
                                                                 mContext
                                                             )
-                                                        
-                                                        model.isFullFilled=true
-                                                        model.isNewData=true
-                                                        model.isConfirmed=true
+
+                                                        model.isFullFilled = true
+                                                        model.isNewData = true
+                                                        model.isConfirmed = true
                                                         CommonClass.kinArrayPass.add(model)
                                                         AppController.kinArrayShow.add(model)
                                                         if (PreferenceManager().getKinDetailsArrayListShow(
-                                                                "kinshow",mContext
+                                                                "kinshow", mContext
                                                             ) == null
                                                         ) {
                                                             PreferenceManager().saveKinDetailsArrayList(
@@ -1768,13 +1771,14 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                             )!!.clear()
                                                             PreferenceManager().saveKinDetailsArrayList(
                                                                 CommonClass.kinArrayPass,
-                                                                "kinshow",mContext
+                                                                "kinshow", mContext
                                                             )
                                                             PreferenceManager().saveKinDetailsArrayListShow(
                                                                 AppController.kinArrayShow,
                                                                 "kinshow", mContext
                                                             )
-                                                            AppController.kinArrayShow=AppController.kinArrayShow
+                                                            AppController.kinArrayShow =
+                                                                AppController.kinArrayShow
                                                             //PreferenceManager().setkinArrayShow("kinshow",mContext,AppController.kinArrayShow)
                                                             System.out.println(
                                                                 "Kin array bshow nsizeinside" + AppController.kinArrayShow.size
@@ -1783,16 +1787,19 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                         System.out.println("Kin array show Size" + AppController.kinArrayShow.size)
                                                         System.out.println(
                                                             "Kin array bshow nsize" + PreferenceManager().getKinDetailsArrayListShow(
-                                                                "kinshow",mContext
+                                                                "kinshow", mContext
                                                             )!!.size
                                                         )
                                                         RecyclerLayout!!.visibility =
                                                             View.VISIBLE
                                                         NoDataLayout!!.visibility =
                                                             View.GONE
-                                                        var llm=LinearLayoutManager(mContext)
-                                                        mRecyclerView!!.layoutManager=llm
-                                                        Log.e("com0",AppController.kinArrayShow.size.toString())
+                                                        var llm = LinearLayoutManager(mContext)
+                                                        mRecyclerView!!.layoutManager = llm
+                                                        Log.e(
+                                                            "com0",
+                                                            AppController.kinArrayShow.size.toString()
+                                                        )
                                                         familyKinRecyclerAdapter =
                                                             FamilyKinRecyclerAdapter(
                                                                 mContext,
@@ -1853,62 +1860,73 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                         tempId = tempId + 1
                                         val TempId = "Mobatia_$tempId"
                                         val model = KinModel()
-                                        model.status="0"
-                                        model.request="1"
-                                        model.name=firstName.text.toString().trim { it <= ' ' }
-                                        model.last_name=
+                                        model.status = "0"
+                                        model.request = "1"
+                                        model.name = firstName.text.toString().trim { it <= ' ' }
+                                        model.last_name =
                                             lastName.text.toString().trim { it <= ' ' }
-                                        model.email=emailKin.text.toString().trim { it <= ' ' }
-                                        model.title=ContactSpinner.text.toString()
-                                        model.kin_id=TempId
-                                        model.relationship=RelationalSpinner.text.toString()
-                                        model.code=countryCode.textView_selectedCountry.text.toString()
-                                        model.user_mobile=contactNumber.text.toString()
-                                        model.student_id=""
-                                        model.created_at=""
-                                        model.updated_at=""
-                                        model.correspondencemailmerge=""
-                                        model.reportmailmerge=""
-                                        model.justcontact=""
-                                        model.phone=contactNumber.text.toString()
-                                        model.id=TempId
-                                        model.user_id=PreferenceManager().getUserId(mContext)
-                                        model.isFullFilled=true
-                                        model.isNewData=true
-                                        model.isConfirmed=true
+                                        model.email = emailKin.text.toString().trim { it <= ' ' }
+                                        model.title = ContactSpinner.text.toString()
+                                        model.kin_id = TempId
+                                        model.relationship = RelationalSpinner.text.toString()
+                                        model.code =
+                                            countryCode.textView_selectedCountry.text.toString()
+                                        model.user_mobile = contactNumber.text.toString()
+                                        model.student_id = ""
+                                        model.created_at = ""
+                                        model.updated_at = ""
+                                        model.correspondencemailmerge = ""
+                                        model.reportmailmerge = ""
+                                        model.justcontact = ""
+                                        model.phone = contactNumber.text.toString()
+                                        model.id = TempId
+                                        model.user_id = PreferenceManager().getUserId(mContext)
+                                        model.isFullFilled = true
+                                        model.isNewData = true
+                                        model.isConfirmed = true
                                         CommonClass.kinArrayPass.add(model)
                                         AppController.kinArrayShow.add(model)
-                                        if (PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext) == null) {
+                                        if (PreferenceManager().getKinDetailsArrayListShow(
+                                                "kinshow",
+                                                mContext
+                                            ) == null
+                                        ) {
                                             PreferenceManager().saveKinDetailsArrayList(
                                                 CommonClass.kinArrayPass,
-                                                "kinshow",mContext
+                                                "kinshow", mContext
                                             )
                                             PreferenceManager().saveKinDetailsArrayListShow(
                                                 AppController.kinArrayShow,
                                                 "kinshow", mContext
                                             )
                                         } else {
-                                            PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                                            PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
+                                            PreferenceManager().getKinDetailsArrayListShow(
+                                                "kinshow",
+                                                mContext
+                                            )!!.clear()
+                                            PreferenceManager().getKinDetailsArrayList(
+                                                "kinshow",
+                                                mContext
+                                            )!!.clear()
                                             PreferenceManager().saveKinDetailsArrayList(
                                                 CommonClass.kinArrayPass,
-                                                "kinshow",mContext
+                                                "kinshow", mContext
                                             )
                                             PreferenceManager().saveKinDetailsArrayListShow(
                                                 AppController.kinArrayShow,
-                                                "kinshow",mContext
+                                                "kinshow", mContext
                                             )
                                         }
                                         System.out.println("Kin array show Size" + AppController.kinArrayShow.size)
                                         System.out.println(
                                             "Kin array bshow nsize" + PreferenceManager().getKinDetailsArrayListShow(
-                                                "kinshow",mContext
+                                                "kinshow", mContext
                                             )!!.size
                                         )
                                         RecyclerLayout!!.visibility = View.VISIBLE
                                         NoDataLayout!!.visibility = View.GONE
-                                        var llm=LinearLayoutManager(mContext)
-                                        mRecyclerView!!.layoutManager=llm
+                                        var llm = LinearLayoutManager(mContext)
+                                        mRecyclerView!!.layoutManager = llm
                                         familyKinRecyclerAdapter = FamilyKinRecyclerAdapter(
                                             mContext,
                                             AppController.kinArrayShow
@@ -1922,59 +1940,70 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                         tempId = tempId + 1
                                         val TempId = "Mobatia_$tempId"
                                         val model = KinModel()
-                                        model.status="0"
-                                        model.request="1"
-                                        model.name=firstName.text.toString().trim { it <= ' ' }
-                                        model.last_name=
+                                        model.status = "0"
+                                        model.request = "1"
+                                        model.name = firstName.text.toString().trim { it <= ' ' }
+                                        model.last_name =
                                             lastName.text.toString().trim { it <= ' ' }
-                                        model.email=emailKin.text.toString().trim { it <= ' ' }
-                                        model.title=ContactSpinner.text.toString()
-                                        model.kin_id=TempId
-                                        model.relationship=RelationalSpinner.text.toString()
-                                        model.code=countryCode.textView_selectedCountry.text.toString()
-                                        model.user_mobile=contactNumber.text.toString()
-                                        model.student_id=""
-                                        model.created_at=""
-                                        model.updated_at=""
-                                        model.phone=contactNumber.text.toString()
-                                        model.id=TempId
-                                        model.user_id=PreferenceManager().getUserId(mContext)
-                                        model.isFullFilled=true
-                                        model.isNewData=true
-                                        model.isConfirmed=true
+                                        model.email = emailKin.text.toString().trim { it <= ' ' }
+                                        model.title = ContactSpinner.text.toString()
+                                        model.kin_id = TempId
+                                        model.relationship = RelationalSpinner.text.toString()
+                                        model.code =
+                                            countryCode.textView_selectedCountry.text.toString()
+                                        model.user_mobile = contactNumber.text.toString()
+                                        model.student_id = ""
+                                        model.created_at = ""
+                                        model.updated_at = ""
+                                        model.phone = contactNumber.text.toString()
+                                        model.id = TempId
+                                        model.user_id = PreferenceManager().getUserId(mContext)
+                                        model.isFullFilled = true
+                                        model.isNewData = true
+                                        model.isConfirmed = true
                                         CommonClass.kinArrayPass.add(model)
                                         AppController.kinArrayShow.add(model)
-                                        if (PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext) == null) {
+                                        if (PreferenceManager().getKinDetailsArrayListShow(
+                                                "kinshow",
+                                                mContext
+                                            ) == null
+                                        ) {
                                             PreferenceManager().saveKinDetailsArrayList(
                                                 CommonClass.kinArrayPass,
-                                                "kinshow",mContext
+                                                "kinshow", mContext
                                             )
                                             PreferenceManager().saveKinDetailsArrayListShow(
                                                 AppController.kinArrayShow,
                                                 "kinshow", mContext
                                             )
                                         } else {
-                                            PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                                            PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
+                                            PreferenceManager().getKinDetailsArrayListShow(
+                                                "kinshow",
+                                                mContext
+                                            )!!.clear()
+                                            PreferenceManager().getKinDetailsArrayList(
+                                                "kinshow",
+                                                mContext
+                                            )!!.clear()
                                             PreferenceManager().saveKinDetailsArrayList(
                                                 CommonClass.kinArrayPass,
-                                                "kinshow",mContext
+                                                "kinshow", mContext
                                             )
                                             PreferenceManager().saveKinDetailsArrayListShow(
                                                 AppController.kinArrayShow,
-                                                "kinshow",mContext
+                                                "kinshow", mContext
                                             )
                                         }
                                         System.out.println("Kin array show Size" + AppController.kinArrayShow.size)
                                         System.out.println(
                                             "Kin array bshow nsize" + PreferenceManager().getKinDetailsArrayListShow(
-                                                "kinshow",mContext
+                                                "kinshow", mContext
                                             )!!.size
                                         )
                                         RecyclerLayout!!.visibility = View.VISIBLE
                                         NoDataLayout!!.visibility = View.GONE
-                                        var llm=LinearLayoutManager(mContext)
-                                        mRecyclerView!!.layoutManager=llm
+                                        var llm = LinearLayoutManager(mContext)
+                                        mRecyclerView!!.layoutManager = llm
                                         familyKinRecyclerAdapter = FamilyKinRecyclerAdapter(
                                             mContext,
                                             AppController.kinArrayShow
@@ -2304,34 +2333,30 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 val contacts: String =
                     AppController.kinArrayShow.get(position).reportmailmerge.toString()
                 val model = KinModel()
-                model.status=status
-                model.request=request
-                model.name=firstName.text.toString().trim { it <= ' ' }
-                model.last_name=lastName.text.toString().trim { it <= ' ' }
-                model.email=emailKin.text.toString().trim { it <= ' ' }
-                model.title=ContactSpinner.text.toString()
-                model.kin_id=kinID
-                model.relationship=RelationalSpinner.text.toString()
-                model.code=countryCode.textView_selectedCountry.text.toString()
-                model.user_mobile=contactNumber.text.toString()
-                model.student_id=studentID
-                model.created_at=createdAT
-                model.updated_at=updatedAT
-                model.phone=contactNumber.text.toString()
-                model.id=IDs
-                model.user_id=userID
+                model.status = status
+                model.request = request
+                model.name = firstName.text.toString().trim { it <= ' ' }
+                model.last_name = lastName.text.toString().trim { it <= ' ' }
+                model.email = emailKin.text.toString().trim { it <= ' ' }
+                model.title = ContactSpinner.text.toString()
+                model.kin_id = kinID
+                model.relationship = RelationalSpinner.text.toString()
+                model.code = countryCode.textView_selectedCountry.text.toString()
+                model.user_mobile = contactNumber.text.toString()
+                model.student_id = studentID
+                model.created_at = createdAT
+                model.updated_at = updatedAT
+                model.phone = contactNumber.text.toString()
+                model.id = IDs
+                model.user_id = userID
                 // String corresspondence=AppController.kinArrayShow.get(position).correspondencemailmerge.toString;
                 //String contacts=AppController.kinArrayShow.get(position).reportmailmerge.toString;
-                model.correspondencemailmerge=corresspondence
-                model.justcontact=justcontact
-                model.reportmailmerge=contacts
-                model.isFullFilled=false
-                if (AppController.kinArrayShow.get(position).isNewData == true) {
-                    model.isNewData=true
-                } else {
-                    model.isNewData=false
-                }
-                model.isConfirmed=false
+                model.correspondencemailmerge = corresspondence
+                model.justcontact = justcontact
+                model.reportmailmerge = contacts
+                model.isFullFilled = false
+                model.isNewData = AppController.kinArrayShow.get(position).isNewData == true
+                model.isConfirmed = false
                 for (j in 0 until CommonClass.kinArrayPass.size) {
                     val dataId: String = CommonClass.kinArrayPass.get(j).id.toString()
                     if (IDs.equals(dataId, ignoreCase = true)) {
@@ -2342,10 +2367,18 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
                 AppController.kinArrayShow.add(position, model)
                 CommonClass.kinArrayPass.add(kinArrayPassPos, model)
-                PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
-                PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                PreferenceManager().saveKinDetailsArrayListShow(AppController.kinArrayShow, "kinshow",mContext)
-                PreferenceManager().saveKinDetailsArrayList(CommonClass.kinArrayPass,"kinshow", mContext)
+                PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!.clear()
+                PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!.clear()
+                PreferenceManager().saveKinDetailsArrayListShow(
+                    AppController.kinArrayShow,
+                    "kinshow",
+                    mContext
+                )
+                PreferenceManager().saveKinDetailsArrayList(
+                    CommonClass.kinArrayPass,
+                    "kinshow",
+                    mContext
+                )
                 familyKinRecyclerAdapter!!.notifyDataSetChanged()
                 dialog.dismiss()
             } else {
@@ -2401,7 +2434,7 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                         Deletedialog.findViewById<Button>(R.id.btn_Ok)
                     dialogButton.text = "Delete"
                     dialogButton.setOnClickListener {
-                        if (AppController.kinArrayShow.get(position).isNewData==true) {
+                        if (AppController.kinArrayShow.get(position).isNewData == true) {
                             var deletePos = -1
                             val newID: String =
                                 AppController.kinArrayShow.get(position).id.toString()
@@ -2414,15 +2447,17 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                 }
                             }
                             CommonClass.kinArrayPass.removeAt(deletePos)
-                            PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                            PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
+                            PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!
+                                .clear()
+                            PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!
+                                .clear()
                             PreferenceManager().saveKinDetailsArrayList(
                                 CommonClass.kinArrayPass,
-                                "kinshow",mContext
+                                "kinshow", mContext
                             )
                             PreferenceManager().saveKinDetailsArrayListShow(
                                 AppController.kinArrayShow,
-                                "kinshow",mContext
+                                "kinshow", mContext
                             )
                             familyKinRecyclerAdapter!!.notifyDataSetChanged()
                             dialog.dismiss()
@@ -2439,46 +2474,48 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                 }
                             }
                             val model = KinModel()
-                            model.status="2"
-                            model.request="0"
-                            model.name=CommonClass.kinArrayPass.get(deletePos).name
-                            model.last_name=
+                            model.status = "2"
+                            model.request = "0"
+                            model.name = CommonClass.kinArrayPass.get(deletePos).name
+                            model.last_name =
                                 CommonClass.kinArrayPass.get(deletePos).last_name
-                            
-                            model.email=CommonClass.kinArrayPass.get(deletePos).email
-                            model.title=CommonClass.kinArrayPass.get(deletePos).title
-                            model.kin_id=CommonClass.kinArrayPass.get(deletePos).id
-                            model.relationship=
+
+                            model.email = CommonClass.kinArrayPass.get(deletePos).email
+                            model.title = CommonClass.kinArrayPass.get(deletePos).title
+                            model.kin_id = CommonClass.kinArrayPass.get(deletePos).id
+                            model.relationship =
                                 CommonClass.kinArrayPass.get(deletePos).relationship
 
-                            model.code=CommonClass.kinArrayPass.get(deletePos).code
-                            model.user_mobile=
+                            model.code = CommonClass.kinArrayPass.get(deletePos).code
+                            model.user_mobile =
                                 CommonClass.kinArrayPass.get(deletePos).user_mobile
 
-                            model.student_id=
+                            model.student_id =
                                 CommonClass.kinArrayPass.get(deletePos).student_id.toString()
 
-                            model.created_at=
+                            model.created_at =
                                 CommonClass.kinArrayPass.get(deletePos).created_at.toString()
 
-                            model.updated_at=
+                            model.updated_at =
                                 CommonClass.kinArrayPass.get(deletePos).updated_at
 
-                            model.phone=CommonClass.kinArrayPass.get(deletePos).phone
-                            model.id=CommonClass.kinArrayPass.get(deletePos).id
-                            model.user_id=
+                            model.phone = CommonClass.kinArrayPass.get(deletePos).phone
+                            model.id = CommonClass.kinArrayPass.get(deletePos).id
+                            model.user_id =
                                 CommonClass.kinArrayPass.get(deletePos).user_id.toString()
 
-                            model.isFullFilled=
+                            model.isFullFilled =
                                 CommonClass.kinArrayPass.get(deletePos).isFullFilled
 
-                            model.isNewData=CommonClass.kinArrayPass.get(deletePos).isNewData
-                            model.isConfirmed=true
+                            model.isNewData = CommonClass.kinArrayPass.get(deletePos).isNewData
+                            model.isConfirmed = true
                             AppController.kinArrayShow.removeAt(position)
                             CommonClass.kinArrayPass.removeAt(deletePos)
                             CommonClass.kinArrayPass.add(deletePos, model)
-                            PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                            PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
+                            PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!
+                                .clear()
+                            PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!
+                                .clear()
                             PreferenceManager().saveKinDetailsArrayList(
                                 CommonClass.kinArrayPass,
                                 "kinshow", mContext
@@ -2531,8 +2568,9 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                             }
                         }
                         CommonClass.kinArrayPass.removeAt(deletePos)
-                        PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                        PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
+                        PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!
+                            .clear()
+                        PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!.clear()
                         PreferenceManager().saveKinDetailsArrayList(
                             CommonClass.kinArrayPass,
                             "kinshow", mContext
@@ -2555,47 +2593,48 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                             }
                         }
                         val model = KinModel()
-                        model.status="2"
-                        model.request="0"
-                        model.name=CommonClass.kinArrayPass.get(deletePos).name
-                        model.last_name=
+                        model.status = "2"
+                        model.request = "0"
+                        model.name = CommonClass.kinArrayPass.get(deletePos).name
+                        model.last_name =
                             CommonClass.kinArrayPass.get(deletePos).last_name
 
-                        model.email=CommonClass.kinArrayPass.get(deletePos).email
-                        model.title=CommonClass.kinArrayPass.get(deletePos).title
-                        model.kin_id=CommonClass.kinArrayPass.get(deletePos).id
-                        model.relationship=
+                        model.email = CommonClass.kinArrayPass.get(deletePos).email
+                        model.title = CommonClass.kinArrayPass.get(deletePos).title
+                        model.kin_id = CommonClass.kinArrayPass.get(deletePos).id
+                        model.relationship =
                             CommonClass.kinArrayPass.get(deletePos).relationship
 
-                        model.code=CommonClass.kinArrayPass.get(deletePos).code
-                        model.user_mobile=
+                        model.code = CommonClass.kinArrayPass.get(deletePos).code
+                        model.user_mobile =
                             CommonClass.kinArrayPass.get(deletePos).user_mobile
 
-                        model.student_id=
+                        model.student_id =
                             CommonClass.kinArrayPass.get(deletePos).student_id.toString()
 
-                        model.created_at=
+                        model.created_at =
                             CommonClass.kinArrayPass.get(deletePos).created_at.toString()
 
-                        model.updated_at=
+                        model.updated_at =
                             CommonClass.kinArrayPass.get(deletePos).updated_at
 
-                        model.phone=CommonClass.kinArrayPass.get(deletePos).phone
-                        model.id=CommonClass.kinArrayPass.get(deletePos).id
-                        model.user_id=CommonClass.kinArrayPass.get(deletePos).user_id.toString()
-                        model.isFullFilled=
+                        model.phone = CommonClass.kinArrayPass.get(deletePos).phone
+                        model.id = CommonClass.kinArrayPass.get(deletePos).id
+                        model.user_id = CommonClass.kinArrayPass.get(deletePos).user_id.toString()
+                        model.isFullFilled =
                             CommonClass.kinArrayPass.get(deletePos).isFullFilled
 
-                        model.isNewData=CommonClass.kinArrayPass.get(deletePos).isNewData
-                        model.isConfirmed=true
+                        model.isNewData = CommonClass.kinArrayPass.get(deletePos).isNewData
+                        model.isConfirmed = true
                         AppController.kinArrayShow.removeAt(position)
                         CommonClass.kinArrayPass.removeAt(deletePos)
                         CommonClass.kinArrayPass.add(deletePos, model)
-                        PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                        PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
+                        PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!
+                            .clear()
+                        PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!.clear()
                         PreferenceManager().saveKinDetailsArrayList(
                             CommonClass.kinArrayPass,
-                            "kinshow",mContext
+                            "kinshow", mContext
                         )
                         PreferenceManager().saveKinDetailsArrayListShow(
                             AppController.kinArrayShow,
@@ -2798,42 +2837,40 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                             AppController.kinArrayShow.get(position)
                                                                 .reportmailmerge.toString()
                                                         val model = KinModel()
-                                                        model.status=status
-                                                        model.request=request
-                                                        model.name=
+                                                        model.status = status
+                                                        model.request = request
+                                                        model.name =
                                                             firstName.text.toString()
                                                                 .trim { it <= ' ' }
-                                                        model.last_name=
+                                                        model.last_name =
                                                             lastName.text.toString()
                                                                 .trim { it <= ' ' }
-                                                        model.email=
+                                                        model.email =
                                                             emailKin.text.toString()
                                                                 .trim { it <= ' ' }
-                                                        model.title=ContactSpinner.text.toString()
-                                                        model.kin_id=kinID
-                                                        model.relationship=RelationalSpinner.text.toString()
-                                                        model.code=countryCode.textView_selectedCountry.text.toString()
-                                                        model.user_mobile=contactNumber.text.toString()
-                                                        model.student_id=studentID
-                                                        model.created_at=createdAT
-                                                        model.updated_at=updatedAT
-                                                        model.phone=contactNumber.text.toString()
-                                                        model.id=IDs
-                                                        model.user_id=userID
-                                                        model.isFullFilled=true
-                                                        model.correspondencemailmerge=
+                                                        model.title = ContactSpinner.text.toString()
+                                                        model.kin_id = kinID
+                                                        model.relationship =
+                                                            RelationalSpinner.text.toString()
+                                                        model.code =
+                                                            countryCode.textView_selectedCountry.text.toString()
+                                                        model.user_mobile =
+                                                            contactNumber.text.toString()
+                                                        model.student_id = studentID
+                                                        model.created_at = createdAT
+                                                        model.updated_at = updatedAT
+                                                        model.phone = contactNumber.text.toString()
+                                                        model.id = IDs
+                                                        model.user_id = userID
+                                                        model.isFullFilled = true
+                                                        model.correspondencemailmerge =
                                                             corresspondence
 
-                                                        model.justcontact=justcontact
-                                                        model.reportmailmerge=contacts
-                                                        if (AppController.kinArrayShow.get(position)
-                                                                .isNewData == true
-                                                        ) {
-                                                            model.isNewData=true
-                                                        } else {
-                                                            model.isNewData=false
-                                                        }
-                                                        model.isConfirmed=true
+                                                        model.justcontact = justcontact
+                                                        model.reportmailmerge = contacts
+                                                        model.isNewData = AppController.kinArrayShow.get(position)
+                                                            .isNewData == true
+                                                        model.isConfirmed = true
                                                         for (j in 0 until CommonClass.kinArrayPass.size) {
                                                             val dataId: String =
                                                                 CommonClass.kinArrayPass.get(j)
@@ -2859,10 +2896,10 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                             model
                                                         )
                                                         PreferenceManager().getKinDetailsArrayList(
-                                                            "kinshow",mContext
+                                                            "kinshow", mContext
                                                         )!!.clear()
                                                         PreferenceManager().getKinDetailsArrayListShow(
-                                                            "kinshow",mContext
+                                                            "kinshow", mContext
                                                         )!!.clear()
                                                         PreferenceManager().saveKinDetailsArrayListShow(
                                                             AppController.kinArrayShow,
@@ -2870,7 +2907,7 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                         )
                                                         PreferenceManager().saveKinDetailsArrayList(
                                                             CommonClass.kinArrayPass,
-                                                            "kinshow",mContext
+                                                            "kinshow", mContext
                                                         )
                                                         dialog.dismiss()
                                                         familyKinRecyclerAdapter!!.notifyDataSetChanged()
@@ -2930,44 +2967,42 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                             AppController.kinArrayShow.get(position)
                                                                 .reportmailmerge.toString()
                                                         val model = KinModel()
-                                                        model.status=status
-                                                        model.request=request
-                                                        model.name=
+                                                        model.status = status
+                                                        model.request = request
+                                                        model.name =
                                                             firstName.text.toString()
                                                                 .trim { it <= ' ' }
-                                                        model.last_name=
+                                                        model.last_name =
                                                             lastName.text.toString()
                                                                 .trim { it <= ' ' }
-                                                        model.email=
+                                                        model.email =
                                                             emailKin.text.toString()
                                                                 .trim { it <= ' ' }
-                                                        model.title=ContactSpinner.text.toString()
-                                                        model.kin_id=kinID
-                                                        model.relationship=RelationalSpinner.text.toString()
-                                                        model.code=countryCode.textView_selectedCountry.text.toString()
-                                                        model.user_mobile=contactNumber.text.toString()
-                                                        model.student_id=studentID
-                                                        model.created_at=createdAT
-                                                        model.updated_at=updatedAT
-                                                        model.phone=contactNumber.text.toString()
-                                                        model.id=IDs
-                                                        model.user_id=userID
+                                                        model.title = ContactSpinner.text.toString()
+                                                        model.kin_id = kinID
+                                                        model.relationship =
+                                                            RelationalSpinner.text.toString()
+                                                        model.code =
+                                                            countryCode.textView_selectedCountry.text.toString()
+                                                        model.user_mobile =
+                                                            contactNumber.text.toString()
+                                                        model.student_id = studentID
+                                                        model.created_at = createdAT
+                                                        model.updated_at = updatedAT
+                                                        model.phone = contactNumber.text.toString()
+                                                        model.id = IDs
+                                                        model.user_id = userID
                                                         // String corresspondence=AppController.kinArrayShow.get(position).correspondencemailmerge.toString;
                                                         //String contacts=AppController.kinArrayShow.get(position).reportmailmerge.toString;
-                                                        model.correspondencemailmerge=
+                                                        model.correspondencemailmerge =
                                                             corresspondence
 
-                                                        model.justcontact=justcontact
-                                                        model.reportmailmerge=contacts
-                                                        model.isFullFilled=true
-                                                        if (AppController.kinArrayShow.get(position)
-                                                                .isNewData == true
-                                                        ) {
-                                                            model.isNewData=true
-                                                        } else {
-                                                            model.isNewData=false
-                                                        }
-                                                        model.isConfirmed=true
+                                                        model.justcontact = justcontact
+                                                        model.reportmailmerge = contacts
+                                                        model.isFullFilled = true
+                                                        model.isNewData = AppController.kinArrayShow.get(position)
+                                                            .isNewData == true
+                                                        model.isConfirmed = true
                                                         for (j in 0 until CommonClass.kinArrayPass.size) {
                                                             val dataId: String =
                                                                 CommonClass.kinArrayPass.get(j)
@@ -2996,7 +3031,7 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                             "kinshow", mContext
                                                         )!!.clear()
                                                         PreferenceManager().getKinDetailsArrayListShow(
-                                                            "kinshow",mContext
+                                                            "kinshow", mContext
                                                         )!!.clear()
                                                         PreferenceManager().saveKinDetailsArrayListShow(
                                                             AppController.kinArrayShow,
@@ -3112,37 +3147,33 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                 AppController.kinArrayShow.get(position)
                                                     .reportmailmerge.toString()
                                             val model = KinModel()
-                                            model.status=status
-                                            model.request=request
-                                            model.name=
+                                            model.status = status
+                                            model.request = request
+                                            model.name =
                                                 firstName.text.toString().trim { it <= ' ' }
-                                            model.last_name=
+                                            model.last_name =
                                                 lastName.text.toString().trim { it <= ' ' }
-                                            model.email=
+                                            model.email =
                                                 emailKin.text.toString().trim { it <= ' ' }
-                                            model.title=ContactSpinner.text.toString()
-                                            model.kin_id=kinID
-                                            model.relationship=RelationalSpinner.text.toString()
-                                            model.code=countryCode.textView_selectedCountry.text.toString()
-                                            model.user_mobile=contactNumber.text.toString()
-                                            model.student_id=studentID
-                                            model.created_at=createdAT
-                                            model.updated_at=updatedAT
-                                            model.phone=contactNumber.text.toString()
-                                            model.id=IDs
-                                            model.user_id=userID
-                                            model.isFullFilled=true
-                                            model.correspondencemailmerge=corresspondence
-                                            model.justcontact=justcontact
-                                            model.reportmailmerge=contacts
-                                            if (AppController.kinArrayShow.get(position)
-                                                    .isNewData == true
-                                            ) {
-                                                model.isNewData=true
-                                            } else {
-                                                model.isNewData=false
-                                            }
-                                            model.isConfirmed=true
+                                            model.title = ContactSpinner.text.toString()
+                                            model.kin_id = kinID
+                                            model.relationship = RelationalSpinner.text.toString()
+                                            model.code =
+                                                countryCode.textView_selectedCountry.text.toString()
+                                            model.user_mobile = contactNumber.text.toString()
+                                            model.student_id = studentID
+                                            model.created_at = createdAT
+                                            model.updated_at = updatedAT
+                                            model.phone = contactNumber.text.toString()
+                                            model.id = IDs
+                                            model.user_id = userID
+                                            model.isFullFilled = true
+                                            model.correspondencemailmerge = corresspondence
+                                            model.justcontact = justcontact
+                                            model.reportmailmerge = contacts
+                                            model.isNewData = AppController.kinArrayShow.get(position)
+                                                .isNewData == true
+                                            model.isConfirmed = true
                                             for (j in 0 until CommonClass.kinArrayPass.size) {
                                                 val dataId: String =
                                                     CommonClass.kinArrayPass.get(j).id.toString()
@@ -3154,11 +3185,17 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                             CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
                                             AppController.kinArrayShow.add(position, model)
                                             CommonClass.kinArrayPass.add(kinArrayPassPos, model)
-                                            PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
-                                            PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
+                                            PreferenceManager().getKinDetailsArrayList(
+                                                "kinshow",
+                                                mContext
+                                            )!!.clear()
+                                            PreferenceManager().getKinDetailsArrayListShow(
+                                                "kinshow",
+                                                mContext
+                                            )!!.clear()
                                             PreferenceManager().saveKinDetailsArrayListShow(
                                                 AppController.kinArrayShow,
-                                                "kinshow",mContext
+                                                "kinshow", mContext
                                             )
                                             PreferenceManager().saveKinDetailsArrayList(
                                                 CommonClass.kinArrayPass,
@@ -3218,39 +3255,35 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                                 AppController.kinArrayShow.get(position)
                                                     .reportmailmerge.toString()
                                             val model = KinModel()
-                                            model.status=status
-                                            model.request=request
-                                            model.name=
+                                            model.status = status
+                                            model.request = request
+                                            model.name =
                                                 firstName.text.toString().trim { it <= ' ' }
-                                            model.last_name=
+                                            model.last_name =
                                                 lastName.text.toString().trim { it <= ' ' }
-                                            model.email=
+                                            model.email =
                                                 emailKin.text.toString().trim { it <= ' ' }
-                                            model.title=ContactSpinner.text.toString()
-                                            model.kin_id=kinID
-                                            model.relationship=RelationalSpinner.text.toString()
-                                            model.code=countryCode.textView_selectedCountry.text.toString()
-                                            model.user_mobile=contactNumber.text.toString()
-                                            model.student_id=studentID
-                                            model.created_at=createdAT
-                                            model.updated_at=updatedAT
-                                            model.phone=contactNumber.text.toString()
-                                            model.id=IDs
-                                            model.user_id=userID
+                                            model.title = ContactSpinner.text.toString()
+                                            model.kin_id = kinID
+                                            model.relationship = RelationalSpinner.text.toString()
+                                            model.code =
+                                                countryCode.textView_selectedCountry.text.toString()
+                                            model.user_mobile = contactNumber.text.toString()
+                                            model.student_id = studentID
+                                            model.created_at = createdAT
+                                            model.updated_at = updatedAT
+                                            model.phone = contactNumber.text.toString()
+                                            model.id = IDs
+                                            model.user_id = userID
                                             // String corresspondence=AppController.kinArrayShow.get(position).correspondencemailmerge.toString;
                                             //String contacts=AppController.kinArrayShow.get(position).reportmailmerge.toString;
-                                            model.correspondencemailmerge=corresspondence
-                                            model.justcontact=justcontact
-                                            model.reportmailmerge=contacts
-                                            model.isFullFilled=true
-                                            if (AppController.kinArrayShow.get(position)
-                                                    .isNewData == true
-                                            ) {
-                                                model.isNewData=true
-                                            } else {
-                                                model.isNewData=false
-                                            }
-                                            model.isConfirmed=true
+                                            model.correspondencemailmerge = corresspondence
+                                            model.justcontact = justcontact
+                                            model.reportmailmerge = contacts
+                                            model.isFullFilled = true
+                                            model.isNewData = AppController.kinArrayShow.get(position)
+                                                .isNewData == true
+                                            model.isConfirmed = true
                                             for (j in 0 until CommonClass.kinArrayPass.size) {
                                                 val dataId: String =
                                                     CommonClass.kinArrayPass.get(j).id.toString()
@@ -3262,15 +3295,21 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                                             CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
                                             AppController.kinArrayShow.add(position, model)
                                             CommonClass.kinArrayPass.add(kinArrayPassPos, model)
-                                            PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
-                                            PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
+                                            PreferenceManager().getKinDetailsArrayList(
+                                                "kinshow",
+                                                mContext
+                                            )!!.clear()
+                                            PreferenceManager().getKinDetailsArrayListShow(
+                                                "kinshow",
+                                                mContext
+                                            )!!.clear()
                                             PreferenceManager().saveKinDetailsArrayListShow(
                                                 AppController.kinArrayShow,
                                                 "kinshow", mContext
                                             )
                                             PreferenceManager().saveKinDetailsArrayList(
                                                 CommonClass.kinArrayPass,
-                                                "kinshow",mContext
+                                                "kinshow", mContext
                                             )
                                             dialog.dismiss()
                                             familyKinRecyclerAdapter!!.notifyDataSetChanged()
@@ -3293,7 +3332,7 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 var status = ""
                 var request = ""
                 var kinArrayPassPos = -1
-                if (!AppController.kinArrayShow.get(position).isNewData!!!!) {
+                if (!AppController.kinArrayShow.get(position).isNewData!!) {
                     if (CommonClass.isKinEdited) {
                         status = "1"
                         request = "0"
@@ -3312,43 +3351,44 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 }
                 val kinID: String = AppController.kinArrayShow.get(position).kin_id.toString()
                 val IDs: String = AppController.kinArrayShow.get(position).id.toString()
-                val studentID: String = AppController.kinArrayShow.get(position).student_id.toString()
-                val createdAT: String = AppController.kinArrayShow.get(position).created_at.toString()
-                val updatedAT: String = AppController.kinArrayShow.get(position).updated_at.toString()
+                val studentID: String =
+                    AppController.kinArrayShow.get(position).student_id.toString()
+                val createdAT: String =
+                    AppController.kinArrayShow.get(position).created_at.toString()
+                val updatedAT: String =
+                    AppController.kinArrayShow.get(position).updated_at.toString()
                 val userID: String = AppController.kinArrayShow.get(position).user_id.toString()
                 val corresspondence: String =
                     AppController.kinArrayShow.get(position).correspondencemailmerge.toString()
-                val contacts: String = AppController.kinArrayShow.get(position).reportmailmerge.toString()
-                val justcontact: String = AppController.kinArrayShow.get(position).justcontact.toString()
+                val contacts: String =
+                    AppController.kinArrayShow.get(position).reportmailmerge.toString()
+                val justcontact: String =
+                    AppController.kinArrayShow.get(position).justcontact.toString()
                 val model = KinModel()
-                model.status=status
-                model.request=request
-                model.name=firstName.text.toString().trim { it <= ' ' }
-                model.last_name=lastName.text.toString().trim { it <= ' ' }
-                model.email=emailKin.text.toString().trim { it <= ' ' }
-                model.title=ContactSpinner.text.toString()
-                model.kin_id=kinID
-                model.relationship=RelationalSpinner.text.toString()
-                model.code=countryCode.textView_selectedCountry.text.toString()
-                model.user_mobile=contactNumber.text.toString()
-                model.student_id=studentID
-                model.created_at=createdAT
-                model.updated_at=updatedAT
-                model.phone=contactNumber.text.toString()
-                model.id=IDs
-                model.user_id=userID
-                model.isFullFilled=true
+                model.status = status
+                model.request = request
+                model.name = firstName.text.toString().trim { it <= ' ' }
+                model.last_name = lastName.text.toString().trim { it <= ' ' }
+                model.email = emailKin.text.toString().trim { it <= ' ' }
+                model.title = ContactSpinner.text.toString()
+                model.kin_id = kinID
+                model.relationship = RelationalSpinner.text.toString()
+                model.code = countryCode.textView_selectedCountry.text.toString()
+                model.user_mobile = contactNumber.text.toString()
+                model.student_id = studentID
+                model.created_at = createdAT
+                model.updated_at = updatedAT
+                model.phone = contactNumber.text.toString()
+                model.id = IDs
+                model.user_id = userID
+                model.isFullFilled = true
                 // String corresspondence=AppController.kinArrayShow.get(position).correspondencemailmerge.toString;
                 //String contacts=AppController.kinArrayShow.get(position).reportmailmerge.toString;
-                model.correspondencemailmerge=corresspondence
-                model.justcontact=justcontact
-                model.reportmailmerge=contacts
-                if (AppController.kinArrayShow.get(position).isNewData == true) {
-                    model.isNewData=true
-                } else {
-                    model.isNewData=false
-                }
-                model.isConfirmed=false
+                model.correspondencemailmerge = corresspondence
+                model.justcontact = justcontact
+                model.reportmailmerge = contacts
+                model.isNewData = AppController.kinArrayShow.get(position).isNewData == true
+                model.isConfirmed = false
                 for (j in 0 until CommonClass.kinArrayPass.size) {
                     val dataId: String = CommonClass.kinArrayPass.get(j).id.toString()
                     if (IDs.equals(dataId, ignoreCase = true)) {
@@ -3359,10 +3399,18 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
                 AppController.kinArrayShow.add(position, model)
                 CommonClass.kinArrayPass.add(kinArrayPassPos, model)
-                PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
-                PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                PreferenceManager().saveKinDetailsArrayListShow(AppController.kinArrayShow,"kinshow", mContext)
-                PreferenceManager().saveKinDetailsArrayList(CommonClass.kinArrayPass, "kinshow",mContext)
+                PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!.clear()
+                PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!.clear()
+                PreferenceManager().saveKinDetailsArrayListShow(
+                    AppController.kinArrayShow,
+                    "kinshow",
+                    mContext
+                )
+                PreferenceManager().saveKinDetailsArrayList(
+                    CommonClass.kinArrayPass,
+                    "kinshow",
+                    mContext
+                )
             }
         })
         firstName.addTextChangedListener(object : TextWatcher {
@@ -3399,57 +3447,66 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 }
                 val kinID: String = AppController.kinArrayShow.get(position).kin_id.toString()
                 val IDs: String = AppController.kinArrayShow.get(position).id.toString()
-                val studentID: String = AppController.kinArrayShow.get(position).student_id.toString()
-                val createdAT: String = AppController.kinArrayShow.get(position).created_at.toString()
-                val updatedAT: String = AppController.kinArrayShow.get(position).updated_at.toString()
+                val studentID: String =
+                    AppController.kinArrayShow.get(position).student_id.toString()
+                val createdAT: String =
+                    AppController.kinArrayShow.get(position).created_at.toString()
+                val updatedAT: String =
+                    AppController.kinArrayShow.get(position).updated_at.toString()
                 val userID: String = AppController.kinArrayShow.get(position).user_id.toString()
                 val corresspondence: String =
                     AppController.kinArrayShow.get(position).correspondencemailmerge.toString()
-                val contacts: String = AppController.kinArrayShow.get(position).reportmailmerge.toString()
-                val justcontact: String = AppController.kinArrayShow.get(position).justcontact.toString()
+                val contacts: String =
+                    AppController.kinArrayShow.get(position).reportmailmerge.toString()
+                val justcontact: String =
+                    AppController.kinArrayShow.get(position).justcontact.toString()
                 val model = KinModel()
-                model.status=status
-                model.request=request
-                model.name=firstName.text.toString().trim { it <= ' ' }
-                model.last_name=lastName.text.toString().trim { it <= ' ' }
-                model.email=emailKin.text.toString().trim { it <= ' ' }
-                model.title=ContactSpinner.text.toString()
-                model.kin_id=kinID
-                model.relationship=RelationalSpinner.text.toString()
-                model.code=countryCode.textView_selectedCountry.text.toString()
-                model.user_mobile=contactNumber.text.toString()
-                model.student_id=studentID
-                model.created_at=createdAT
-                model.updated_at=updatedAT
-                model.phone=contactNumber.text.toString()
-                model.id=IDs
-                model.user_id=userID
-                model.isFullFilled=false
+                model.status = status
+                model.request = request
+                model.name = firstName.text.toString().trim { it <= ' ' }
+                model.last_name = lastName.text.toString().trim { it <= ' ' }
+                model.email = emailKin.text.toString().trim { it <= ' ' }
+                model.title = ContactSpinner.text.toString()
+                model.kin_id = kinID
+                model.relationship = RelationalSpinner.text.toString()
+                model.code = countryCode.textView_selectedCountry.text.toString()
+                model.user_mobile = contactNumber.text.toString()
+                model.student_id = studentID
+                model.created_at = createdAT
+                model.updated_at = updatedAT
+                model.phone = contactNumber.text.toString()
+                model.id = IDs
+                model.user_id = userID
+                model.isFullFilled = false
                 // String corresspondence=AppController.kinArrayShow.get(position).correspondencemailmerge.toString;
                 //String contacts=AppController.kinArrayShow.get(position).reportmailmerge.toString;
-                model.correspondencemailmerge=corresspondence
-                model.justcontact=justcontact
-                model.reportmailmerge=contacts
-                if (AppController.kinArrayShow.get(position).isNewData == true) {
-                    model.isNewData=true
-                } else {
-                    model.isNewData=false
-                }
-                model.isConfirmed=false
+                model.correspondencemailmerge = corresspondence
+                model.justcontact = justcontact
+                model.reportmailmerge = contacts
+                model.isNewData = AppController.kinArrayShow.get(position).isNewData == true
+                model.isConfirmed = false
                 for (j in 0 until CommonClass.kinArrayPass.size) {
                     val dataId: String = CommonClass.kinArrayPass.get(j).id.toString()
                     if (IDs.equals(dataId, ignoreCase = true)) {
                         kinArrayPassPos = j
                     }
                 }
-                AppController.kinArrayShow.removeAt(position)
-                CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
-                AppController.kinArrayShow.add(position, model)
-                CommonClass.kinArrayPass.add(kinArrayPassPos, model)
-                PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
-                PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                PreferenceManager().saveKinDetailsArrayListShow(AppController.kinArrayShow,"kinshow", mContext)
-                PreferenceManager().saveKinDetailsArrayList(CommonClass.kinArrayPass,"kinshow", mContext)
+//                AppController.kinArrayShow.removeAt(position)
+//                CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
+//                AppController.kinArrayShow.add(position, model)
+//                CommonClass.kinArrayPass.add(kinArrayPassPos, model)
+                PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!.clear()
+                PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!.clear()
+                PreferenceManager().saveKinDetailsArrayListShow(
+                    AppController.kinArrayShow,
+                    "kinshow",
+                    mContext
+                )
+                PreferenceManager().saveKinDetailsArrayList(
+                    CommonClass.kinArrayPass,
+                    "kinshow",
+                    mContext
+                )
             }
         })
         lastName.addTextChangedListener(object : TextWatcher {
@@ -3486,57 +3543,66 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 }
                 val kinID: String = AppController.kinArrayShow.get(position).kin_id.toString()
                 val IDs: String = AppController.kinArrayShow.get(position).id.toString()
-                val studentID: String = AppController.kinArrayShow.get(position).student_id.toString()
-                val createdAT: String = AppController.kinArrayShow.get(position).created_at.toString()
-                val updatedAT: String = AppController.kinArrayShow.get(position).updated_at.toString()
+                val studentID: String =
+                    AppController.kinArrayShow.get(position).student_id.toString()
+                val createdAT: String =
+                    AppController.kinArrayShow.get(position).created_at.toString()
+                val updatedAT: String =
+                    AppController.kinArrayShow.get(position).updated_at.toString()
                 val userID: String = AppController.kinArrayShow.get(position).user_id.toString()
                 val corresspondence: String =
                     AppController.kinArrayShow.get(position).correspondencemailmerge.toString()
-                val justcontact: String = AppController.kinArrayShow.get(position).justcontact.toString()
-                val contacts: String = AppController.kinArrayShow.get(position).reportmailmerge.toString()
+                val justcontact: String =
+                    AppController.kinArrayShow.get(position).justcontact.toString()
+                val contacts: String =
+                    AppController.kinArrayShow.get(position).reportmailmerge.toString()
                 val model = KinModel()
-                model.status=status
-                model.request=request
-                model.name=firstName.text.toString().trim { it <= ' ' }
-                model.last_name=lastName.text.toString().trim { it <= ' ' }
-                model.email=emailKin.text.toString().trim { it <= ' ' }
-                model.title=ContactSpinner.text.toString()
-                model.kin_id=kinID
-                model.relationship=RelationalSpinner.text.toString()
-                model.code=countryCode.textView_selectedCountry.text.toString()
-                model.user_mobile=contactNumber.text.toString()
-                model.student_id=studentID
-                model.created_at=createdAT
-                model.updated_at=updatedAT
-                model.phone=contactNumber.text.toString()
-                model.id=IDs
-                model.user_id=userID
-                model.isFullFilled=false
+                model.status = status
+                model.request = request
+                model.name = firstName.text.toString().trim { it <= ' ' }
+                model.last_name = lastName.text.toString().trim { it <= ' ' }
+                model.email = emailKin.text.toString().trim { it <= ' ' }
+                model.title = ContactSpinner.text.toString()
+                model.kin_id = kinID
+                model.relationship = RelationalSpinner.text.toString()
+                model.code = countryCode.textView_selectedCountry.text.toString()
+                model.user_mobile = contactNumber.text.toString()
+                model.student_id = studentID
+                model.created_at = createdAT
+                model.updated_at = updatedAT
+                model.phone = contactNumber.text.toString()
+                model.id = IDs
+                model.user_id = userID
+                model.isFullFilled = false
                 // String corresspondence=AppController.kinArrayShow.get(position).correspondencemailmerge.toString;
                 //String contacts=AppController.kinArrayShow.get(position).reportmailmerge.toString;
-                model.correspondencemailmerge=corresspondence
-                model.justcontact=justcontact
-                model.reportmailmerge=contacts
-                if (AppController.kinArrayShow.get(position).isNewData == true) {
-                    model.isNewData=true
-                } else {
-                    model.isNewData=false
-                }
-                model.isConfirmed=false
+                model.correspondencemailmerge = corresspondence
+                model.justcontact = justcontact
+                model.reportmailmerge = contacts
+                model.isNewData = AppController.kinArrayShow.get(position).isNewData == true
+                model.isConfirmed = false
                 for (j in 0 until CommonClass.kinArrayPass.size) {
                     val dataId: String = CommonClass.kinArrayPass.get(j).id.toString()
                     if (IDs.equals(dataId, ignoreCase = true)) {
                         kinArrayPassPos = j
                     }
                 }
-                AppController.kinArrayShow.removeAt(position)
-                CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
-                AppController.kinArrayShow.add(position, model)
-                CommonClass.kinArrayPass.add(kinArrayPassPos, model)
-                PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
-                PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                PreferenceManager().saveKinDetailsArrayListShow(AppController.kinArrayShow,"kinshow", mContext)
-                PreferenceManager().saveKinDetailsArrayList(CommonClass.kinArrayPass,"kinshow", mContext)
+//                AppController.kinArrayShow.removeAt(position)
+//                CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
+//                AppController.kinArrayShow.add(position, model)
+//                CommonClass.kinArrayPass.add(kinArrayPassPos, model)
+                PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!.clear()
+                PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!.clear()
+                PreferenceManager().saveKinDetailsArrayListShow(
+                    AppController.kinArrayShow,
+                    "kinshow",
+                    mContext
+                )
+                PreferenceManager().saveKinDetailsArrayList(
+                    CommonClass.kinArrayPass,
+                    "kinshow",
+                    mContext
+                )
             }
         })
         emailKin.addTextChangedListener(object : TextWatcher {
@@ -3573,57 +3639,66 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 }
                 val kinID: String = AppController.kinArrayShow.get(position).kin_id.toString()
                 val IDs: String = AppController.kinArrayShow.get(position).id.toString()
-                val studentID: String = AppController.kinArrayShow.get(position).student_id.toString()
-                val createdAT: String = AppController.kinArrayShow.get(position).created_at.toString()
-                val updatedAT: String = AppController.kinArrayShow.get(position).updated_at.toString()
+                val studentID: String =
+                    AppController.kinArrayShow.get(position).student_id.toString()
+                val createdAT: String =
+                    AppController.kinArrayShow.get(position).created_at.toString()
+                val updatedAT: String =
+                    AppController.kinArrayShow.get(position).updated_at.toString()
                 val userID: String = AppController.kinArrayShow.get(position).user_id.toString()
                 val corresspondence: String =
                     AppController.kinArrayShow.get(position).correspondencemailmerge.toString()
-                val justcontact: String = AppController.kinArrayShow.get(position).justcontact.toString()
-                val contacts: String = AppController.kinArrayShow.get(position).reportmailmerge.toString()
+                val justcontact: String =
+                    AppController.kinArrayShow.get(position).justcontact.toString()
+                val contacts: String =
+                    AppController.kinArrayShow.get(position).reportmailmerge.toString()
                 val model = KinModel()
-                model.status=status
-                model.request=request
-                model.name=firstName.text.toString().trim { it <= ' ' }
-                model.last_name=lastName.text.toString().trim { it <= ' ' }
-                model.email=emailKin.text.toString().trim { it <= ' ' }
-                model.title=ContactSpinner.text.toString()
-                model.kin_id=kinID
-                model.relationship=RelationalSpinner.text.toString()
-                model.code=countryCode.textView_selectedCountry.text.toString()
-                model.user_mobile=contactNumber.text.toString()
-                model.student_id=studentID
-                model.created_at=createdAT
-                model.updated_at=updatedAT
-                model.phone=contactNumber.text.toString()
-                model.id=IDs
-                model.user_id=userID
-                model.isFullFilled=false
+                model.status = status
+                model.request = request
+                model.name = firstName.text.toString().trim { it <= ' ' }
+                model.last_name = lastName.text.toString().trim { it <= ' ' }
+                model.email = emailKin.text.toString().trim { it <= ' ' }
+                model.title = ContactSpinner.text.toString()
+                model.kin_id = kinID
+                model.relationship = RelationalSpinner.text.toString()
+                model.code = countryCode.textView_selectedCountry.text.toString()
+                model.user_mobile = contactNumber.text.toString()
+                model.student_id = studentID
+                model.created_at = createdAT
+                model.updated_at = updatedAT
+                model.phone = contactNumber.text.toString()
+                model.id = IDs
+                model.user_id = userID
+                model.isFullFilled = false
                 // String corresspondence=AppController.kinArrayShow.get(position).correspondencemailmerge.toString;
                 //String contacts=AppController.kinArrayShow.get(position).reportmailmerge.toString;
-                model.correspondencemailmerge=corresspondence
-                model.justcontact=justcontact
-                model.reportmailmerge=contacts
-                if (AppController.kinArrayShow.get(position).isNewData == true) {
-                    model.isNewData=true
-                } else {
-                    model.isNewData=false
-                }
-                model.isConfirmed=false
+                model.correspondencemailmerge = corresspondence
+                model.justcontact = justcontact
+                model.reportmailmerge = contacts
+                model.isNewData = AppController.kinArrayShow.get(position).isNewData == true
+                model.isConfirmed = false
                 for (j in 0 until CommonClass.kinArrayPass.size) {
                     val dataId: String = CommonClass.kinArrayPass.get(j).id.toString()
                     if (IDs.equals(dataId, ignoreCase = true)) {
                         kinArrayPassPos = j
                     }
                 }
-                AppController.kinArrayShow.removeAt(position)
-                CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
-                AppController.kinArrayShow.add(position, model)
-                CommonClass.kinArrayPass.add(kinArrayPassPos, model)
-                PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
-                PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                PreferenceManager().saveKinDetailsArrayListShow(AppController.kinArrayShow,"kinshow", mContext)
-                PreferenceManager().saveKinDetailsArrayList(CommonClass.kinArrayPass,"kinshow", mContext)
+//                AppController.kinArrayShow.removeAt(position)
+//                CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
+//                AppController.kinArrayShow.add(position, model)
+//                CommonClass.kinArrayPass.add(kinArrayPassPos, model)
+                PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!.clear()
+                PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!.clear()
+                PreferenceManager().saveKinDetailsArrayListShow(
+                    AppController.kinArrayShow,
+                    "kinshow",
+                    mContext
+                )
+                PreferenceManager().saveKinDetailsArrayList(
+                    CommonClass.kinArrayPass,
+                    "kinshow",
+                    mContext
+                )
             }
         })
         RelationalSpinner.addTextChangedListener(object : TextWatcher {
@@ -3668,44 +3743,45 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 }
                 val kinID: String = AppController.kinArrayShow.get(position).kin_id.toString()
                 val IDs: String = AppController.kinArrayShow.get(position).id.toString()
-                val studentID: String = AppController.kinArrayShow.get(position).student_id.toString()
-                val createdAT: String = AppController.kinArrayShow.get(position).created_at.toString()
-                val updatedAT: String = AppController.kinArrayShow.get(position).updated_at.toString()
+                val studentID: String =
+                    AppController.kinArrayShow.get(position).student_id.toString()
+                val createdAT: String =
+                    AppController.kinArrayShow.get(position).created_at.toString()
+                val updatedAT: String =
+                    AppController.kinArrayShow.get(position).updated_at.toString()
                 val userID: String = AppController.kinArrayShow.get(position).user_id.toString()
                 val corresspondence: String =
                     AppController.kinArrayShow.get(position).correspondencemailmerge.toString()
-                val justcontact: String = AppController.kinArrayShow.get(position).justcontact.toString()
-                val contacts: String = AppController.kinArrayShow.get(position).reportmailmerge.toString()
+                val justcontact: String =
+                    AppController.kinArrayShow.get(position).justcontact.toString()
+                val contacts: String =
+                    AppController.kinArrayShow.get(position).reportmailmerge.toString()
 
                 val model = KinModel()
-                model.status=status
-                model.request=request
-                model.name=firstName.text.toString().trim { it <= ' ' }
-                model.last_name=lastName.text.toString().trim { it <= ' ' }
-                model.email=emailKin.text.toString().trim { it <= ' ' }
-                model.title=ContactSpinner.text.toString()
-                model.kin_id=kinID
-                model.relationship=RelationalSpinner.text.toString()
-                model.code=countryCode.textView_selectedCountry.text.toString()
-                model.user_mobile=contactNumber.text.toString()
-                model.student_id=studentID
-                model.created_at=createdAT
-                model.updated_at=updatedAT
-                model.phone=contactNumber.text.toString()
-                model.id=IDs
-                model.user_id=userID
-                model.isFullFilled=false
+                model.status = status
+                model.request = request
+                model.name = firstName.text.toString().trim { it <= ' ' }
+                model.last_name = lastName.text.toString().trim { it <= ' ' }
+                model.email = emailKin.text.toString().trim { it <= ' ' }
+                model.title = ContactSpinner.text.toString()
+                model.kin_id = kinID
+                model.relationship = RelationalSpinner.text.toString()
+                model.code = countryCode.textView_selectedCountry.text.toString()
+                model.user_mobile = contactNumber.text.toString()
+                model.student_id = studentID
+                model.created_at = createdAT
+                model.updated_at = updatedAT
+                model.phone = contactNumber.text.toString()
+                model.id = IDs
+                model.user_id = userID
+                model.isFullFilled = false
                 // String corresspondence=AppController.kinArrayShow.get(position).correspondencemailmerge.toString;
                 //String contacts=AppController.kinArrayShow.get(position).reportmailmerge.toString;
-                model.correspondencemailmerge=corresspondence
-                model.justcontact=justcontact
-                model.reportmailmerge=contacts
-                if (AppController.kinArrayShow.get(position).isNewData == true) {
-                    model.isNewData=true
-                } else {
-                    model.isNewData=false
-                }
-                model.isConfirmed=false
+                model.correspondencemailmerge = corresspondence
+                model.justcontact = justcontact
+                model.reportmailmerge = contacts
+                model.isNewData = AppController.kinArrayShow.get(position).isNewData == true
+                model.isConfirmed = false
                 for (j in 0 until CommonClass.kinArrayPass.size) {
                     val dataId: String = CommonClass.kinArrayPass.get(j).id.toString()
                     if (IDs.equals(dataId)) {
@@ -3716,10 +3792,18 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
                 AppController.kinArrayShow.add(position, model)
                 CommonClass.kinArrayPass.add(kinArrayPassPos, model)
-                PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
-                PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                PreferenceManager().saveKinDetailsArrayListShow(AppController.kinArrayShow,"kinshow", mContext)
-                PreferenceManager().saveKinDetailsArrayList(CommonClass.kinArrayPass,"kinshow", mContext)
+                PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!.clear()
+                PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!.clear()
+                PreferenceManager().saveKinDetailsArrayListShow(
+                    AppController.kinArrayShow,
+                    "kinshow",
+                    mContext
+                )
+                PreferenceManager().saveKinDetailsArrayList(
+                    CommonClass.kinArrayPass,
+                    "kinshow",
+                    mContext
+                )
             }
         })
         contactNumber.addTextChangedListener(object : TextWatcher {
@@ -3756,57 +3840,66 @@ Log.e("kinad",AppController.kinArrayShow.size.toString())
                 }
                 val kinID: String = AppController.kinArrayShow.get(position).kin_id.toString()
                 val IDs: String = AppController.kinArrayShow.get(position).id.toString()
-                val studentID: String = AppController.kinArrayShow.get(position).student_id.toString()
-                val createdAT: String = AppController.kinArrayShow.get(position).created_at.toString()
-                val updatedAT: String = AppController.kinArrayShow.get(position).updated_at.toString()
+                val studentID: String =
+                    AppController.kinArrayShow.get(position).student_id.toString()
+                val createdAT: String =
+                    AppController.kinArrayShow.get(position).created_at.toString()
+                val updatedAT: String =
+                    AppController.kinArrayShow.get(position).updated_at.toString()
                 val userID: String = AppController.kinArrayShow.get(position).user_id.toString()
                 val corresspondence: String =
                     AppController.kinArrayShow.get(position).correspondencemailmerge.toString()
-                val justcontact: String = AppController.kinArrayShow.get(position).justcontact.toString()
-                val contacts: String = AppController.kinArrayShow.get(position).reportmailmerge.toString()
+                val justcontact: String =
+                    AppController.kinArrayShow.get(position).justcontact.toString()
+                val contacts: String =
+                    AppController.kinArrayShow.get(position).reportmailmerge.toString()
                 val model = KinModel()
-                model.status=status
-                model.request=request
-                model.name=firstName.text.toString().trim { it <= ' ' }
-                model.last_name=lastName.text.toString().trim { it <= ' ' }
-                model.email=emailKin.text.toString().trim { it <= ' ' }
-                model.title=ContactSpinner.text.toString()
-                model.kin_id=kinID
-                model.relationship=RelationalSpinner.text.toString()
-                model.code=countryCode.textView_selectedCountry.text.toString()
-                model.user_mobile=contactNumber.text.toString()
-                model.student_id=studentID
-                model.created_at=createdAT
-                model.updated_at=updatedAT
-                model.phone=contactNumber.text.toString()
-                model.id=IDs
-                model.user_id=userID
-                model.isFullFilled=false
+                model.status = status
+                model.request = request
+                model.name = firstName.text.toString().trim { it <= ' ' }
+                model.last_name = lastName.text.toString().trim { it <= ' ' }
+                model.email = emailKin.text.toString().trim { it <= ' ' }
+                model.title = ContactSpinner.text.toString()
+                model.kin_id = kinID
+                model.relationship = RelationalSpinner.text.toString()
+                model.code = countryCode.textView_selectedCountry.text.toString()
+                model.user_mobile = contactNumber.text.toString()
+                model.student_id = studentID
+                model.created_at = createdAT
+                model.updated_at = updatedAT
+                model.phone = contactNumber.text.toString()
+                model.id = IDs
+                model.user_id = userID
+                model.isFullFilled = false
                 // String corresspondence=AppController.kinArrayShow.get(position).correspondencemailmerge.toString;
                 //String contacts=AppController.kinArrayShow.get(position).reportmailmerge.toString;
-                model.correspondencemailmerge=corresspondence
-                model.justcontact=justcontact
-                model.relationship=contacts
-                if (AppController.kinArrayShow.get(position).isNewData!! == true) {
-                    model.isNewData=true
-                } else {
-                    model.isNewData=false
-                }
-                model.isConfirmed=false
+                model.correspondencemailmerge = corresspondence
+                model.justcontact = justcontact
+                model.relationship = contacts
+                model.isNewData = AppController.kinArrayShow.get(position).isNewData!! == true
+                model.isConfirmed = false
                 for (j in 0 until CommonClass.kinArrayPass.size) {
                     val dataId: String = CommonClass.kinArrayPass.get(j).id.toString()
                     if (IDs.equals(dataId)) {
                         kinArrayPassPos = j
                     }
                 }
-                AppController.kinArrayShow.removeAt(position)
-                CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
-                AppController.kinArrayShow.add(position, model)
-                CommonClass.kinArrayPass.add(kinArrayPassPos, model)
-                PreferenceManager().getKinDetailsArrayList("kinshow",mContext)!!.clear()
-                PreferenceManager().getKinDetailsArrayListShow("kinshow",mContext)!!.clear()
-                PreferenceManager().saveKinDetailsArrayListShow(AppController.kinArrayShow,"kinshow", mContext)
-                PreferenceManager().saveKinDetailsArrayList(CommonClass.kinArrayPass,"kinshow", mContext)
+//                AppController.kinArrayShow.removeAt(position)
+//                CommonClass.kinArrayPass.removeAt(kinArrayPassPos)
+//                AppController.kinArrayShow.add(position, model)
+//                CommonClass.kinArrayPass.add(kinArrayPassPos, model)
+                PreferenceManager().getKinDetailsArrayList("kinshow", mContext)!!.clear()
+                PreferenceManager().getKinDetailsArrayListShow("kinshow", mContext)!!.clear()
+                PreferenceManager().saveKinDetailsArrayListShow(
+                    AppController.kinArrayShow,
+                    "kinshow",
+                    mContext
+                )
+                PreferenceManager().saveKinDetailsArrayList(
+                    CommonClass.kinArrayPass,
+                    "kinshow",
+                    mContext
+                )
             }
         })
     }

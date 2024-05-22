@@ -1,7 +1,6 @@
 package com.example.bskl_kotlin.activity.calender.model
 
 import com.example.bskl_kotlin.fragment.calendar.model.StudentDetailModelJava
-import com.example.kingsapp.activities.calender.model.StudentDetailModel
 
 class CalenderListModel (
     var id: String? = null,

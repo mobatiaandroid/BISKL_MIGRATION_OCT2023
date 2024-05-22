@@ -1,7 +1,5 @@
 package com.example.bskl_kotlin.activity.settings.model
 
-import com.example.bskl_kotlin.activity.datacollection_p2.model.PassportDetailModel
-import com.example.kingsapp.activities.calender.model.StudentDetailModel
 import com.google.gson.annotations.SerializedName
 
 class UserprofileStudentResponseModel  (

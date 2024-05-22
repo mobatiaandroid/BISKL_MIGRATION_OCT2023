@@ -124,7 +124,7 @@ class SplashActivity : AppCompatActivity() {
             mContext.contentResolver,
             Settings.Secure.ANDROID_ID
         )
-        var devicereg= DeviceRegisterApiModel(tokenM, "2",androidId,
+        var devicereg= DeviceRegisterApiModel("tokenM", "2",androidId,
             PreferenceManager().getUserId(mContext).toString())
         val call: Call<DeviceregisterModel> = ApiClient.getClient.deviceRegister(
             devicereg,"Bearer "+PreferenceManager().getaccesstoken(mContext).toString()

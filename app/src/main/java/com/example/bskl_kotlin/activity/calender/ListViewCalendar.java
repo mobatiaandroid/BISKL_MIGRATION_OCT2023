@@ -41,19 +41,11 @@ import com.example.bskl_kotlin.activity.calendar.CalendarInfoActivity;
 import com.example.bskl_kotlin.activity.calender.adapter.CustomList;
 import com.example.bskl_kotlin.activity.calender.adapter.ListViewSpinnerAdapter;
 import com.example.bskl_kotlin.activity.calender.model.CalenderBadgeResponseModel;
-import com.example.bskl_kotlin.activity.calender.model.CalenderHolidayResponseModel;
 
 import com.example.bskl_kotlin.activity.calender.model.CalenderMonthModel;
 import com.example.bskl_kotlin.activity.calender.utils.CalendarListener;
 import com.example.bskl_kotlin.fragment.attendance.APIClient;
 import com.example.bskl_kotlin.fragment.attendance.PreferenceManagerr;
-import com.example.bskl_kotlin.fragment.attendance.adapter.ChartListRecyclerAdapter;
-import com.example.bskl_kotlin.fragment.attendance.adapter.SelectedListRecyclerAdapter;
-import com.example.bskl_kotlin.fragment.attendance.model.AttendanceChartListModel;
-import com.example.bskl_kotlin.fragment.attendance.model.AttendanceModel;
-import com.example.bskl_kotlin.fragment.attendance.model.AttendanceResponseModel;
-import com.example.bskl_kotlin.fragment.attendance.model.AttendenceResponse;
-import com.example.bskl_kotlin.fragment.attendance.model.ResponseArrayAttendanceModel;
 import com.example.bskl_kotlin.fragment.calendar.CalenderDetailActivity;
 import com.example.bskl_kotlin.fragment.calendar.adapter.MyRecyclerViewAdapter;
 import com.example.bskl_kotlin.fragment.calendar.model.CalendarModel;
@@ -63,16 +55,7 @@ import com.example.bskl_kotlin.manager.countrypicker.AppControllerr;
 import com.example.bskl_kotlin.recyclerviewmanager.ItemOffsetDecoration;
 import com.example.bskl_kotlin.recyclerviewmanager.RecyclerItemListener;
 import com.example.bskl_kotlin.rest_api.ApiInterface;
-import com.example.kingsapp.activities.calender.model.StudentDetailModel;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.Entry;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.formatter.LargeValueFormatter;
 import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.text.ParseException;
